@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Heart, User, Settings, LogOut } from 'lucide-react';
+import { Heart, User, Settings, LogOut, Stethoscope, Activity } from 'lucide-react';
 
 const Navbar = () => {
   return (
@@ -12,7 +12,10 @@ const Navbar = () => {
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex items-center gap-2">
-                <Heart className="h-8 w-8 text-medical-primary" />
+                <div className="relative">
+                  <Stethoscope className="h-7 w-7 text-medical-primary absolute -left-1 -top-1" />
+                  <Activity className="h-7 w-7 text-medical-primary" />
+                </div>
                 <span className="text-xl font-bold text-medical-primary font-heading">Precision Health Compass</span>
               </Link>
             </div>

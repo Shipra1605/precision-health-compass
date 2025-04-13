@@ -22,7 +22,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({ patient }) => {
   const healthScore = Math.round(85 - (bmi > 25 ? (bmi - 25) * 2 : 0) + (patient.age < 40 ? 5 : 0));
   
   // Function to determine the progress bar color
-  const getProgressClass = (score: number) => {
+  const getProgressClass = (score: number): string => {
     if (score >= 80) return "bg-green-500";
     if (score >= 60) return "bg-blue-500";
     if (score >= 40) return "bg-yellow-500";
