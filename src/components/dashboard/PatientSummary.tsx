@@ -21,6 +21,14 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({ patient }) => {
   // For demo purposes, let's create a "health score"
   const healthScore = Math.round(85 - (bmi > 25 ? (bmi - 25) * 2 : 0) + (patient.age < 40 ? 5 : 0));
   
+  // Function to determine the progress bar color
+  const getProgressClass = (score: number) => {
+    if (score >= 80) return "bg-green-500";
+    if (score >= 60) return "bg-blue-500";
+    if (score >= 40) return "bg-yellow-500";
+    return "bg-red-500";
+  };
+  
   return (
     <Card className="health-card">
       <CardHeader className="pb-2">
@@ -80,17 +88,7 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({ patient }) => {
             <div className="text-xl font-semibold">{healthScore}/100</div>
             <Progress 
               value={healthScore} 
-              className="h-2 mt-1" 
-              // Fix: remove indicatorClassName which is not supported
-              // and use the proper className instead
-              className={
-                `h-2 mt-1 ${
-                  healthScore >= 80 ? "bg-green-500" : 
-                  healthScore >= 60 ? "bg-blue-500" : 
-                  healthScore >= 40 ? "bg-yellow-500" : 
-                  "bg-red-500"
-                }`
-              }
+              className={`h-2 mt-1 ${getProgressClass(healthScore)}`}
             />
           </div>
           
