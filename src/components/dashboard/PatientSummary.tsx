@@ -81,11 +81,15 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({ patient }) => {
             <Progress 
               value={healthScore} 
               className="h-2 mt-1" 
-              indicatorClassName={
-                healthScore >= 80 ? "progress-excellent" : 
-                healthScore >= 60 ? "progress-good" : 
-                healthScore >= 40 ? "progress-fair" : 
-                "progress-poor"
+              // Fix: remove indicatorClassName which is not supported
+              // and use the proper className instead
+              className={
+                `h-2 mt-1 ${
+                  healthScore >= 80 ? "bg-green-500" : 
+                  healthScore >= 60 ? "bg-blue-500" : 
+                  healthScore >= 40 ? "bg-yellow-500" : 
+                  "bg-red-500"
+                }`
               }
             />
           </div>
