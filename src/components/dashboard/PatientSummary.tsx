@@ -23,17 +23,17 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({ patient }) => {
   
   // Function to determine the progress bar color
   const getProgressClass = (score: number): string => {
-    if (score >= 80) return "bg-green-500";
-    if (score >= 60) return "bg-blue-500";
+    if (score >= 80) return "bg-teal-500";
+    if (score >= 60) return "bg-teal-400";
     if (score >= 40) return "bg-yellow-500";
     return "bg-red-500";
   };
   
   return (
-    <Card className="health-card">
+    <Card className="health-card hover-lift">
       <CardHeader className="pb-2">
         <CardTitle className="text-xl font-medium flex items-center gap-2">
-          <User className="h-5 w-5 text-medical-primary" />
+          <User className="h-5 w-5 text-teal-600" />
           Patient Summary
         </CardTitle>
         <CardDescription>Basic health metrics and information</CardDescription>
@@ -45,10 +45,10 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({ patient }) => {
               <img 
                 src={patient.profileImage} 
                 alt={`${patient.firstName} ${patient.lastName}`} 
-                className="h-24 w-24 rounded-full border-2 border-medical-light"
+                className="h-24 w-24 rounded-full border-2 border-teal-200"
               />
             ) : (
-              <div className="h-24 w-24 rounded-full bg-medical-light flex items-center justify-center text-2xl font-bold text-medical-primary">
+              <div className="h-24 w-24 rounded-full bg-teal-100 flex items-center justify-center text-2xl font-bold text-teal-600">
                 {patient.firstName[0]}{patient.lastName[0]}
               </div>
             )}
@@ -59,12 +59,12 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({ patient }) => {
               {patient.age} years old • {patient.gender} • {patient.height}cm • {patient.weight}kg
             </div>
             <div className="flex flex-wrap gap-2 justify-center md:justify-start">
-              <Badge variant="outline" className="bg-medical-light/30">
-                <Droplet className="h-3 w-3 mr-1" />
+              <Badge variant="outline" className="bg-teal-50">
+                <Droplet className="h-3 w-3 mr-1 text-teal-600" />
                 {patient.bloodType}
               </Badge>
               {patient.allergies.map((allergy, index) => (
-                <Badge key={index} variant="secondary">
+                <Badge key={index} variant="secondary" className="bg-teal-100 text-teal-800">
                   {allergy}
                 </Badge>
               ))}
@@ -73,17 +73,17 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({ patient }) => {
         </div>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mt-4">
-          <div className="health-stat bg-medical-light/20">
+          <div className="health-stat bg-teal-50 hover-scale">
             <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
-              <Activity className="h-3 w-3" /> BMI
+              <Activity className="h-3 w-3 text-teal-600" /> BMI
             </div>
             <div className="text-xl font-semibold">{bmi.toFixed(1)}</div>
             <div className="text-sm">{bmiCategory}</div>
           </div>
           
-          <div className="health-stat bg-medical-light/20">
+          <div className="health-stat bg-teal-50 hover-scale">
             <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
-              <Heart className="h-3 w-3" /> Health Score
+              <Heart className="h-3 w-3 text-teal-600" /> Health Score
             </div>
             <div className="text-xl font-semibold">{healthScore}/100</div>
             <Progress 
@@ -92,9 +92,9 @@ const PatientSummary: React.FC<PatientSummaryProps> = ({ patient }) => {
             />
           </div>
           
-          <div className="health-stat bg-medical-light/20">
+          <div className="health-stat bg-teal-50 hover-scale">
             <div className="text-xs text-gray-500 mb-1 flex items-center gap-1">
-              <Activity className="h-3 w-3" /> Risk Profile
+              <Activity className="h-3 w-3 text-teal-600" /> Risk Profile
             </div>
             <div className="text-xl font-semibold">
               {
