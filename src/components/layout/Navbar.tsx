@@ -12,11 +12,9 @@ const Navbar = () => {
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex items-center gap-2">
-                <img 
-                  src="/lovable-uploads/ada3d3a6-2579-48cf-9503-3ff02f7da658.png" 
-                  alt="MediCare AI Logo" 
-                  className="h-10 w-auto"
-                />
+                <div className="relative h-10 w-10 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
+                  <Activity className="h-6 w-6 text-white" />
+                </div>
                 <span className="text-xl font-bold text-teal-600 font-heading">MediCare AI</span>
               </Link>
             </div>

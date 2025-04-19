@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
-import { Heart, ArrowRight, CheckCircle } from 'lucide-react';
+import { Activity, ArrowRight, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface AccountData {
@@ -48,6 +48,20 @@ const Signup: React.FC = () => {
       });
       return;
     }
+    
+    // Check if email already exists
+    const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+    const userExists = existingUsers.some((user: any) => user.email === accountData.email);
+    
+    if (userExists) {
+      toast({
+        title: "Error",
+        description: "Email already in use. Please use a different email or login.",
+        variant: "destructive"
+      });
+      return;
+    }
+    
     setStep(2);
   };
 
@@ -62,18 +76,31 @@ const Signup: React.FC = () => {
       return;
     }
     
-    // Save user data to localStorage
-    const userData = {
-      ...accountData,
-      ...personalData,
-      id: Date.now().toString()
-    };
-    
-    // Get existing users or create empty array
-    const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    localStorage.setItem('users', JSON.stringify([...existingUsers, userData]));
-    
-    setStep(3);
+    try {
+      // Save user data to localStorage
+      const userData = {
+        ...accountData,
+        ...personalData,
+        id: Date.now().toString(),
+        createdAt: new Date().toISOString()
+      };
+      
+      // Get existing users or create empty array
+      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
+      localStorage.setItem('users', JSON.stringify([...existingUsers, userData]));
+      
+      // Also set as current user
+      localStorage.setItem('currentUser', JSON.stringify(userData));
+      
+      setStep(3);
+    } catch (error) {
+      console.error("Signup error:", error);
+      toast({
+        title: "Error",
+        description: "An error occurred during signup. Please try again.",
+        variant: "destructive"
+      });
+    }
   };
 
   const goToLogin = () => {
@@ -81,13 +108,21 @@ const Signup: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-medical-background px-4 py-12">
-      <div className="mb-8 flex items-center gap-2">
-        <Heart className="h-8 w-8 text-medical-primary" />
-        <span className="text-2xl font-bold text-medical-primary">Precision Health Compass</span>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-teal-50 to-white px-4 py-12 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-40 left-10 w-64 h-64 rounded-full bg-teal-100/30 blur-3xl"></div>
+        <div className="absolute bottom-40 right-10 w-80 h-80 rounded-full bg-blue-100/30 blur-3xl"></div>
       </div>
       
-      <Card className="w-full max-w-md">
+      <div className="mb-8 flex items-center gap-2 relative z-10">
+        <div className="relative h-12 w-12 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
+          <Activity className="h-8 w-8 text-white" />
+        </div>
+        <span className="text-2xl font-bold text-teal-600">MediCare AI</span>
+      </div>
+      
+      <Card className="w-full max-w-md relative z-10 bg-white/90 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-center">
             {step === 3 ? "Account Created Successfully!" : "New User – Please Create Your Account"}
@@ -95,7 +130,7 @@ const Signup: React.FC = () => {
           <CardDescription className="text-center">
             {step === 1 && "Step 1: Account Setup"}
             {step === 2 && "Step 2: Personal Details"}
-            {step === 3 && "Welcome, New User"}
+            {step === 3 && "Welcome to MediCare AI"}
           </CardDescription>
         </CardHeader>
         
@@ -126,7 +161,7 @@ const Signup: React.FC = () => {
                 />
               </div>
               
-              <Button type="submit" className="w-full mt-6 flex items-center justify-center gap-2">
+              <Button type="submit" className="w-full mt-6 flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 transition-colors">
                 Next <ArrowRight className="h-4 w-4" />
               </Button>
             </form>
@@ -220,14 +255,17 @@ const Signup: React.FC = () => {
                 </Select>
               </div>
               
-              <Button type="submit" className="w-full mt-6">Submit</Button>
+              <Button type="submit" className="w-full mt-6 bg-teal-600 hover:bg-teal-700 transition-colors">Submit</Button>
             </form>
           )}
           
           {step === 3 && (
             <div className="text-center py-6">
               <div className="flex justify-center mb-4">
-                <CheckCircle className="h-16 w-16 text-green-500" />
+                <div className="relative">
+                  <div className="absolute inset-0 rounded-full bg-green-100 blur-md animate-pulse-subtle"></div>
+                  <CheckCircle className="h-16 w-16 text-green-500 relative" />
+                </div>
               </div>
               <p className="text-gray-600 mb-6">
                 Your account has been created successfully. You can now log in to access your dashboard.
@@ -238,8 +276,8 @@ const Signup: React.FC = () => {
         
         {step === 3 && (
           <CardFooter>
-            <Button onClick={goToLogin} className="w-full">
-              Login Now
+            <Button onClick={() => navigate('/dashboard')} className="w-full bg-teal-600 hover:bg-teal-700 transition-colors">
+              Go to Dashboard
             </Button>
           </CardFooter>
         )}

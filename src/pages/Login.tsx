@@ -1,5 +1,5 @@
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -16,48 +16,70 @@ const Login: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
 
+  useEffect(() => {
+    // Check if user is already logged in
+    const currentUser = localStorage.getItem('currentUser');
+    if (currentUser) {
+      navigate('/dashboard');
+    }
+  }, [navigate]);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Retrieve users from localStorage
-    const users = JSON.parse(localStorage.getItem('users') || '[]');
-    const user = users.find((u: any) => u.email === email && u.password === password);
-    
-    setTimeout(() => {
-      if (user) {
-        // Store current user in session
-        localStorage.setItem('currentUser', JSON.stringify(user));
-        
-        toast({
-          title: "Success",
-          description: "You have successfully logged in",
-        });
-        
-        navigate('/dashboard');
-      } else {
-        toast({
-          title: "Error",
-          description: "Invalid email or password",
-          variant: "destructive",
-        });
-      }
+    try {
+      // Retrieve users from localStorage
+      const users = JSON.parse(localStorage.getItem('users') || '[]');
+      const user = users.find((u: any) => u.email === email);
+      
+      setTimeout(() => {
+        if (user && user.password === password) {
+          // Store current user in session
+          localStorage.setItem('currentUser', JSON.stringify(user));
+          
+          toast({
+            title: "Success",
+            description: "You have successfully logged in",
+          });
+          
+          navigate('/dashboard');
+        } else {
+          toast({
+            title: "Error",
+            description: "Invalid email or password",
+            variant: "destructive",
+          });
+        }
+        setIsLoading(false);
+      }, 1000); // Simulate network request
+    } catch (error) {
+      console.error("Login error:", error);
+      toast({
+        title: "Error",
+        description: "An error occurred during login",
+        variant: "destructive",
+      });
       setIsLoading(false);
-    }, 1000); // Simulate network request
+    }
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-teal-50 to-white px-4 py-12">
-      <div className="mb-8 flex items-center gap-2">
-        <img 
-          src="/lovable-uploads/ada3d3a6-2579-48cf-9503-3ff02f7da658.png" 
-          alt="MediCare AI Logo" 
-          className="h-12 w-auto"
-        />
+    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-teal-50 to-white px-4 py-12 relative overflow-hidden">
+      {/* Background decoration */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-40 left-10 w-64 h-64 rounded-full bg-teal-100/30 blur-3xl"></div>
+        <div className="absolute bottom-40 right-10 w-80 h-80 rounded-full bg-blue-100/30 blur-3xl"></div>
+      </div>
+      
+      <div className="mb-8 flex items-center gap-2 relative z-10">
+        <div className="relative h-12 w-12 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
+          <Activity className="h-8 w-8 text-white" />
+        </div>
         <span className="text-2xl font-bold text-teal-600">MediCare AI</span>
       </div>
       
-      <Card className="w-full max-w-md hover:shadow-lg transition-all duration-300">
+      <Card className="w-full max-w-md hover:shadow-lg transition-all duration-300 relative z-10 bg-white/90 backdrop-blur-sm">
         <CardHeader>
           <CardTitle className="text-center">Log In to Your Account</CardTitle>
           <CardDescription className="text-center">
