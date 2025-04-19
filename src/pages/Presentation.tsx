@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { Link } from 'react-router-dom';
-import { ChevronLeft, ChevronRight, Home } from 'lucide-react';
+import { ChevronLeft, ChevronRight, Home, Stethoscope } from 'lucide-react';
 
 const Presentation = () => {
   const [currentSlide, setCurrentSlide] = React.useState(1);
@@ -19,7 +18,6 @@ const Presentation = () => {
   return (
     <div className="min-h-screen bg-gradient-to-b from-teal-50 to-white">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        {/* Navigation */}
         <div className="flex justify-between items-center mb-6">
           <Link to="/">
             <Button variant="outline" size="sm" className="flex items-center gap-2">
@@ -53,9 +51,7 @@ const Presentation = () => {
           </div>
         </div>
         
-        {/* Slide container with aspect ratio */}
         <div className="bg-white border border-gray-200 rounded-lg shadow-lg aspect-[16/9] relative overflow-hidden">
-          {/* Title Slide */}
           {currentSlide === 1 && (
             <div className="w-full h-full p-16 flex flex-col justify-center items-center text-center">
               <div className="absolute top-8 left-8 flex items-center">
@@ -75,7 +71,6 @@ const Presentation = () => {
             </div>
           )}
           
-          {/* Abstract Slide */}
           {currentSlide === 2 && (
             <div className="w-full h-full p-16">
               <h2 className="text-3xl font-bold text-teal-800 mb-8">Abstract</h2>
@@ -92,7 +87,6 @@ const Presentation = () => {
             </div>
           )}
           
-          {/* Objectives Slide */}
           {currentSlide === 3 && (
             <div className="w-full h-full p-16">
               <h2 className="text-3xl font-bold text-teal-800 mb-8">Objectives</h2>
@@ -106,7 +100,6 @@ const Presentation = () => {
             </div>
           )}
           
-          {/* Technologies Slide */}
           {currentSlide === 4 && (
             <div className="w-full h-full p-16">
               <h2 className="text-3xl font-bold text-teal-800 mb-8">Technologies Used</h2>
@@ -135,7 +128,6 @@ const Presentation = () => {
             </div>
           )}
           
-          {/* System Architecture Slide */}
           {currentSlide === 5 && (
             <div className="w-full h-full p-16">
               <h2 className="text-3xl font-bold text-teal-800 mb-8">System Architecture</h2>
@@ -151,7 +143,6 @@ const Presentation = () => {
             </div>
           )}
           
-          {/* Workflow Slide */}
           {currentSlide === 6 && (
             <div className="w-full h-full p-16">
               <h2 className="text-3xl font-bold text-teal-800 mb-8">System Workflow</h2>
@@ -223,7 +214,6 @@ const Presentation = () => {
             </div>
           )}
           
-          {/* API & Model Pipeline Slide */}
           {currentSlide === 7 && (
             <div className="w-full h-full p-16">
               <h2 className="text-3xl font-bold text-teal-800 mb-6">API Endpoints & Model Pipeline</h2>
@@ -265,7 +255,6 @@ const Presentation = () => {
             </div>
           )}
           
-          {/* Example Input/Output Slide */}
           {currentSlide === 8 && (
             <div className="w-full h-full p-16">
               <h2 className="text-3xl font-bold text-teal-800 mb-8">Example Input/Output</h2>
@@ -313,7 +302,6 @@ const Presentation = () => {
             </div>
           )}
           
-          {/* Conclusion Slide */}
           {currentSlide === 9 && (
             <div className="w-full h-full p-16">
               <h2 className="text-3xl font-bold text-teal-800 mb-6">Challenges & Conclusion</h2>
@@ -349,7 +337,6 @@ const Presentation = () => {
             </div>
           )}
           
-          {/* Pagination dots */}
           <div className="absolute bottom-4 left-0 right-0 flex justify-center gap-2">
             {Array.from({ length: totalSlides }).map((_, i) => (
               <button
