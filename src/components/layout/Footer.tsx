@@ -9,7 +9,7 @@ const Footer = () => {
         <div className="flex justify-center items-center">
           <div className="flex items-center gap-2">
             <Stethoscope className="h-5 w-5 text-teal-600" />
-            <span className="text-sm font-medium text-gray-600">MediCare AI © 2025</span>
+            <span className="text-sm font-medium text-gray-600">MediCare AI © 2025 | Project Mentor: Mr. Deen Mohammad</span>
           </div>
         </div>
       </div>

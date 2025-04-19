@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { User, Settings, LogOut, Stethoscope } from 'lucide-react';
+import { User, Settings, LogOut, Stethoscope, Presentation } from 'lucide-react';
 
 const Navbar = () => {
   return (
@@ -20,6 +20,12 @@ const Navbar = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <Link to="/presentation">
+              <Button variant="outline" size="sm">
+                <Presentation className="h-4 w-4 mr-2" />
+                <span>Project Presentation</span>
+              </Button>
+            </Link>
             <Button variant="ghost" size="icon">
               <Settings className="h-5 w-5" />
             </Button>
