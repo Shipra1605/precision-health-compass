@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { useToast } from '@/components/ui/use-toast';
-import { LogIn } from 'lucide-react';
+import { LogIn, Stethoscope } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 const Login: React.FC = () => {
@@ -29,14 +29,22 @@ const Login: React.FC = () => {
     setIsLoading(true);
     
     try {
+      // Store login time to ensure login data persists longer
+      const sessionExpiry = new Date();
+      sessionExpiry.setMonth(sessionExpiry.getMonth() + 1); // Set expiry to 1 month
+      
       // Retrieve users from localStorage
       const users = JSON.parse(localStorage.getItem('users') || '[]');
       const user = users.find((u: any) => u.email === email);
       
       setTimeout(() => {
         if (user && user.password === password) {
-          // Store current user in session
-          localStorage.setItem('currentUser', JSON.stringify(user));
+          // Store current user in session with expiry
+          const userSession = {
+            ...user,
+            sessionExpiry: sessionExpiry.toISOString()
+          };
+          localStorage.setItem('currentUser', JSON.stringify(userSession));
           
           toast({
             title: "Success",
@@ -74,7 +82,7 @@ const Login: React.FC = () => {
       
       <div className="mb-8 flex items-center gap-2 relative z-10">
         <div className="relative h-12 w-12 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
-          <Activity className="h-8 w-8 text-white" />
+          <Stethoscope className="h-8 w-8 text-white" />
         </div>
         <span className="text-2xl font-bold text-teal-600">MediCare AI</span>
       </div>

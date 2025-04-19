@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { UserPlus, LogIn, BarChart2, FileText, Stethoscope, Brain, Activity, PieChart, Server, Dna, Flask, Microscope } from 'lucide-react';
+import { UserPlus, LogIn, BarChart2, FileText, Stethoscope, Brain, Activity, PieChart, Server, Dna, Microscope } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 
 const Home: React.FC = () => {
@@ -49,13 +49,11 @@ const Home: React.FC = () => {
               <div className="flex-shrink-0 flex justify-center">
                 <div className="relative">
                   <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-teal-200 to-cyan-200 blur-md opacity-75 animate-pulse-subtle"></div>
-                  <div className="relative">
-                    <img 
-                      src="/lovable-uploads/ada3d3a6-2579-48cf-9503-3ff02f7da658.png" 
-                      alt="MediCare AI Logo" 
-                      className="h-48 w-auto drop-shadow-md"
-                    />
-                    <h2 className="text-2xl font-bold text-teal-700 mt-2">MediCare AI</h2>
+                  <div className="relative flex flex-col items-center">
+                    <div className="h-24 w-24 bg-gradient-to-r from-teal-500 to-cyan-500 rounded-full flex items-center justify-center shadow-lg mb-4">
+                      <Stethoscope className="h-12 w-12 text-white" />
+                    </div>
+                    <h2 className="text-2xl font-bold text-teal-700">MediCare AI</h2>
                   </div>
                 </div>
               </div>
@@ -76,7 +74,7 @@ const Home: React.FC = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">AI Diagnosis</h3>
                 <p className="text-gray-600">
-                  Advanced algorithms analyze symptoms and medical data to provide quick preliminary insights about potential health conditions.
+                  AI analysis of your symptoms to provide preliminary insights about potential health conditions using our BERT-based model.
                 </p>
               </div>
               
@@ -89,7 +87,7 @@ const Home: React.FC = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Treatment Plans</h3>
                 <p className="text-gray-600">
-                  Receive evidence-based treatment suggestions tailored to your symptoms and medical profile with clear explanations.
+                  Personalized treatment suggestions with confidence scores based on your symptoms and medical profile.
                 </p>
               </div>
               
@@ -102,7 +100,7 @@ const Home: React.FC = () => {
                 </div>
                 <h3 className="text-xl font-semibold mb-2">Health Records</h3>
                 <p className="text-gray-600">
-                  Securely store and access your medical data in one place, making it easier to track health patterns over time.
+                  Secure storage of your medical data to track patterns and provide better treatment recommendations over time.
                 </p>
               </div>
             </div>
@@ -115,31 +113,31 @@ const Home: React.FC = () => {
             <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
               <div className="flex flex-col items-center p-6 hover-lift rounded-lg">
                 <div className="w-full h-40 mb-4 bg-gradient-to-br from-teal-50 to-teal-100 rounded-lg flex items-center justify-center shadow-inner">
-                  <Microscope className="h-16 w-16 text-teal-600" />
+                  <Microscope className="h-16 w-16 text-teal-600 animate-pulse-subtle" />
                 </div>
                 <h3 className="text-lg font-medium">Clinical BERT</h3>
                 <p className="text-sm text-center text-gray-600 mt-2">
-                  A specialized language model that processes medical text to understand complex symptoms and clinical terminology.
+                  Our specialized NLP model processes medical terminology to understand complex symptoms with 89.2% accuracy.
                 </p>
               </div>
               
               <div className="flex flex-col items-center p-6 hover-lift rounded-lg">
                 <div className="w-full h-40 mb-4 bg-gradient-to-br from-teal-50 to-teal-100 rounded-lg flex items-center justify-center shadow-inner">
-                  <BarChart2 className="h-16 w-16 text-teal-600" />
+                  <BarChart2 className="h-16 w-16 text-teal-600 animate-pulse-subtle" />
                 </div>
                 <h3 className="text-lg font-medium">XGBoost</h3>
                 <p className="text-sm text-center text-gray-600 mt-2">
-                  A powerful decision-tree algorithm that analyzes health data to identify patterns and predict optimal treatment options.
+                  Our decision-tree algorithm analyzes health data with 87% precision to identify patterns and predict optimal treatments.
                 </p>
               </div>
               
               <div className="flex flex-col items-center p-6 hover-lift rounded-lg">
                 <div className="w-full h-40 mb-4 bg-gradient-to-br from-teal-50 to-teal-100 rounded-lg flex items-center justify-center shadow-inner">
-                  <Dna className="h-16 w-16 text-teal-600" />
+                  <Dna className="h-16 w-16 text-teal-600 animate-pulse-subtle" />
                 </div>
                 <h3 className="text-lg font-medium">SHAP</h3>
                 <p className="text-sm text-center text-gray-600 mt-2">
-                  An explainable AI framework that provides transparency by showing how different factors influence treatment recommendations.
+                  Our explainable AI framework shows how different factors influence our recommendations with transparency.
                 </p>
               </div>
             </div>

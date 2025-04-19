@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { User, Settings, LogOut, Activity } from 'lucide-react';
+import { User, Settings, LogOut, Stethoscope } from 'lucide-react';
 
 const Navbar = () => {
   return (
@@ -13,7 +13,7 @@ const Navbar = () => {
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex items-center gap-2">
                 <div className="relative h-10 w-10 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
-                  <Activity className="h-6 w-6 text-white" />
+                  <Stethoscope className="h-6 w-6 text-white" />
                 </div>
                 <span className="text-xl font-bold text-teal-600 font-heading">MediCare AI</span>
               </Link>

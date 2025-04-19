@@ -51,6 +51,35 @@ body {
   }
 }
 
+.float-animation {
+  animation: float 4s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.rotate-slow {
+  animation: rotateSlow 20s linear infinite;
+}
+
+@keyframes rotateSlow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
 /* Gradient Effects */
 .text-gradient {
   background: linear-gradient(to right, #0ea5e9, #14b8a6);
@@ -85,5 +114,42 @@ body {
   100% {
     transform: scale(0.95);
     box-shadow: 0 0 0 0 rgba(14, 165, 233, 0);
+  }
+}
+
+/* 3D Card Effect */
+.card-3d {
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+}
+
+.card-3d:hover {
+  transform: rotateY(5deg) rotateX(5deg);
+}
+
+/* Medical Icon Animation */
+.medical-icon {
+  transition: all 0.3s ease;
+}
+
+.medical-icon:hover {
+  transform: scale(1.1);
+  filter: drop-shadow(0 0 5px rgba(20, 184, 166, 0.5));
+}
+
+/* Floating Elements */
+.floating-element {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-15px);
+  }
+  100% {
+    transform: translateY(0px);
   }
 }

@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { useToast } from '@/components/ui/use-toast';
-import { Activity, ArrowRight, CheckCircle } from 'lucide-react';
+import { Stethoscope, ArrowRight, CheckCircle } from 'lucide-react';
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface AccountData {
@@ -77,12 +77,17 @@ const Signup: React.FC = () => {
     }
     
     try {
+      // Set expiry date for login session (1 month)
+      const sessionExpiry = new Date();
+      sessionExpiry.setMonth(sessionExpiry.getMonth() + 1);
+      
       // Save user data to localStorage
       const userData = {
         ...accountData,
         ...personalData,
         id: Date.now().toString(),
-        createdAt: new Date().toISOString()
+        createdAt: new Date().toISOString(),
+        sessionExpiry: sessionExpiry.toISOString()
       };
       
       // Get existing users or create empty array
@@ -103,8 +108,8 @@ const Signup: React.FC = () => {
     }
   };
 
-  const goToLogin = () => {
-    navigate('/login');
+  const goToDashboard = () => {
+    navigate('/dashboard');
   };
 
   return (
@@ -117,7 +122,7 @@ const Signup: React.FC = () => {
       
       <div className="mb-8 flex items-center gap-2 relative z-10">
         <div className="relative h-12 w-12 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
-          <Activity className="h-8 w-8 text-white" />
+          <Stethoscope className="h-8 w-8 text-white" />
         </div>
         <span className="text-2xl font-bold text-teal-600">MediCare AI</span>
       </div>
@@ -268,7 +273,7 @@ const Signup: React.FC = () => {
                 </div>
               </div>
               <p className="text-gray-600 mb-6">
-                Your account has been created successfully. You can now log in to access your dashboard.
+                Your account has been created successfully. You can now access your personalized dashboard.
               </p>
             </div>
           )}
@@ -276,7 +281,7 @@ const Signup: React.FC = () => {
         
         {step === 3 && (
           <CardFooter>
-            <Button onClick={() => navigate('/dashboard')} className="w-full bg-teal-600 hover:bg-teal-700 transition-colors">
+            <Button onClick={goToDashboard} className="w-full bg-teal-600 hover:bg-teal-700 transition-colors">
               Go to Dashboard
             </Button>
           </CardFooter>
