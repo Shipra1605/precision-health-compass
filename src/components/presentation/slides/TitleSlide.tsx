@@ -1,26 +1,29 @@
 
-import React from 'react';
-import { Stethoscope } from 'lucide-react';
+import React from "react";
 
-const TitleSlide = () => {
-  return (
-    <div className="w-full h-full p-16 flex flex-col justify-center items-center text-center">
-      <div className="absolute top-8 left-8 flex items-center">
-        <div className="relative h-16 w-16 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
-          <Stethoscope className="h-10 w-10 text-white" />
-        </div>
+const TitleSlide = () => (
+  <div className="flex flex-col items-center justify-center h-full py-20">
+    <div className="mb-8 flex items-center gap-4">
+      <div className="relative h-16 w-16 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
+        {/* Hero icon or logo */}
+        <span className="text-4xl text-white font-bold">AI</span>
       </div>
-      
-      <h1 className="text-5xl font-bold text-teal-800 mb-6">MediCare AI</h1>
-      <h2 className="text-3xl font-medium text-teal-600 mb-12">Project Report</h2>
-      
-      <div className="mt-16 text-left w-full max-w-2xl">
-        <h3 className="text-xl font-semibold mb-2">Prepared by:</h3>
-        <p className="mb-1">MCA Final Year – Group 35</p>
-        <p className="mb-4">Project Mentor: Mr. Deen Mohammad</p>
-      </div>
+      <span className="text-4xl font-extrabold text-teal-700">
+        MediCare AI
+      </span>
     </div>
-  );
-};
+    <h1 className="text-3xl md:text-4xl font-bold mb-2 text-gray-800">
+      Intelligent Medical Recommendation System
+    </h1>
+    <p className="text-lg text-gray-600 mb-6 text-center max-w-2xl">
+      Project Report & Presentation
+    </p>
+    <span className="text-lg font-medium text-gray-500 italic">
+      Prepared by: MCA Final Year – Group 35
+      <br />
+      Mentor: <span className="text-teal-700 font-bold">Mr. Deen Mohammad</span>
+    </span>
+  </div>
+);
 
 export default TitleSlide;
