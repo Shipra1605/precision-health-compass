@@ -35,7 +35,9 @@ const Login: React.FC = () => {
       
       // Retrieve users from localStorage
       const users = JSON.parse(localStorage.getItem('users') || '[]');
-      const user = users.find((u: any) => u.email === email);
+      
+      // Fix: Case-insensitive email comparison for better user experience
+      const user = users.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
       
       setTimeout(() => {
         if (user && user.password === password) {
@@ -51,8 +53,15 @@ const Login: React.FC = () => {
             description: "You have successfully logged in",
           });
           
+          // Log for debugging
+          console.log('Login successful. User data:', userSession);
+          
           navigate('/dashboard');
         } else {
+          // Log for debugging
+          console.log('Login failed. Attempted email:', email);
+          console.log('Available users:', users);
+          
           toast({
             title: "Error",
             description: "Invalid email or password",
