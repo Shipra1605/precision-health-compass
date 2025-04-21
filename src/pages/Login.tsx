@@ -48,17 +48,17 @@ const Login: React.FC = () => {
           };
           localStorage.setItem('currentUser', JSON.stringify(userSession));
           
+          // For debugging
+          console.log('Login successful. User data:', userSession);
+          
           toast({
             title: "Success",
             description: "You have successfully logged in",
           });
           
-          // Log for debugging
-          console.log('Login successful. User data:', userSession);
-          
           navigate('/dashboard');
         } else {
-          // Log for debugging
+          // For debugging
           console.log('Login failed. Attempted email:', email);
           console.log('Available users:', users);
           

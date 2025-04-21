@@ -69,7 +69,7 @@ const MainNavbar = () => {
               <NavigationMenuList>
                 {navItems.map((item) => (
                   <NavigationMenuItem key={item.name}>
-                    <Link to={item.path} legacyBehavior passHref>
+                    <Link to={item.path}>
                       <NavigationMenuLink
                         className={cn(
                           navigationMenuTriggerStyle(),
