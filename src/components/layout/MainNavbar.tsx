@@ -55,10 +55,13 @@ const MainNavbar = () => {
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/dashboard" className="flex items-center gap-2">
-                <div className="relative h-10 w-10 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
+                <div className="relative h-10 w-10 flex items-center justify-center bg-gradient-to-r from-red-500 to-red-600 rounded-full shadow-md">
                   <Stethoscope className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-xl font-bold text-teal-600 font-heading">MediCare AI</span>
+                <div className="flex flex-col items-start">
+                  <span className="text-xl font-bold text-red-600 font-heading">MediCare AI</span>
+                  <span className="text-xs text-gray-500">Personalized care at your fingertips</span>
+                </div>
               </Link>
             </div>
           </div>
@@ -74,7 +77,7 @@ const MainNavbar = () => {
                         className={cn(
                           navigationMenuTriggerStyle(),
                           "flex items-center",
-                          isActive(item.path) && "bg-teal-50 text-teal-700"
+                          isActive(item.path) && "bg-red-50 text-red-700"
                         )}
                       >
                         {item.icon}
@@ -125,7 +128,7 @@ const MainNavbar = () => {
                   className={cn(
                     "flex items-center px-4 py-2 text-base font-medium rounded-md",
                     isActive(item.path)
-                      ? "bg-teal-50 text-teal-700"
+                      ? "bg-red-50 text-red-700"
                       : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                   )}
                   onClick={() => setMenuOpen(false)}

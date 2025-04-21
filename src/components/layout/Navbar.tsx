@@ -12,16 +12,19 @@ const Navbar = () => {
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex items-center gap-2">
-                <div className="relative h-10 w-10 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
+                <div className="relative h-10 w-10 flex items-center justify-center bg-gradient-to-r from-red-500 to-red-600 rounded-full shadow-md">
                   <Stethoscope className="h-6 w-6 text-white" />
                 </div>
-                <span className="text-xl font-bold text-teal-600 font-heading">MediCare AI</span>
+                <div className="flex flex-col items-start">
+                  <span className="text-xl font-bold text-red-600 font-heading">MediCare AI</span>
+                  <span className="text-xs text-gray-500">Personalized care at your fingertips</span>
+                </div>
               </Link>
             </div>
           </div>
           <div className="flex items-center gap-4">
             <Link to="/presentation">
-              <Button variant="outline" size="sm">
+              <Button variant="outline" size="sm" className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700">
                 <Presentation className="h-4 w-4 mr-2" />
                 <span>Project Presentation</span>
               </Button>
@@ -32,7 +35,7 @@ const Navbar = () => {
             <Button variant="ghost" size="icon">
               <User className="h-5 w-5" />
             </Button>
-            <Button variant="outline" size="sm">
+            <Button variant="outline" size="sm" className="border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700">
               <LogOut className="h-4 w-4 mr-2" />
               <span>Sign Out</span>
             </Button>

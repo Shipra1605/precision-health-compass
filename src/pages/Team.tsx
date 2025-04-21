@@ -81,11 +81,11 @@ const Team = () => {
     <MainLayout>
       <div className="container mx-auto px-4 py-12 max-w-6xl">
         <h1 className="text-3xl md:text-4xl font-bold mb-4 text-center text-gray-800">Meet Our Team</h1>
-        <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-cyan-500 mx-auto mb-8"></div>
+        <div className="w-24 h-1 bg-gradient-to-r from-red-400 to-blue-500 mx-auto mb-8"></div>
         
         <p className="text-lg text-gray-600 max-w-3xl mx-auto text-center mb-12">
-          MediCare AI was developed by a dedicated team of MCA students under the mentorship of Mr. Deen Mohammad.
-          Our diverse skills and collaborative approach made this project possible.
+          MediCare AI is developed by a dedicated team of MCA students with specialization in Machine Learning and Artificial Intelligence. 
+          Our diverse skills and collaborative approach make this project possible.
         </p>
         
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -96,7 +96,7 @@ const Team = () => {
               style={{ animationDelay: `${index * 0.1}s` }}
             >
               <Card className="overflow-hidden hover-lift bg-white border border-gray-100">
-                <div className="aspect-[3/2] overflow-hidden bg-gradient-to-br from-teal-100 to-cyan-100">
+                <div className="aspect-[3/2] overflow-hidden bg-gradient-to-br from-blue-100 to-red-100">
                   <img 
                     src={member.avatarUrl} 
                     alt={member.name} 
@@ -105,7 +105,7 @@ const Team = () => {
                 </div>
                 <CardContent className="p-6">
                   <h2 className="text-xl font-semibold text-gray-800 mb-1">{member.name}</h2>
-                  <p className="text-teal-600 text-sm font-medium mb-3">{member.role}</p>
+                  <p className="text-blue-600 text-sm font-medium mb-3">{member.role}</p>
                   
                   <div className="space-y-2 text-sm text-gray-600 mb-4">
                     <p className="flex items-center">
@@ -149,18 +149,11 @@ const Team = () => {
           ))}
         </div>
         
-        <div className="mt-16 bg-gradient-to-r from-teal-50 to-blue-50 rounded-xl p-8 shadow-sm border border-teal-100">
-          <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">Project Mentor</h2>
-          <div className="flex flex-col items-center">
-            <div className="w-24 h-24 rounded-full bg-gradient-to-r from-teal-400 to-cyan-400 flex items-center justify-center mb-4">
-              <span className="text-3xl font-bold text-white">DM</span>
-            </div>
-            <h3 className="text-xl font-semibold text-gray-800">Mr. Deen Mohammad</h3>
-            <p className="text-gray-600 mt-1">Faculty Mentor</p>
-            <p className="text-gray-600 mt-4 max-w-2xl text-center">
-              Under Mr. Deen Mohammad's expert guidance, our team developed this comprehensive medical AI system.
-              His insights and direction were instrumental in shaping both the technical implementation and 
-              practical applications of this project.
+        <div className="mt-16 bg-gradient-to-r from-blue-50 to-red-50 rounded-xl p-8 shadow-sm border border-blue-100">
+          <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">Project Information</h2>
+          <div className="text-center">
+            <p className="text-gray-600 mt-4 max-w-3xl mx-auto text-center">
+              Made in partial fulfillment of Master's in Computer Applications (MCA) with specialization in Machine Learning and Artificial Intelligence, under internship collaboration with IBM.
             </p>
           </div>
         </div>
