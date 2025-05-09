@@ -4,10 +4,6 @@ import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { 
   Home, 
-  Info, 
-  Activity, 
-  Leaf, 
-  Users, 
   LogOut, 
   Stethoscope,
   Menu,
@@ -42,25 +38,22 @@ const MainNavbar = () => {
   };
 
   const navItems = [
-    { name: 'Home', path: '/dashboard', icon: <Home className="h-4 w-4 mr-2" /> },
-    { name: 'About', path: '/about', icon: <Info className="h-4 w-4 mr-2" /> },
-    { name: 'Health Facts', path: '/health-facts', icon: <Activity className="h-4 w-4 mr-2" /> },
-    { name: 'Meet the Team', path: '/team', icon: <Users className="h-4 w-4 mr-2" /> },
+    { name: 'Dashboard', path: '/dashboard', icon: <Home className="h-4 w-4 mr-2" /> },
   ];
 
   return (
-    <header className="bg-white border-b border-gray-100 sticky top-0 z-30">
+    <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-30 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/dashboard" className="flex items-center gap-2">
-                <div className="relative h-10 w-10 flex items-center justify-center bg-gradient-to-r from-red-500 to-red-600 rounded-full shadow-md">
+                <div className="relative h-10 w-10 flex items-center justify-center bg-gradient-to-br from-teal-500 to-blue-600 rounded-full shadow">
                   <Stethoscope className="h-6 w-6 text-white" />
                 </div>
                 <div className="flex flex-col items-start">
-                  <span className="text-xl font-bold text-red-600 font-heading">MediCare AI</span>
-                  <span className="text-xs text-gray-500">Personalized care at your fingertips</span>
+                  <span className="text-xl font-bold text-gray-800 font-heading">MediCare AI</span>
+                  <span className="text-xs text-gray-600">Personalized care at your fingertips</span>
                 </div>
               </Link>
             </div>
@@ -77,7 +70,7 @@ const MainNavbar = () => {
                         className={cn(
                           navigationMenuTriggerStyle(),
                           "flex items-center",
-                          isActive(item.path) && "bg-red-50 text-red-700"
+                          isActive(item.path) && "bg-teal-50 text-teal-700"
                         )}
                       >
                         {item.icon}
@@ -93,7 +86,7 @@ const MainNavbar = () => {
               variant="outline" 
               size="sm" 
               onClick={handleLogout}
-              className="ml-4 flex items-center gap-2 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+              className="ml-4 flex items-center gap-2 border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700"
             >
               <LogOut className="h-4 w-4" />
               <span>Sign Out</span>
@@ -128,7 +121,7 @@ const MainNavbar = () => {
                   className={cn(
                     "flex items-center px-4 py-2 text-base font-medium rounded-md",
                     isActive(item.path)
-                      ? "bg-red-50 text-red-700"
+                      ? "bg-teal-50 text-teal-700"
                       : "text-gray-600 hover:bg-gray-50 hover:text-gray-900"
                   )}
                   onClick={() => setMenuOpen(false)}
@@ -144,7 +137,7 @@ const MainNavbar = () => {
                   handleLogout();
                   setMenuOpen(false);
                 }}
-                className="flex items-center ml-3 mr-3 mt-3 border-red-200 text-red-600 hover:bg-red-50 hover:text-red-700"
+                className="flex items-center ml-3 mr-3 mt-3 border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 <span>Sign Out</span>
