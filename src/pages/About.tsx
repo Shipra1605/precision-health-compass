@@ -1,12 +1,14 @@
 
 import React from 'react';
-import MainLayout from '@/components/layout/MainLayout';
+import Navbar from '@/components/layout/Navbar';
+import Footer from '@/components/layout/Footer';
 import { Stethoscope, Brain, Database, ShieldCheck, Users } from 'lucide-react';
 import { Card, CardContent } from '@/components/ui/card';
 
 const About = () => {
   return (
-    <MainLayout>
+    <div className="min-h-screen flex flex-col page-background">
+      <Navbar />
       <div className="container mx-auto px-4 py-12 max-w-5xl">
         <div className="mb-12 text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">About MediCare AI</h1>
@@ -125,7 +127,7 @@ const About = () => {
             </div>
             <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-sm">
               <h3 className="font-medium text-blue-700">Backend</h3>
-              <p className="text-gray-600 text-sm">Node.js, Express, LocalStorage</p>
+              <p className="text-gray-600 text-sm">Node.js, Express, MySQL</p>
             </div>
           </div>
           
@@ -148,7 +150,8 @@ const About = () => {
           </div>
         </div>
       </div>
-    </MainLayout>
+      <Footer />
+    </div>
   );
 };
 

@@ -1,7 +1,7 @@
 
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { UserPlus, LogIn, BarChart2, FileText, Stethoscope, Brain, PieChart, Server, Dna, Microscope } from 'lucide-react';
+import { UserPlus, LogIn, BarChart2, FileText, Stethoscope, Brain, Activity, Database, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
@@ -70,7 +70,7 @@ const Home: React.FC = () => {
               <div className="glass-panel p-6 rounded-lg border-t-4 border-blue-500 hover-lift">
                 <div className="flex justify-center mb-4">
                   <div className="p-3 bg-blue-100/50 rounded-lg">
-                    <Brain className="h-8 w-8 text-blue-600" />
+                    <Brain className="h-7 w-7 text-blue-600" />
                   </div>
                 </div>
                 <h3 className="text-lg font-semibold mb-2">AI Diagnosis</h3>
@@ -83,7 +83,7 @@ const Home: React.FC = () => {
               <div className="glass-panel p-6 rounded-lg border-t-4 border-teal-500 hover-lift">
                 <div className="flex justify-center mb-4">
                   <div className="p-3 bg-teal-100/50 rounded-lg">
-                    <PieChart className="h-8 w-8 text-teal-600" />
+                    <Activity className="h-7 w-7 text-teal-600" />
                   </div>
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Treatment Plans</h3>
@@ -96,7 +96,7 @@ const Home: React.FC = () => {
               <div className="glass-panel p-6 rounded-lg border-t-4 border-blue-500 hover-lift">
                 <div className="flex justify-center mb-4">
                   <div className="p-3 bg-blue-100/50 rounded-lg">
-                    <Server className="h-8 w-8 text-blue-600" />
+                    <FileText className="h-7 w-7 text-blue-600" />
                   </div>
                 </div>
                 <h3 className="text-lg font-semibold mb-2">Health Records</h3>
@@ -114,8 +114,8 @@ const Home: React.FC = () => {
             
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
               <div className="flex flex-col items-center p-4 hover-lift rounded-lg">
-                <div className="w-full h-32 mb-4 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-lg flex items-center justify-center shadow-inner">
-                  <Microscope className="h-12 w-12 text-blue-600" />
+                <div className="w-full h-24 mb-4 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-lg flex items-center justify-center shadow-inner">
+                  <Brain className="h-10 w-10 text-blue-600" />
                 </div>
                 <h3 className="text-base font-medium">Clinical BERT</h3>
                 <p className="text-xs text-center text-gray-600 mt-2">
@@ -124,8 +124,8 @@ const Home: React.FC = () => {
               </div>
               
               <div className="flex flex-col items-center p-4 hover-lift rounded-lg">
-                <div className="w-full h-32 mb-4 bg-gradient-to-br from-teal-50 to-teal-100/50 rounded-lg flex items-center justify-center shadow-inner">
-                  <BarChart2 className="h-12 w-12 text-teal-600" />
+                <div className="w-full h-24 mb-4 bg-gradient-to-br from-teal-50 to-teal-100/50 rounded-lg flex items-center justify-center shadow-inner">
+                  <BarChart2 className="h-10 w-10 text-teal-600" />
                 </div>
                 <h3 className="text-base font-medium">XGBoost</h3>
                 <p className="text-xs text-center text-gray-600 mt-2">
@@ -134,8 +134,8 @@ const Home: React.FC = () => {
               </div>
               
               <div className="flex flex-col items-center p-4 hover-lift rounded-lg">
-                <div className="w-full h-32 mb-4 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-lg flex items-center justify-center shadow-inner">
-                  <Dna className="h-12 w-12 text-blue-600" />
+                <div className="w-full h-24 mb-4 bg-gradient-to-br from-blue-50 to-blue-100/50 rounded-lg flex items-center justify-center shadow-inner">
+                  <Shield className="h-10 w-10 text-blue-600" />
                 </div>
                 <h3 className="text-base font-medium">SHAP</h3>
                 <p className="text-xs text-center text-gray-600 mt-2">

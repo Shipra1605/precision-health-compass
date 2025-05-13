@@ -2,7 +2,7 @@
 import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { LogOut, Stethoscope, Menu, X } from 'lucide-react';
+import { LogOut, Stethoscope } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import { useState } from 'react';
 
@@ -17,7 +17,7 @@ const MainNavbar = () => {
       title: "Logged Out",
       description: "You have been successfully logged out",
     });
-    navigate('/login');
+    navigate('/');  // Redirect to homepage after logout
   };
 
   return (
@@ -60,9 +60,13 @@ const MainNavbar = () => {
               aria-label="Toggle menu"
             >
               {menuOpen ? (
-                <X className="h-5 w-5" />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                </svg>
               ) : (
-                <Menu className="h-5 w-5" />
+                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+                </svg>
               )}
             </Button>
           </div>
