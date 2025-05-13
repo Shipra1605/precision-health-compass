@@ -86,7 +86,7 @@ const HealthFacts: React.FC = () => {
                   <CardContent className="pt-6 pb-4">
                     <div className="flex flex-col items-center text-center">
                       <div className={`rounded-full p-4 ${facts[currentFact].color} mb-6`}>
-                        <facts[currentFact].icon className="h-8 w-8" />
+                        {React.createElement(facts[currentFact].icon, { className: "h-8 w-8" })}
                       </div>
                       
                       <h3 className="text-xl font-semibold mb-4">{facts[currentFact].title}</h3>
@@ -107,7 +107,7 @@ const HealthFacts: React.FC = () => {
                   <CardContent className="p-6">
                     <div className="flex items-start gap-4">
                       <div className={`rounded-full p-3 ${fact.color} flex-shrink-0`}>
-                        <fact.icon className="h-6 w-6" />
+                        {React.createElement(fact.icon, { className: "h-6 w-6" })}
                       </div>
                       
                       <div>
