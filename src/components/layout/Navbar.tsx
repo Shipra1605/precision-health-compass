@@ -1,8 +1,8 @@
 
 import React from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { LogIn, UserPlus, Stethoscope, Home } from 'lucide-react';
+import { Home, Stethoscope } from 'lucide-react';
 
 const Navbar = () => {
   const location = useLocation();
@@ -15,8 +15,8 @@ const Navbar = () => {
           <div className="flex">
             <div className="flex-shrink-0 flex items-center">
               <Link to="/" className="flex items-center gap-2">
-                <div className="relative h-10 w-10 flex items-center justify-center bg-gradient-to-br from-teal-500 to-blue-600 rounded-full shadow">
-                  <Stethoscope className="h-6 w-6 text-white" />
+                <div className="relative flex items-center justify-center">
+                  <Stethoscope className="h-6 w-6 text-teal-600" />
                 </div>
                 <div className="flex flex-col items-start">
                   <span className="text-xl font-bold text-gray-800 font-heading">MediCare AI</span>
@@ -28,41 +28,43 @@ const Navbar = () => {
           <div className="flex items-center gap-4">
             {!isHomePage && (
               <Link to="/">
-                <Button variant="ghost" size="sm">
+                <Button variant="outline" size="sm" className="border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700">
                   <Home className="h-4 w-4 mr-2" />
-                  Home
+                  Back to Homepage
                 </Button>
               </Link>
             )}
-            <Link to="/about">
-              <Button variant="ghost" size="sm">
-                About
-              </Button>
-            </Link>
-            <Link to="/health-facts">
-              <Button variant="ghost" size="sm">
-                Health Facts
-              </Button>
-            </Link>
-            <Link to="/team">
-              <Button variant="ghost" size="sm">
-                Meet the Team
-              </Button>
-            </Link>
-            <div className="flex items-center gap-2">
-              <Link to="/login">
-                <Button variant="outline" size="sm" className="border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700">
-                  <LogIn className="h-4 w-4 mr-2" />
-                  <span>Sign In</span>
-                </Button>
-              </Link>
-              <Link to="/signup">
-                <Button size="sm" className="bg-teal-600 hover:bg-teal-700">
-                  <UserPlus className="h-4 w-4 mr-2" />
-                  <span>Sign Up</span>
-                </Button>
-              </Link>
-            </div>
+            {isHomePage && (
+              <>
+                <Link to="/about">
+                  <Button variant="ghost" size="sm">
+                    About
+                  </Button>
+                </Link>
+                <Link to="/health-facts">
+                  <Button variant="ghost" size="sm">
+                    Health Facts
+                  </Button>
+                </Link>
+                <Link to="/team">
+                  <Button variant="ghost" size="sm">
+                    Meet the Team
+                  </Button>
+                </Link>
+                <div className="flex items-center gap-2">
+                  <Link to="/login">
+                    <Button variant="outline" size="sm" className="border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700">
+                      Sign In
+                    </Button>
+                  </Link>
+                  <Link to="/signup">
+                    <Button size="sm" className="bg-teal-600 hover:bg-teal-700">
+                      Sign Up
+                    </Button>
+                  </Link>
+                </div>
+              </>
+            )}
           </div>
         </div>
       </div>

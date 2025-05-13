@@ -107,7 +107,7 @@ const HealthFacts: React.FC = () => {
           </div>
           
           <Tabs defaultValue="facts" className="w-full">
-            <TabsList className="grid w-full grid-cols-2 mb-8">
+            <TabsList className="grid w-full grid-cols-2 mb-6">
               <TabsTrigger value="facts">Health Facts</TabsTrigger>
               <TabsTrigger value="prevention">Prevention Tips</TabsTrigger>
             </TabsList>
@@ -158,25 +158,6 @@ const HealthFacts: React.FC = () => {
                   Tip {currentTip + 1} of {preventionTips.length}
                 </div>
               </div>
-            </TabsContent>
-            
-            <TabsContent value="all" className="space-y-6">
-              {healthFacts.map((fact, index) => (
-                <Card key={index} className="hover-lift">
-                  <CardContent className="p-6">
-                    <div className="flex items-start gap-4">
-                      <div className={`rounded-full p-3 ${fact.color} flex-shrink-0`}>
-                        {React.createElement(fact.icon, { className: "h-6 w-6" })}
-                      </div>
-                      
-                      <div>
-                        <h3 className="font-semibold mb-2">{fact.title}</h3>
-                        <p className="text-gray-600 text-sm">{fact.description}</p>
-                      </div>
-                    </div>
-                  </CardContent>
-                </Card>
-              ))}
             </TabsContent>
           </Tabs>
         </div>

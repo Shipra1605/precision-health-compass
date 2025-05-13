@@ -1,292 +1,164 @@
 
 import React, { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { Checkbox } from '@/components/ui/checkbox';
+import { ArrowRight, Home } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
-import { Stethoscope, ArrowRight, CheckCircle } from 'lucide-react';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import Footer from '@/components/layout/Footer';
 
-interface AccountData {
-  email: string;
-  password: string;
-}
-
-interface PersonalData {
-  fullName: string;
-  age: string;
-  gender: string;
-  height: string;
-  weight: string;
-  existingIllness: string;
-}
-
-const Signup: React.FC = () => {
-  const [step, setStep] = useState<1 | 2 | 3>(1);
-  const [accountData, setAccountData] = useState<AccountData>({ email: '', password: '' });
-  const [personalData, setPersonalData] = useState<PersonalData>({
-    fullName: '',
-    age: '',
-    gender: '',
-    height: '',
-    weight: '',
-    existingIllness: ''
-  });
-  
-  const navigate = useNavigate();
+const Signup = () => {
+  const [name, setName] = useState('');
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [agreeTerms, setAgreeTerms] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
+  const navigate = useNavigate();
 
-  const handleAccountSubmit = (e: React.FormEvent) => {
+  const handleSignup = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!accountData.email || !accountData.password) {
+    
+    if (!agreeTerms) {
       toast({
-        title: "Error",
-        description: "Please fill all required fields",
-        variant: "destructive"
+        title: "Terms Required",
+        description: "Please agree to the terms and conditions to continue.",
+        variant: "destructive",
       });
       return;
     }
     
-    // Check if email already exists
-    const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-    const userExists = existingUsers.some((user: any) => user.email === accountData.email);
+    setIsLoading(true);
     
-    if (userExists) {
-      toast({
-        title: "Error",
-        description: "Email already in use. Please use a different email or login.",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    setStep(2);
-  };
-
-  const handlePersonalSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!personalData.fullName || !personalData.age || !personalData.gender) {
-      toast({
-        title: "Error",
-        description: "Please fill all required fields",
-        variant: "destructive"
-      });
-      return;
-    }
-    
-    try {
-      // Set expiry date for login session (1 month)
-      const sessionExpiry = new Date();
-      sessionExpiry.setMonth(sessionExpiry.getMonth() + 1);
-      
-      // Save user data to localStorage
-      const userData = {
-        ...accountData,
-        ...personalData,
-        id: Date.now().toString(),
-        createdAt: new Date().toISOString(),
-        sessionExpiry: sessionExpiry.toISOString()
-      };
-      
-      // Get existing users or create empty array
-      const existingUsers = JSON.parse(localStorage.getItem('users') || '[]');
-      localStorage.setItem('users', JSON.stringify([...existingUsers, userData]));
-      
-      // Also set as current user
+    // Simulate registration delay
+    setTimeout(() => {
+      // Mock successful registration
+      const userData = { email, name, id: `user_${Date.now()}` };
       localStorage.setItem('currentUser', JSON.stringify(userData));
       
-      setStep(3);
-    } catch (error) {
-      console.error("Signup error:", error);
       toast({
-        title: "Error",
-        description: "An error occurred during signup. Please try again.",
-        variant: "destructive"
+        title: "Account Created",
+        description: "Welcome to MediCare AI! Your account has been created successfully.",
       });
-    }
-  };
-
-  const goToDashboard = () => {
-    navigate('/dashboard');
+      
+      navigate('/dashboard');
+      setIsLoading(false);
+    }, 1000);
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-teal-50 to-white px-4 py-12 relative overflow-hidden">
-      {/* Background decoration */}
-      <div className="absolute inset-0 z-0">
-        <div className="absolute top-40 left-10 w-64 h-64 rounded-full bg-teal-100/30 blur-3xl"></div>
-        <div className="absolute bottom-40 right-10 w-80 h-80 rounded-full bg-blue-100/30 blur-3xl"></div>
-      </div>
-      
-      <div className="mb-8 flex items-center gap-2 relative z-10">
-        <div className="relative h-12 w-12 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
-          <Stethoscope className="h-8 w-8 text-white" />
+    <div className="flex flex-col min-h-screen page-background">
+      <div className="h-16 p-4 border-b border-gray-100 bg-white/90 backdrop-blur-sm">
+        <div className="max-w-7xl mx-auto flex justify-between items-center">
+          <Link to="/" className="flex items-center gap-2">
+            <div className="flex-shrink-0 text-teal-600 font-bold text-xl">MediCare AI</div>
+          </Link>
+          <Link to="/">
+            <Button variant="outline" size="sm" className="border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700">
+              <Home className="h-4 w-4 mr-2" />
+              Back to Homepage
+            </Button>
+          </Link>
         </div>
-        <span className="text-2xl font-bold text-teal-600">MediCare AI</span>
       </div>
       
-      <Card className="w-full max-w-md relative z-10 bg-white/90 backdrop-blur-sm">
-        <CardHeader>
-          <CardTitle className="text-center">
-            {step === 3 ? "Account Created Successfully!" : "New User – Please Create Your Account"}
-          </CardTitle>
-          <CardDescription className="text-center">
-            {step === 1 && "Step 1: Account Setup"}
-            {step === 2 && "Step 2: Personal Details"}
-            {step === 3 && "Welcome to MediCare AI"}
-          </CardDescription>
-        </CardHeader>
-        
-        <CardContent>
-          {step === 1 && (
-            <form onSubmit={handleAccountSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="email">Email</Label>
-                <Input 
-                  id="email" 
-                  type="email" 
-                  placeholder="youremail@example.com"
-                  value={accountData.email}
-                  onChange={(e) => setAccountData({...accountData, email: e.target.value})}
-                  required
-                />
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
-                <Input 
-                  id="password" 
-                  type="password" 
-                  placeholder="Create a secure password"
-                  value={accountData.password}
-                  onChange={(e) => setAccountData({...accountData, password: e.target.value})}
-                  required
-                />
-              </div>
-              
-              <Button type="submit" className="w-full mt-6 flex items-center justify-center gap-2 bg-teal-600 hover:bg-teal-700 transition-colors">
-                Next <ArrowRight className="h-4 w-4" />
-              </Button>
-            </form>
-          )}
-          
-          {step === 2 && (
-            <form onSubmit={handlePersonalSubmit} className="space-y-4">
-              <div className="space-y-2">
-                <Label htmlFor="fullName">Full Name</Label>
-                <Input 
-                  id="fullName" 
-                  placeholder="Enter your full name"
-                  value={personalData.fullName}
-                  onChange={(e) => setPersonalData({...personalData, fullName: e.target.value})}
-                  required
-                />
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="age">Age</Label>
+      <div className="flex-grow flex items-center justify-center p-4">
+        <div className="w-full max-w-md">
+          <div className="bg-white p-8 rounded-lg shadow-md border border-gray-100">
+            <div className="text-center mb-6">
+              <h1 className="text-2xl font-bold font-heading mb-2">Create an Account</h1>
+              <p className="text-gray-600">Sign up to get started with MediCare AI</p>
+            </div>
+            
+            <form onSubmit={handleSignup}>
+              <div className="space-y-4">
+                <div>
+                  <Label htmlFor="name">Full Name</Label>
                   <Input 
-                    id="age" 
-                    type="number" 
-                    placeholder="Years"
-                    value={personalData.age}
-                    onChange={(e) => setPersonalData({...personalData, age: e.target.value})}
+                    id="name" 
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                    placeholder="John Doe"
                     required
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="gender">Gender</Label>
-                  <Select 
-                    value={personalData.gender}
-                    onValueChange={(value) => setPersonalData({...personalData, gender: value})}
-                  >
-                    <SelectTrigger id="gender">
-                      <SelectValue placeholder="Select" />
-                    </SelectTrigger>
-                    <SelectContent>
-                      <SelectItem value="male">Male</SelectItem>
-                      <SelectItem value="female">Female</SelectItem>
-                      <SelectItem value="other">Other</SelectItem>
-                    </SelectContent>
-                  </Select>
-                </div>
-              </div>
-              
-              <div className="grid grid-cols-2 gap-4">
-                <div className="space-y-2">
-                  <Label htmlFor="height">Height (cm)</Label>
+                <div>
+                  <Label htmlFor="email">Email</Label>
                   <Input 
-                    id="height" 
-                    type="number" 
-                    placeholder="In centimeters"
-                    value={personalData.height}
-                    onChange={(e) => setPersonalData({...personalData, height: e.target.value})}
+                    id="email" 
+                    type="email" 
+                    placeholder="your.email@example.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
                   />
                 </div>
                 
-                <div className="space-y-2">
-                  <Label htmlFor="weight">Weight (kg)</Label>
+                <div>
+                  <Label htmlFor="password">Password</Label>
                   <Input 
-                    id="weight" 
-                    type="number" 
-                    placeholder="In kilograms"
-                    value={personalData.weight}
-                    onChange={(e) => setPersonalData({...personalData, weight: e.target.value})}
+                    id="password"
+                    type="password" 
+                    placeholder="Create a secure password"
+                    value={password}
+                    onChange={(e) => setPassword(e.target.value)}
+                    required
+                    minLength={8}
                   />
+                  <p className="text-xs text-gray-500 mt-1">Password must be at least 8 characters</p>
                 </div>
-              </div>
-              
-              <div className="space-y-2">
-                <Label htmlFor="existingIllness">Existing Illness</Label>
-                <Select 
-                  value={personalData.existingIllness}
-                  onValueChange={(value) => setPersonalData({...personalData, existingIllness: value})}
+                
+                <div className="flex items-center gap-2">
+                  <Checkbox 
+                    id="terms" 
+                    checked={agreeTerms}
+                    onCheckedChange={(checked) => setAgreeTerms(!!checked)}
+                    required
+                  />
+                  <Label htmlFor="terms" className="text-sm leading-none">
+                    I agree to the{" "}
+                    <Link to="/terms" className="text-teal-600 hover:underline">
+                      terms and conditions
+                    </Link>
+                  </Label>
+                </div>
+                
+                <Button 
+                  className="w-full bg-teal-600 hover:bg-teal-700" 
+                  type="submit"
+                  disabled={isLoading}
                 >
-                  <SelectTrigger id="existingIllness">
-                    <SelectValue placeholder="Select if any" />
-                  </SelectTrigger>
-                  <SelectContent>
-                    <SelectItem value="none">None</SelectItem>
-                    <SelectItem value="diabetes">Diabetes</SelectItem>
-                    <SelectItem value="hypertension">Hypertension</SelectItem>
-                    <SelectItem value="asthma">Asthma</SelectItem>
-                    <SelectItem value="arthritis">Arthritis</SelectItem>
-                    <SelectItem value="other">Other</SelectItem>
-                  </SelectContent>
-                </Select>
+                  {isLoading ? (
+                    <div className="flex items-center">
+                      <div className="animate-spin mr-2 h-4 w-4 border-2 border-t-transparent border-white rounded-full" />
+                      <span>Creating account...</span>
+                    </div>
+                  ) : (
+                    <div className="flex items-center justify-center">
+                      <span>Create Account</span>
+                      <ArrowRight className="ml-2 h-4 w-4" />
+                    </div>
+                  )}
+                </Button>
               </div>
-              
-              <Button type="submit" className="w-full mt-6 bg-teal-600 hover:bg-teal-700 transition-colors">Submit</Button>
             </form>
-          )}
-          
-          {step === 3 && (
-            <div className="text-center py-6">
-              <div className="flex justify-center mb-4">
-                <div className="relative">
-                  <div className="absolute inset-0 rounded-full bg-green-100 blur-md animate-pulse-subtle"></div>
-                  <CheckCircle className="h-16 w-16 text-green-500 relative" />
-                </div>
-              </div>
-              <p className="text-gray-600 mb-6">
-                Your account has been created successfully. You can now access your personalized dashboard.
+            
+            <div className="mt-6 text-center text-sm">
+              <p>
+                Already have an account?{" "}
+                <Link to="/login" className="text-teal-600 hover:underline font-medium">
+                  Sign in
+                </Link>
               </p>
             </div>
-          )}
-        </CardContent>
-        
-        {step === 3 && (
-          <CardFooter>
-            <Button onClick={goToDashboard} className="w-full bg-teal-600 hover:bg-teal-700 transition-colors">
-              Go to Dashboard
-            </Button>
-          </CardFooter>
-        )}
-      </Card>
+          </div>
+        </div>
+      </div>
+      
+      <Footer />
     </div>
   );
 };

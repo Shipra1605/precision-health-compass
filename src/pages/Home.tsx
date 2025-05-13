@@ -20,7 +20,7 @@ const Home: React.FC = () => {
               <div className="md:w-2/3 text-left mb-8 md:mb-0 md:pr-8">
                 <h1 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4 font-heading animate-fade-in">
                   <span className="bg-clip-text text-transparent bg-gradient-to-r from-teal-600 to-blue-600">
-                    Your Personal AI Doctor
+                    Welcome to your personal AI Doctor
                   </span>
                 </h1>
                 
@@ -47,14 +47,7 @@ const Home: React.FC = () => {
               
               <div className="flex-shrink-0 flex justify-center">
                 <div className="relative">
-                  <div className="absolute -inset-4 rounded-full bg-gradient-to-r from-teal-200 to-blue-200 blur-md opacity-75"></div>
-                  <div className="relative flex flex-col items-center">
-                    <div className="h-20 w-20 bg-gradient-to-br from-teal-500 to-blue-600 rounded-full flex items-center justify-center shadow-lg mb-4">
-                      <Stethoscope className="h-10 w-10 text-white" />
-                    </div>
-                    <h2 className="text-xl font-bold text-gray-700">MediCare AI</h2>
-                    <p className="text-sm text-gray-500">Personalized care at your fingertips</p>
-                  </div>
+                  <Stethoscope className="h-16 w-16 text-teal-600" />
                 </div>
               </div>
             </div>

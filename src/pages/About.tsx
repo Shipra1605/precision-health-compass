@@ -12,7 +12,7 @@ const About = () => {
       <div className="container mx-auto px-4 py-12 max-w-5xl">
         <div className="mb-12 text-center">
           <h1 className="text-3xl md:text-4xl font-bold mb-4 text-gray-800">About MediCare AI</h1>
-          <div className="w-24 h-1 bg-gradient-to-r from-red-400 to-blue-500 mx-auto mb-6"></div>
+          <div className="w-24 h-1 bg-gradient-to-r from-teal-400 to-blue-500 mx-auto mb-6"></div>
           
           <div className="max-w-3xl mx-auto bg-white p-6 shadow-md rounded-lg border border-gray-100">
             <p className="text-lg font-medium text-gray-700 mb-3">
@@ -71,7 +71,7 @@ const About = () => {
         <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
           <Card className="animate-fade-in hover-lift" style={{ animationDelay: "0.3s" }}>
             <CardContent className="p-6">
-              <div className="h-12 w-12 rounded-full bg-gradient-to-r from-red-400 to-red-600 flex items-center justify-center mb-4 mx-auto">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-r from-teal-400 to-teal-600 flex items-center justify-center mb-4 mx-auto">
                 <Stethoscope className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-lg font-semibold mb-2 text-center">Smart Treatment Recommendations</h3>
@@ -95,7 +95,7 @@ const About = () => {
 
           <Card className="animate-fade-in hover-lift" style={{ animationDelay: "0.5s" }}>
             <CardContent className="p-6">
-              <div className="h-12 w-12 rounded-full bg-gradient-to-r from-purple-400 to-pink-400 flex items-center justify-center mb-4 mx-auto">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-r from-teal-400 to-teal-600 flex items-center justify-center mb-4 mx-auto">
                 <ShieldCheck className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-lg font-semibold mb-2 text-center">Secure Web Experience</h3>
@@ -107,18 +107,18 @@ const About = () => {
 
           <Card className="animate-fade-in hover-lift" style={{ animationDelay: "0.6s" }}>
             <CardContent className="p-6">
-              <div className="h-12 w-12 rounded-full bg-gradient-to-r from-yellow-400 to-orange-400 flex items-center justify-center mb-4 mx-auto">
+              <div className="h-12 w-12 rounded-full bg-gradient-to-r from-blue-400 to-indigo-400 flex items-center justify-center mb-4 mx-auto">
                 <Users className="h-6 w-6 text-white" />
               </div>
               <h3 className="text-lg font-semibold mb-2 text-center">Collaborative Development</h3>
               <p className="text-gray-600 text-center text-sm">
-                Built collaboratively by MCA students, including Shipra Nayal and team, combining diverse expertise.
+                Built collaboratively by MCA students specializing in AI and ML, combining diverse expertise.
               </p>
             </CardContent>
           </Card>
         </div>
 
-        <div className="bg-gradient-to-r from-blue-50 to-red-50 rounded-xl p-8 shadow-sm border border-blue-100 animate-fade-in" style={{ animationDelay: "0.7s" }}>
+        <div className="bg-gradient-to-r from-blue-50 to-teal-50 rounded-xl p-8 shadow-sm border border-blue-100 animate-fade-in" style={{ animationDelay: "0.7s" }}>
           <h2 className="text-2xl font-bold mb-4 text-gray-800 text-center">Technology Stack</h2>
           <div className="grid sm:grid-cols-2 gap-4 mb-6 max-w-3xl mx-auto">
             <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-sm">
@@ -137,15 +137,15 @@ const About = () => {
               <p className="text-gray-600 text-sm">ClinicalBERT, XGBoost</p>
             </div>
             <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-sm">
-              <h3 className="font-medium text-blue-700">Database</h3>
-              <p className="text-gray-600 text-sm">MySQL / MongoDB</p>
+              <h3 className="font-medium text-blue-700">UI Components</h3>
+              <p className="text-gray-600 text-sm">Shadcn UI, Lucide Icons</p>
             </div>
           </div>
           
           <div className="mt-4 max-w-3xl mx-auto">
             <div className="bg-white/80 backdrop-blur-sm p-4 rounded-lg shadow-sm">
               <h3 className="font-medium text-blue-700">AI Layer</h3>
-              <p className="text-gray-600 text-sm">SHAP for explainability</p>
+              <p className="text-gray-600 text-sm">SHAP for explainability, React Query for state management</p>
             </div>
           </div>
         </div>
