@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowRight, Home } from 'lucide-react';
+import { ArrowRight, Home, Stethoscope } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import Footer from '@/components/layout/Footer';
 
