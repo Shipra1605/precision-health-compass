@@ -36,11 +36,14 @@ const Login: React.FC = () => {
       // Retrieve users from localStorage
       const users = JSON.parse(localStorage.getItem('users') || '[]');
       
-      // Fix: Case-insensitive email comparison for better user experience
+      // Case-insensitive email comparison for better user experience
       const user = users.find((u: any) => u.email.toLowerCase() === email.toLowerCase());
       
       setTimeout(() => {
         if (user && user.password === password) {
+          // Clear any existing session
+          localStorage.removeItem('currentUser');
+          
           // Store current user in session with expiry
           const userSession = {
             ...user,
@@ -48,7 +51,6 @@ const Login: React.FC = () => {
           };
           localStorage.setItem('currentUser', JSON.stringify(userSession));
           
-          // For debugging
           console.log('Login successful. User data:', userSession);
           
           toast({
@@ -58,7 +60,6 @@ const Login: React.FC = () => {
           
           navigate('/dashboard');
         } else {
-          // For debugging
           console.log('Login failed. Attempted email:', email);
           console.log('Available users:', users);
           
@@ -82,7 +83,7 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center bg-gradient-to-b from-teal-50 to-white px-4 py-12 relative overflow-hidden">
+    <div className="min-h-screen flex flex-col items-center justify-center page-background px-4 py-12 relative overflow-hidden">
       {/* Background decoration */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-40 left-10 w-64 h-64 rounded-full bg-teal-100/30 blur-3xl"></div>
@@ -90,7 +91,7 @@ const Login: React.FC = () => {
       </div>
       
       <div className="mb-8 flex items-center gap-2 relative z-10">
-        <div className="relative h-12 w-12 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
+        <div className="relative h-12 w-12 flex items-center justify-center bg-gradient-to-r from-teal-500 to-blue-500 rounded-full shadow-md">
           <Stethoscope className="h-8 w-8 text-white" />
         </div>
         <span className="text-2xl font-bold text-teal-600">MediCare AI</span>

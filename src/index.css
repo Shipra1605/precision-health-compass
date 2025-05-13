@@ -93,7 +93,7 @@
 
 @layer components {
   .health-card {
-    @apply bg-white rounded-lg shadow-md hover:shadow-lg transition-shadow p-5 border border-gray-100;
+    @apply bg-white/90 backdrop-blur-sm rounded-lg shadow-md hover:shadow-lg transition-shadow p-5 border border-gray-100;
   }
 
   .health-stat {
@@ -116,29 +116,25 @@
     @apply bg-red-500;
   }
   
-  .glass-card {
-    @apply bg-white/90 backdrop-blur-sm border border-white/50 shadow-md hover:shadow-lg transition-shadow;
+  .glass-panel {
+    @apply bg-white/90 backdrop-blur-sm border border-gray-100/50 shadow-sm hover:shadow-md transition-shadow;
   }
   
   .gradient-border {
-    @apply relative before:absolute before:inset-0 before:p-[1px] before:rounded-lg before:bg-gradient-to-r before:from-red-400 before:to-blue-400 before:-z-10;
+    @apply relative before:absolute before:inset-0 before:p-[1px] before:rounded-lg before:bg-gradient-to-r before:from-teal-400 before:to-blue-400 before:-z-10;
   }
   
   .medical-gradient-bg {
-    @apply bg-gradient-to-br from-blue-50 to-red-50;
+    @apply bg-gradient-to-br from-blue-50 to-teal-50;
   }
   
   .page-background {
-    @apply min-h-screen bg-gradient-to-br from-blue-50 via-white to-red-50 bg-fixed;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23e2e8f0' fill-opacity='0.4'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
-  
-  .glass-panel {
-    @apply bg-white/80 backdrop-blur-sm border border-gray-100/50 shadow-sm hover:shadow-md transition-shadow;
+    @apply min-h-screen bg-gradient-to-br from-blue-50 via-white to-teal-50 bg-fixed;
+    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230ea5e9' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   }
   
   .section-background {
-    @apply bg-gradient-to-br from-white/80 to-white/60 backdrop-blur-sm border border-white/20 rounded-lg shadow-sm;
+    @apply bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-sm border border-white/20 rounded-lg shadow-sm;
   }
 }
 

@@ -1,7 +1,6 @@
-
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import Navbar from '@/components/layout/Navbar';
+import MainNavbar from '@/components/layout/MainNavbar';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
@@ -172,8 +171,8 @@ const Dashboard: React.FC = () => {
   }
 
   return (
-    <div className="min-h-screen flex flex-col">
-      <Navbar />
+    <div className="min-h-screen flex flex-col page-background">
+      <MainNavbar />
       
       <main className="flex-grow bg-medical-background">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -181,7 +180,7 @@ const Dashboard: React.FC = () => {
             {/* Sidebar */}
             <div className="lg:col-span-1">
               <div className="space-y-6">
-                <Card>
+                <Card className="glass-panel">
                   <CardHeader className="pb-2">
                     <CardTitle className="text-lg flex items-center gap-2">
                       <User className="h-5 w-5 text-medical-primary" />
@@ -321,7 +320,7 @@ const Dashboard: React.FC = () => {
             
             {/* Main content */}
             <div className="lg:col-span-2 space-y-6">
-              <Card>
+              <Card className="glass-panel">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <Activity className="h-5 w-5 text-medical-primary" />
@@ -346,7 +345,7 @@ const Dashboard: React.FC = () => {
                 </CardContent>
               </Card>
               
-              <Card>
+              <Card className="glass-panel">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
                     <BarChart className="h-5 w-5 text-medical-primary" />

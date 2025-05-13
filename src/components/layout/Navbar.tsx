@@ -1,12 +1,12 @@
 
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { LogOut, Stethoscope } from 'lucide-react';
+import { Home, LogIn, UserPlus, Stethoscope } from 'lucide-react';
 
 const Navbar = () => {
   return (
-    <header className="bg-white/80 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-30 shadow-sm">
+    <header className="bg-white/90 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-30 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex">
@@ -23,6 +23,12 @@ const Navbar = () => {
             </div>
           </div>
           <div className="flex items-center gap-4">
+            <Link to="/">
+              <Button variant="ghost" size="sm">
+                <Home className="h-4 w-4 mr-2" />
+                Home
+              </Button>
+            </Link>
             <Link to="/about">
               <Button variant="ghost" size="sm">
                 About
@@ -38,12 +44,20 @@ const Navbar = () => {
                 Meet the Team
               </Button>
             </Link>
-            <Link to="/login">
-              <Button variant="outline" size="sm" className="border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700">
-                <LogOut className="h-4 w-4 mr-2" />
-                <span>Sign In</span>
-              </Button>
-            </Link>
+            <div className="flex items-center gap-2">
+              <Link to="/login">
+                <Button variant="outline" size="sm" className="border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700">
+                  <LogIn className="h-4 w-4 mr-2" />
+                  <span>Sign In</span>
+                </Button>
+              </Link>
+              <Link to="/signup">
+                <Button size="sm" className="bg-teal-600 hover:bg-teal-700">
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  <span>Sign Up</span>
+                </Button>
+              </Link>
+            </div>
           </div>
         </div>
       </div>
