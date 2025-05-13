@@ -5,8 +5,8 @@ import Footer from '@/components/layout/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { motion } from 'framer-motion';
-import { ArrowRight, Heart, Brain, LucideIcon, Lungs, Activity, Apple } from 'lucide-react';
+import { ArrowRight, Heart, Brain, Activity, Apple, Droplet } from 'lucide-react';
+import type { LucideIcon } from 'lucide-react';
 
 interface FactProps {
   title: string;
@@ -31,7 +31,7 @@ const facts: FactProps[] = [
   {
     title: "Lungs Contain Nearly 1,500 Miles of Airways",
     description: "If all the airways in your lungs were laid end to end, they would extend for about 1,500 miles—roughly the distance from New York to Denver. These airways contain tiny air sacs called alveoli, and you have about 600 million of them, providing an enormous surface area for gas exchange.",
-    icon: Lungs,
+    icon: Droplet, // Replacing Lungs with Droplet icon
     color: "bg-teal-100 text-teal-600"
   },
   {
@@ -75,12 +75,9 @@ const HealthFacts: React.FC = () => {
             </TabsList>
             
             <TabsContent value="facts" className="w-full">
-              <motion.div
+              <div
                 key={currentFact}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                exit={{ opacity: 0, y: -20 }}
-                transition={{ duration: 0.5 }}
+                className="animate-fade-in"
               >
                 <Card className="glass-panel">
                   <CardContent className="pt-6 pb-4">
@@ -98,7 +95,7 @@ const HealthFacts: React.FC = () => {
                     </div>
                   </CardContent>
                 </Card>
-              </motion.div>
+              </div>
             </TabsContent>
             
             <TabsContent value="all" className="space-y-6">
