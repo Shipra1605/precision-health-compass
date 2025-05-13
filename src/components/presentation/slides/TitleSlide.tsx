@@ -4,8 +4,7 @@ import React from "react";
 const TitleSlide = () => (
   <div className="flex flex-col items-center justify-center h-full py-20">
     <div className="mb-8 flex items-center gap-4">
-      <div className="relative h-16 w-16 flex items-center justify-center bg-gradient-to-r from-teal-400 to-cyan-400 rounded-full shadow-md">
-        {/* Hero icon or logo */}
+      <div className="relative h-16 w-16 flex items-center justify-center bg-gradient-to-r from-teal-500 to-blue-500 rounded-full shadow-md">
         <span className="text-4xl text-white font-bold">AI</span>
       </div>
       <span className="text-4xl font-extrabold text-teal-700">

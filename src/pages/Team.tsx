@@ -4,7 +4,6 @@ import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Card, CardContent } from '@/components/ui/card';
 import { User, Mail, FileText } from 'lucide-react';
-import { useLocation } from 'react-router-dom';
 
 interface TeamMember {
   id: number;
@@ -71,9 +70,9 @@ const Team = () => {
       
       <main className="flex-grow px-4 py-12">
         <div className="max-w-7xl mx-auto">
-          <div className="mb-12 text-center">
-            <h1 className="text-3xl md:text-4xl font-bold mb-4 font-heading">Meet Our Team</h1>
-            <p className="text-lg text-gray-600 max-w-3xl mx-auto">
+          <div className="mb-10 text-center">
+            <h1 className="text-2xl md:text-3xl font-bold mb-3 font-heading">Meet Our Team</h1>
+            <p className="text-base text-gray-600 max-w-2xl mx-auto font-normal">
               This project MediCare AI is built by a team of MCA students specializing in Artificial Intelligence and Machine Learning. 
               Our Collaborative support and diverse skills, knowledge and understanding of the problem statement has made this project possible.
             </p>
@@ -84,7 +83,7 @@ const Team = () => {
               <Card key={member.id} className="hover-lift overflow-hidden border border-gray-200">
                 <CardContent className="p-0">
                   <div className="flex items-center p-4">
-                    <div className="w-16 h-16 rounded-full overflow-hidden mr-4 flex-shrink-0 border border-gray-200">
+                    <div className="w-14 h-14 rounded-full overflow-hidden mr-4 flex-shrink-0 border border-gray-200">
                       <img 
                         src={member.photoUrl} 
                         alt={member.name} 
@@ -92,27 +91,27 @@ const Team = () => {
                       />
                     </div>
                     <div>
-                      <h3 className="text-lg font-bold mb-1">{member.name}</h3>
-                      <p className="text-teal-600 font-medium text-sm">{member.role}</p>
+                      <h3 className="text-base font-bold mb-1">{member.name}</h3>
+                      <p className="text-teal-600 font-medium text-xs">{member.role}</p>
                     </div>
                   </div>
                   
-                  <div className="border-t border-gray-100 p-4 bg-gray-50">
-                    <div className="space-y-2 text-sm">
+                  <div className="border-t border-gray-100 p-3 bg-gray-50">
+                    <div className="space-y-2 text-xs">
                       <div className="flex items-center gap-2">
-                        <User className="h-4 w-4 text-gray-500" />
+                        <User className="h-3.5 w-3.5 text-gray-500" />
                         <span className="text-gray-600">SAP ID: {member.sapId}</span>
                       </div>
                       
                       <div className="flex items-center gap-2">
-                        <Mail className="h-4 w-4 text-gray-500" />
+                        <Mail className="h-3.5 w-3.5 text-gray-500" />
                         <a href={`mailto:${member.email}`} className="text-blue-600 hover:underline">
                           {member.email}
                         </a>
                       </div>
                       
                       <div className="flex items-center gap-2">
-                        <FileText className="h-4 w-4 text-gray-500" />
+                        <FileText className="h-3.5 w-3.5 text-gray-500" />
                         <a 
                           href={member.linkedin} 
                           target="_blank" 
@@ -129,9 +128,8 @@ const Team = () => {
             ))}
           </div>
           
-          {/* Academic Attribution - Only on Team Page */}
-          <div className="mt-16 pt-8 border-t border-gray-200">
-            <p className="text-center text-gray-600 italic font-medium">
+          <div className="mt-12 pt-6 border-t border-gray-200">
+            <p className="text-center text-gray-600 italic text-sm font-medium">
               Made in partial fulfillment of Master's in Computer Applications (MCA) with specialization in Machine Learning and Artificial Intelligence under IBM internship program
             </p>
           </div>

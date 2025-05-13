@@ -51,7 +51,10 @@ const Login = () => {
       <div className="h-16 p-4 border-b border-gray-100 bg-white/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex-shrink-0 text-teal-600 font-bold text-xl">MediCare AI</div>
+            <div className="flex items-center">
+              <Stethoscope className="h-5 w-5 text-teal-600 mr-1" />
+              <div className="flex-shrink-0 text-teal-600 font-bold text-xl">MediCare AI</div>
+            </div>
           </Link>
           <Link to="/">
             <Button variant="outline" size="sm" className="border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700">
