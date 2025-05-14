@@ -5,7 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowRight, Home } from 'lucide-react';
+import { ArrowRight, Home, Stethoscope } from 'lucide-react'; // Added Stethoscope
 import { useToast } from '@/components/ui/use-toast';
 import Footer from '@/components/layout/Footer';
 
@@ -34,9 +34,50 @@ const Signup = () => {
     
     // Simulate registration delay
     setTimeout(() => {
-      // Mock successful registration
-      const userData = { email, name, id: `user_${Date.now()}` };
-      localStorage.setItem('currentUser', JSON.stringify(userData));
+      const registeredUsersString = localStorage.getItem('registeredUsers');
+      const registeredUsers = registeredUsersString ? JSON.parse(registeredUsersString) : [];
+
+      const emailExists = registeredUsers.some((user: any) => user.email === email);
+
+      if (emailExists) {
+        toast({
+          title: "Registration Failed",
+          description: "This email address is already registered.",
+          variant: "destructive",
+        });
+        setIsLoading(false);
+        return;
+      }
+
+      const newUserData = { 
+        id: `user_${Date.now()}`, 
+        name, 
+        email, 
+        // Storing password directly in localStorage is not secure for real applications.
+        // This is for demonstration purposes only.
+        password 
+      };
+      
+      registeredUsers.push(newUserData);
+      localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+      
+      // Set current user session
+      const sessionDuration = 1 * 24 * 60 * 60 * 1000; // 1 day
+      const expiryDate = new Date(Date.now() + sessionDuration);
+      const userDataForSession = {
+        id: newUserData.id,
+        name: newUserData.name,
+        email: newUserData.email,
+        // Mock data for dashboard until profile setup is implemented
+        age: "30", // Default age
+        gender: "Prefer not to say", // Default gender
+        height: "170", // Default height in cm
+        weight: "70", // Default weight in kg
+        existingIllness: "none", // Default illness
+        fullName: newUserData.name, // Use provided name for fullName
+        sessionExpiry: expiryDate.toISOString(),
+      };
+      localStorage.setItem('currentUser', JSON.stringify(userDataForSession));
       
       toast({
         title: "Account Created",
@@ -53,7 +94,10 @@ const Signup = () => {
       <div className="h-16 p-4 border-b border-gray-100 bg-white/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex-shrink-0 text-teal-600 font-bold text-xl">MediCare AI</div>
+            <div className="flex items-center"> {/* Added this div for consistency */}
+              <Stethoscope className="h-5 w-5 text-teal-600 mr-1" />
+              <div className="flex-shrink-0 text-teal-600 font-bold text-xl">MediCare AI</div>
+            </div>
           </Link>
           <Link to="/">
             <Button variant="outline" size="sm" className="border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700">
@@ -119,20 +163,23 @@ const Signup = () => {
                     required
                   />
                   <Label htmlFor="terms" className="text-sm leading-none">
-                    I agree to the{" "}
+                    I agree to the terms and conditions
+                    {/* Removed Link to "/terms" as it doesn't exist yet 
+                        If you want this page, let me know!
                     <Link to="/terms" className="text-teal-600 hover:underline">
                       terms and conditions
                     </Link>
+                    */}
                   </Label>
                 </div>
                 
                 <Button 
                   className="w-full bg-teal-600 hover:bg-teal-700" 
                   type="submit"
-                  disabled={isLoading}
+                  disabled={isLoading || !name || !email || !password || !agreeTerms}
                 >
                   {isLoading ? (
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       <div className="animate-spin mr-2 h-4 w-4 border-2 border-t-transparent border-white rounded-full" />
                       <span>Creating account...</span>
                     </div>

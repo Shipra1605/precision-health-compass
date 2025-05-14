@@ -21,12 +21,34 @@ const Login = () => {
     e.preventDefault();
     setIsLoading(true);
     
-    // Simulate authentication delay
     setTimeout(() => {
-      if (email && password) {
-        // Mock successful login
-        const userData = { email, name: "John Doe", id: "user123" };
-        localStorage.setItem('currentUser', JSON.stringify(userData));
+      const registeredUsersString = localStorage.getItem('registeredUsers');
+      const registeredUsers = registeredUsersString ? JSON.parse(registeredUsersString) : [];
+
+      const foundUser = registeredUsers.find(
+        (user: any) => user.email === email && user.password === password
+      );
+
+      if (foundUser) {
+        const sessionDuration = rememberMe ? 30 * 24 * 60 * 60 * 1000 : 1 * 24 * 60 * 60 * 1000; // 30 days or 1 day
+        const expiryDate = new Date(Date.now() + sessionDuration);
+        
+        // Prepare user data for session, ensuring all required fields for Dashboard are present
+        // Use data from foundUser and add defaults if necessary for dashboard fields
+        const userDataForSession = {
+          id: foundUser.id,
+          email: foundUser.email,
+          name: foundUser.name, // This should be the registered name
+          fullName: foundUser.name, // Ensure fullName is set
+          age: foundUser.age || "30", // Default if not present
+          gender: foundUser.gender || "Prefer not to say", // Default
+          height: foundUser.height || "170", // Default
+          weight: foundUser.weight || "70", // Default
+          existingIllness: foundUser.existingIllness || "none", // Default
+          sessionExpiry: expiryDate.toISOString(),
+        };
+        
+        localStorage.setItem('currentUser', JSON.stringify(userDataForSession));
         
         toast({
           title: "Login Successful",
@@ -35,10 +57,9 @@ const Login = () => {
         
         navigate('/dashboard');
       } else {
-        // Mock login failure
         toast({
           title: "Login Failed",
-          description: "Please check your credentials and try again.",
+          description: "Invalid credentials or user not registered. Please check your details or sign up.",
           variant: "destructive",
         });
       }
@@ -90,9 +111,11 @@ const Login = () => {
                 <div>
                   <div className="flex justify-between items-center mb-1">
                     <Label htmlFor="password">Password</Label>
+                    {/* Removed "Forgot password?" link as it's not implemented
                     <Link to="/forgot-password" className="text-xs text-teal-600 hover:underline">
                       Forgot password?
                     </Link>
+                    */}
                   </div>
                   <Input 
                     id="password"
@@ -111,17 +134,17 @@ const Login = () => {
                     onCheckedChange={(checked) => setRememberMe(!!checked)} 
                   />
                   <Label htmlFor="remember" className="text-sm leading-none">
-                    Remember me for 30 days
+                    Remember me
                   </Label>
                 </div>
                 
                 <Button 
                   className="w-full bg-teal-600 hover:bg-teal-700" 
                   type="submit" 
-                  disabled={isLoading}
+                  disabled={isLoading || !email || !password}
                 >
                   {isLoading ? (
-                    <div className="flex items-center">
+                    <div className="flex items-center justify-center">
                       <div className="animate-spin mr-2 h-4 w-4 border-2 border-t-transparent border-white rounded-full" />
                       <span>Signing in...</span>
                     </div>
