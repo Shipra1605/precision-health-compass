@@ -166,6 +166,14 @@ const Dashboard: React.FC = () => {
     setActiveRecommendation(rec);
   };
 
+  // Function to safely get user initials
+  const getUserInitials = (): string => {
+    if (!user || !user.fullName) return "?";
+    
+    const nameParts = user.fullName.split(' ');
+    return nameParts.map(part => part[0] || '').join('');
+  };
+
   if (!user) {
     return <div className="flex justify-center items-center h-screen">Loading...</div>;
   }
@@ -191,7 +199,7 @@ const Dashboard: React.FC = () => {
                     <div className="space-y-4">
                       <div className="flex justify-center">
                         <div className="h-20 w-20 rounded-full bg-medical-light flex items-center justify-center text-xl font-bold text-medical-primary">
-                          {user.fullName.split(' ').map(n => n[0]).join('')}
+                          {getUserInitials()}
                         </div>
                       </div>
                       
