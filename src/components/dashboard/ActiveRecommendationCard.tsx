@@ -1,8 +1,7 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { ScrollText, CheckCircle, BarChart3 } from 'lucide-react'; // BarChart3 for confidence
-import { Recommendation } from '@/pages/Dashboard'; // Assuming type is exported from Dashboard
+import { Recommendation } from '@/types'; // Corrected import path
 import { Progress } from "@/components/ui/progress";
 
 

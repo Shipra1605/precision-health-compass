@@ -1,10 +1,9 @@
-
 import React from 'react';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { UploadCloud, FileText } from 'lucide-react';
-import { UserData, MedicalRecord } from '@/pages/Dashboard'; // Assuming types are exported from Dashboard
+import { UserData, MedicalRecord } from '@/types'; // Corrected import path
 
 interface MedicalRecordsCardProps {
   user: UserData | null;

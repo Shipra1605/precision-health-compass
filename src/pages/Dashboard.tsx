@@ -50,7 +50,7 @@ const Dashboard: React.FC = () => {
       if (savedRecommendations) {
         setRecommendations(JSON.parse(savedRecommendations).map((rec: any) => ({
           ...rec,
-          date: new Date(record.date)
+          date: new Date(rec.date)
         })));
       }
     } catch (error) {
@@ -64,8 +64,6 @@ const Dashboard: React.FC = () => {
     setUser(prevUser => {
       if (!prevUser) return null;
       const newUser = { ...prevUser, ...updatedData };
-      // No need to update localStorage currentUser here, PatientInfoCard does it.
-      // But if other components modify user data, this is where it would sync.
       return newUser;
     });
   };
