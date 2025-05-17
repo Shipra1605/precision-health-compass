@@ -1,5 +1,6 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+
+import React, { useState, useEffect } from 'react';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
@@ -7,6 +8,7 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { ArrowRight, Home, Stethoscope } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import Footer from '@/components/layout/Footer';
+import { UserData } from '@/types'; // Import UserData
 
 const Login = () => {
   const [email, setEmail] = useState('');
@@ -15,13 +17,23 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    if (location.state?.profileSetupComplete) {
+      toast({
+        title: `Welcome, ${location.state.userName || 'User'}!`,
+        description: "Your profile is set up. Please log in to continue.",
+      });
+    }
+  }, [location.state, toast]);
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     
     setTimeout(() => {
-      let registeredUsers: any[] = [];
+      let registeredUsers: UserData[] = [];
       try {
         const registeredUsersString = localStorage.getItem('registeredUsers');
         if (registeredUsersString) {
@@ -29,36 +41,52 @@ const Login = () => {
         }
       } catch (error) {
         console.error("Error parsing registered users from localStorage:", error);
-        // Keep registeredUsers as empty array, effectively meaning no users are registered
-        // or data is corrupt.
       }
 
       const foundUser = registeredUsers.find(
-        (user: any) => user.email === email && user.password === password
+        (user) => user.email === email && user.password === password
       );
 
       if (foundUser) {
+        // Check if essential profile details are filled. If not, redirect to profile setup.
+        // This is a fallback, ideally they complete setup after signup.
+        if (!foundUser.fullName || !foundUser.age || !foundUser.gender) {
+           toast({
+            title: "Profile Incomplete",
+            description: "Please complete your profile information first.",
+            variant: "destructive"
+          });
+          navigate('/profile-setup', { state: { email: foundUser.email, name: foundUser.name } });
+          setIsLoading(false);
+          return;
+        }
+
+
         const sessionDuration = rememberMe ? 30 * 24 * 60 * 60 * 1000 : 1 * 24 * 60 * 60 * 1000; // 30 days or 1 day
         const expiryDate = new Date(Date.now() + sessionDuration);
         
-        const userDataForSession = {
+        // Create session data using all available fields from foundUser
+        const userDataForSession: UserData = {
           id: foundUser.id,
           email: foundUser.email,
-          name: foundUser.name, 
-          fullName: foundUser.name, // Ensure fullName is set from registered name
-          age: foundUser.age || "30", 
-          gender: foundUser.gender || "Prefer not to say", 
-          height: foundUser.height || "170", 
-          weight: foundUser.weight || "70", 
-          existingIllness: foundUser.existingIllness || "none", 
+          name: foundUser.name, // Initial name
+          fullName: foundUser.fullName || foundUser.name, // Prioritize fullName from profile
+          age: foundUser.age,
+          gender: foundUser.gender,
+          heightCm: foundUser.heightCm,
+          weightKg: foundUser.weightKg,
+          existingIllness: foundUser.existingIllness,
+          profileImageBase64: foundUser.profileImageBase64, // Include profile image
           sessionExpiry: expiryDate.toISOString(),
         };
-        
-        localStorage.setItem('currentUser', JSON.stringify(userDataForSession));
+        // Remove password before storing in currentUser session
+        const { password: _p, ...secureUserDataForSession } = userDataForSession;
+
+        localStorage.setItem('currentUser', JSON.stringify(secureUserDataForSession));
         
         toast({
           title: "Login Successful",
-          description: "Welcome back to MediCare AI!",
+          description: `Welcome back, ${secureUserDataForSession.fullName || secureUserDataForSession.name}!`,
         });
         
         navigate('/dashboard');

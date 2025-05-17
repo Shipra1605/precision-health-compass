@@ -1,16 +1,16 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
-import { ArrowRight, Home, Stethoscope } from 'lucide-react'; // Added Stethoscope
+import { ArrowRight, Home, Stethoscope } from 'lucide-react';
 import { useToast } from '@/components/ui/use-toast';
 import Footer from '@/components/layout/Footer';
+import { UserData } from '@/types'; // Import UserData
 
 const Signup = () => {
-  const [name, setName] = useState('');
+  const [name, setName] = useState(''); // This will be the initial 'name', distinct from 'fullName'
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [agreeTerms, setAgreeTerms] = useState(false);
@@ -32,12 +32,11 @@ const Signup = () => {
     
     setIsLoading(true);
     
-    // Simulate registration delay
     setTimeout(() => {
       const registeredUsersString = localStorage.getItem('registeredUsers');
-      const registeredUsers = registeredUsersString ? JSON.parse(registeredUsersString) : [];
+      const registeredUsers: UserData[] = registeredUsersString ? JSON.parse(registeredUsersString) : [];
 
-      const emailExists = registeredUsers.some((user: any) => user.email === email);
+      const emailExists = registeredUsers.some(user => user.email === email);
 
       if (emailExists) {
         toast({
@@ -49,42 +48,24 @@ const Signup = () => {
         return;
       }
 
-      const newUserData = { 
+      const newUserData: UserData = { 
         id: `user_${Date.now()}`, 
-        name, 
+        name, // Store the initial name
         email, 
-        // Storing password directly in localStorage is not secure for real applications.
-        // This is for demonstration purposes only.
-        password 
+        password, // Storing password directly is not secure, for demo only.
+        // Other fields (fullName, age, etc.) will be added in profile setup
       };
       
       registeredUsers.push(newUserData);
       localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
       
-      // Set current user session
-      const sessionDuration = 1 * 24 * 60 * 60 * 1000; // 1 day
-      const expiryDate = new Date(Date.now() + sessionDuration);
-      const userDataForSession = {
-        id: newUserData.id,
-        name: newUserData.name,
-        email: newUserData.email,
-        // Mock data for dashboard until profile setup is implemented
-        age: "30", // Default age
-        gender: "Prefer not to say", // Default gender
-        height: "170", // Default height in cm
-        weight: "70", // Default weight in kg
-        existingIllness: "none", // Default illness
-        fullName: newUserData.name, // Use provided name for fullName
-        sessionExpiry: expiryDate.toISOString(),
-      };
-      localStorage.setItem('currentUser', JSON.stringify(userDataForSession));
-      
       toast({
-        title: "Account Created",
-        description: "Welcome to MediCare AI! Your account has been created successfully.",
+        title: "Initial Registration Successful",
+        description: "Next, let's complete your profile.",
       });
       
-      navigate('/dashboard');
+      // Redirect to profile setup page, passing email and initial name
+      navigate('/profile-setup', { state: { email: email, name: name } });
       setIsLoading(false);
     }, 1000);
   };
@@ -94,7 +75,7 @@ const Signup = () => {
       <div className="h-16 p-4 border-b border-gray-100 bg-white/90 backdrop-blur-sm">
         <div className="max-w-7xl mx-auto flex justify-between items-center">
           <Link to="/" className="flex items-center gap-2">
-            <div className="flex items-center"> {/* Added this div for consistency */}
+            <div className="flex items-center">
               <Stethoscope className="h-5 w-5 text-teal-600 mr-1" />
               <div className="flex-shrink-0 text-teal-600 font-bold text-xl">MediCare AI</div>
             </div>
@@ -119,12 +100,12 @@ const Signup = () => {
             <form onSubmit={handleSignup}>
               <div className="space-y-4">
                 <div>
-                  <Label htmlFor="name">Full Name</Label>
+                  <Label htmlFor="name">Your Name (Display Name)</Label>
                   <Input 
                     id="name" 
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="John Doe"
+                    placeholder="e.g., Alex Smith"
                     required
                   />
                 </div>
@@ -164,12 +145,6 @@ const Signup = () => {
                   />
                   <Label htmlFor="terms" className="text-sm leading-none">
                     I agree to the terms and conditions
-                    {/* Removed Link to "/terms" as it doesn't exist yet 
-                        If you want this page, let me know!
-                    <Link to="/terms" className="text-teal-600 hover:underline">
-                      terms and conditions
-                    </Link>
-                    */}
                   </Label>
                 </div>
                 
@@ -185,7 +160,7 @@ const Signup = () => {
                     </div>
                   ) : (
                     <div className="flex items-center justify-center">
-                      <span>Create Account</span>
+                      <span>Sign Up & Continue</span>
                       <ArrowRight className="ml-2 h-4 w-4" />
                     </div>
                   )}
