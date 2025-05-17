@@ -1,4 +1,3 @@
-
 import React, { useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
@@ -22,8 +21,17 @@ const Login = () => {
     setIsLoading(true);
     
     setTimeout(() => {
-      const registeredUsersString = localStorage.getItem('registeredUsers');
-      const registeredUsers = registeredUsersString ? JSON.parse(registeredUsersString) : [];
+      let registeredUsers: any[] = [];
+      try {
+        const registeredUsersString = localStorage.getItem('registeredUsers');
+        if (registeredUsersString) {
+          registeredUsers = JSON.parse(registeredUsersString);
+        }
+      } catch (error) {
+        console.error("Error parsing registered users from localStorage:", error);
+        // Keep registeredUsers as empty array, effectively meaning no users are registered
+        // or data is corrupt.
+      }
 
       const foundUser = registeredUsers.find(
         (user: any) => user.email === email && user.password === password
@@ -33,18 +41,16 @@ const Login = () => {
         const sessionDuration = rememberMe ? 30 * 24 * 60 * 60 * 1000 : 1 * 24 * 60 * 60 * 1000; // 30 days or 1 day
         const expiryDate = new Date(Date.now() + sessionDuration);
         
-        // Prepare user data for session, ensuring all required fields for Dashboard are present
-        // Use data from foundUser and add defaults if necessary for dashboard fields
         const userDataForSession = {
           id: foundUser.id,
           email: foundUser.email,
-          name: foundUser.name, // This should be the registered name
-          fullName: foundUser.name, // Ensure fullName is set
-          age: foundUser.age || "30", // Default if not present
-          gender: foundUser.gender || "Prefer not to say", // Default
-          height: foundUser.height || "170", // Default
-          weight: foundUser.weight || "70", // Default
-          existingIllness: foundUser.existingIllness || "none", // Default
+          name: foundUser.name, 
+          fullName: foundUser.name, // Ensure fullName is set from registered name
+          age: foundUser.age || "30", 
+          gender: foundUser.gender || "Prefer not to say", 
+          height: foundUser.height || "170", 
+          weight: foundUser.weight || "70", 
+          existingIllness: foundUser.existingIllness || "none", 
           sessionExpiry: expiryDate.toISOString(),
         };
         
@@ -105,17 +111,13 @@ const Login = () => {
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
                     required
+                    autoComplete="email"
                   />
                 </div>
                 
                 <div>
                   <div className="flex justify-between items-center mb-1">
                     <Label htmlFor="password">Password</Label>
-                    {/* Removed "Forgot password?" link as it's not implemented
-                    <Link to="/forgot-password" className="text-xs text-teal-600 hover:underline">
-                      Forgot password?
-                    </Link>
-                    */}
                   </div>
                   <Input 
                     id="password"
@@ -124,6 +126,7 @@ const Login = () => {
                     value={password}
                     onChange={(e) => setPassword(e.target.value)}
                     required
+                    autoComplete="current-password"
                   />
                 </div>
                 
@@ -134,7 +137,7 @@ const Login = () => {
                     onCheckedChange={(checked) => setRememberMe(!!checked)} 
                   />
                   <Label htmlFor="remember" className="text-sm leading-none">
-                    Remember me
+                    Remember me for 30 days
                   </Label>
                 </div>
                 
