@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import DashboardNavbar from '@/components/dashboard/DashboardNavbar';
-import Footer from '@/components/layout/Footer';
 import { useToast } from '@/components/ui/use-toast';
 import PatientInfoCard from '@/components/dashboard/PatientInfoCard';
 import MedicalRecordsCard from '@/components/dashboard/MedicalRecordsCard';
@@ -9,7 +8,7 @@ import PreviousRecommendationsCard from '@/components/dashboard/PreviousRecommen
 import SymptomAnalysisCard from '@/components/dashboard/SymptomAnalysisCard';
 import ActiveRecommendationCard from '@/components/dashboard/ActiveRecommendationCard';
 import MainLayout from '@/components/layout/MainLayout';
-import { UserData, MedicalRecord, Recommendation } from '@/types'; // Import from centralized types
+import { UserData, MedicalRecord, Recommendation } from '@/types';
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<UserData | null>(null);
@@ -32,7 +31,10 @@ const Dashboard: React.FC = () => {
     let loadedUser: UserData;
     try {
       loadedUser = JSON.parse(currentUserString);
-      // Ensure fullName is prioritized
+      if (loadedUser.needsProfileSetup) {
+        navigate('/profile-setup');
+        return;
+      }
       if (!loadedUser.fullName && loadedUser.name) {
         loadedUser.fullName = loadedUser.name;
       }
@@ -85,6 +87,18 @@ const Dashboard: React.FC = () => {
       });
       e.target.value = ''; // Clear file input
     }
+  };
+
+  const handleDeleteRecord = (recordId: string) => {
+    if (!user) return;
+    const updatedRecords = medicalRecords.filter(record => record.id !== recordId);
+    setMedicalRecords(updatedRecords);
+    localStorage.setItem(`records_${user.id}`, JSON.stringify(updatedRecords));
+    toast({
+      title: "Record Deleted",
+      description: "The medical record has been removed.",
+      variant: "destructive"
+    });
   };
 
   const handleSymptomSubmit = () => {
@@ -145,51 +159,42 @@ const Dashboard: React.FC = () => {
 
   if (!user) {
     return (
-      <div className="flex flex-col min-h-screen page-background">
-        <DashboardNavbar />
-        <main className="flex-grow flex items-center justify-center">
+      <MainLayout requireAuth={true}>
+        <div className="flex-grow flex items-center justify-center">
            <div>Loading patient dashboard...</div>
-        </main>
-        <Footer />
-      </div>
+        </div>
+      </MainLayout>
     );
   }
 
   return (
     <MainLayout requireAuth={true}>
-      <div className="min-h-screen flex flex-col page-background">
-        <DashboardNavbar /> 
-        <main className="flex-grow bg-medical-background">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-              <div className="lg:col-span-1">
-                <div className="space-y-6">
-                  <PatientInfoCard patient={user} onUpdatePatient={handlePatientUpdate} />
-                  <MedicalRecordsCard
-                    user={user}
-                    medicalRecords={medicalRecords}
-                    onFileUpload={handleFileUpload}
-                  />
-                  <PreviousRecommendationsCard
-                    recommendations={recommendations}
-                    onViewRecommendation={viewRecommendationDetails}
-                  />
-                </div>
-              </div>
-              
-              <div className="lg:col-span-2 space-y-6">
-                <SymptomAnalysisCard
-                  symptoms={symptoms}
-                  onSymptomsChange={setSymptoms}
-                  onSubmit={handleSymptomSubmit}
-                  isAnalyzing={isAnalyzing}
-                />
-                <ActiveRecommendationCard recommendation={activeRecommendationDetails} />
-              </div>
-            </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+          <div className="lg:col-span-1 space-y-6">
+            <PatientInfoCard patient={user} onUpdatePatient={handlePatientUpdate} />
+            <MedicalRecordsCard
+              user={user}
+              medicalRecords={medicalRecords}
+              onFileUpload={handleFileUpload}
+              onDeleteRecord={handleDeleteRecord}
+            />
           </div>
-        </main>
-        <Footer />
+          
+          <div className="lg:col-span-2 space-y-6">
+            <SymptomAnalysisCard
+              symptoms={symptoms}
+              onSymptomsChange={setSymptoms}
+              onSubmit={handleSymptomSubmit}
+              isAnalyzing={isAnalyzing}
+            />
+            <PreviousRecommendationsCard
+              recommendations={recommendations}
+              onViewRecommendation={viewRecommendationDetails}
+            />
+            <ActiveRecommendationCard recommendation={activeRecommendationDetails} />
+          </div>
+        </div>
       </div>
     </MainLayout>
   );

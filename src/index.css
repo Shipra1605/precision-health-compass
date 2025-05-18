@@ -7,8 +7,8 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%;
-    --foreground: 224 71.4% 4.1%;
+    --background: 0 0% 98%; /* Light mode background */
+    --foreground: 224 71.4% 4.1%; /* Light mode text */
 
     --card: 0 0% 100%;
     --card-foreground: 224 71.4% 4.1%;
@@ -16,16 +16,16 @@
     --popover: 0 0% 100%;
     --popover-foreground: 224 71.4% 4.1%;
 
-    --primary: 359 100% 66%;
+    --primary: 359 100% 66%; /* Adjusted primary for better contrast with new BGs */
     --primary-foreground: 210 20% 98%;
 
-    --secondary: 220 100% 66%;
+    --secondary: 220 100% 66%; /* Adjusted secondary */
     --secondary-foreground: 0 0% 98%;
 
     --muted: 220 20% 94%;
     --muted-foreground: 220 8.9% 46.1%;
 
-    --accent: 220 76% 59%;
+    --accent: 220 76% 59%; /* Teal accent */
     --accent-foreground: 0 0% 98%;
 
     --destructive: 0 84.2% 60.2%;
@@ -37,6 +37,7 @@
 
     --radius: 0.5rem;
 
+    /* ... keep existing dark mode variables ... */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -101,6 +102,7 @@
     @apply flex flex-col items-center justify-center p-4 rounded-lg;
   }
 
+  /* ... keep existing progress styles ... */
   .progress-excellent {
     @apply bg-green-500;
   }
@@ -118,7 +120,7 @@
   }
   
   .glass-panel {
-    @apply bg-white/90 backdrop-blur-sm border border-gray-100/50 shadow-sm hover:shadow-md transition-shadow;
+    @apply bg-white/80 backdrop-blur-md border border-gray-200/60 shadow-lg hover:shadow-xl transition-shadow; /* Enhanced glass panel */
   }
   
   .gradient-border {
@@ -129,17 +131,88 @@
     @apply bg-gradient-to-br from-blue-50 to-teal-50;
   }
   
+  .page-container { /* Generic container for pages that might have BGs */
+    @apply min-h-screen flex flex-col;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: relative; /* For pseudo-elements */
+  }
+  
+  .page-content-overlay { /* To ensure content is readable over backgrounds */
+    @apply relative z-10 flex-grow; /* flex-grow needed if page-container is flex-col */
+    /* Add padding or other layout styles as needed here or in specific page components */
+  }
+
+  .homepage-bg {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url('/lovable-uploads/eefc0b2d-4141-4f45-b14a-8fc54aee98d2.png'); /* image 2 with light overlay */
+  }
+  .homepage-bg::after {
+    content: "";
+    background-image: url('/lovable-uploads/bc87be0f-f706-4edb-aecf-cd934d06a4f2.png'); /* image 3 */
+    background-size: contain;
+    background-position: right center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 45%; /* Adjust as needed */
+    opacity: 0.25; /* Make it subtle */
+    z-index: 0; /* Behind page-content-overlay */
+  }
+
+  .auth-pages-bg { /* For login, signup */
+     background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/lovable-uploads/7e88c256-f9b4-45a9-b74e-1123997db7b5.png'); /* image 4 with overlay */
+     /* Or blend with image 5: 
+     background-image: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('/lovable-uploads/7e88c256-f9b4-45a9-b74e-1123997db7b5.png'), url('/lovable-uploads/62c5df4e-e08a-4e1e-aad8-eece213af7b5.png');
+     background-blend-mode: overlay, normal;
+     background-size: cover, 50% auto, 50% auto;
+     background-position: center, top left, bottom right; */
+  }
+  
+  .info-pages-bg { /* For health-facts, about, team */
+     background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/lovable-uploads/62c5df4e-e08a-4e1e-aad8-eece213af7b5.png'); /* image 5 with overlay */
+  }
+  .team-page-bg {
+    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('/lovable-uploads/2afa7cc2-9706-4f1e-8bdc-d6145b20ca20.png'); /* image 8 with overlay */
+  }
+
+  .dashboard-page-bg {
+    background-image: linear-gradient(rgba(240, 248, 255, 0.3), rgba(240, 248, 255, 0.3)), url('/lovable-uploads/db668ec8-b3a2-44cc-bf04-d3667d2f415b.png'); /* image 7 with overlay */
+  }
+  .dashboard-page-bg::after {
+    content: "";
+    background-image: url('/lovable-uploads/03420be4-e095-471d-9c9e-bd7576558fde.png'); /* image 6 */
+    background-size: contain; /* or 'cover' based on aspect ratio */
+    background-position: right center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 40%; /* Adjust width */
+    opacity: 0.2; /* Adjust opacity */
+    z-index: 0; /* Behind page-content-overlay */
+  }
+
+  /* Fallback page-background for pages not explicitly set */
   .page-background {
-    @apply min-h-screen bg-gradient-to-br from-blue-50 via-white to-teal-50 bg-fixed;
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230ea5e9' fill-opacity='0.05'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    @apply min-h-screen bg-gradient-to-br from-sky-50 via-slate-50 to-teal-50 bg-fixed;
+    /* background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230ea5e9' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); */
   }
   
   .section-background {
-    @apply bg-gradient-to-br from-white/90 to-white/70 backdrop-blur-sm border border-white/20 rounded-lg shadow-sm;
+    @apply bg-white/90 backdrop-blur-sm border border-white/20 rounded-lg shadow-sm;
+  }
+
+  .professional-card {
+    @apply bg-white/95 backdrop-blur-md border border-slate-200/70 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl;
   }
 }
 
 @layer utilities {
+  /* ... keep existing animation utilities ... */
   .animate-pulse-subtle {
     animation: pulse-subtle 3s ease-in-out infinite;
   }

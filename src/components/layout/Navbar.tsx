@@ -2,7 +2,8 @@
 import React from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { Home, Stethoscope } from 'lucide-react';
+import { Home } from 'lucide-react';
+import Logo from './Logo'; // Import the new Logo component
 
 const Navbar = () => {
   const location = useLocation();
@@ -11,19 +12,11 @@ const Navbar = () => {
   return (
     <header className="bg-white/90 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-30 shadow-sm">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between h-16 items-center"> {/* Added items-center */}
           <div className="flex">
-            <div className="flex-shrink-0 flex items-center">
-              <Link to="/" className="flex items-center gap-2">
-                <div className="relative flex items-center justify-center">
-                  <Stethoscope className="h-6 w-6 text-teal-600" />
-                </div>
-                <div className="flex flex-col items-start">
-                  <span className="text-xl font-bold text-gray-800 font-heading">MediCare AI</span>
-                  <span className="text-xs text-gray-600">Personalized care at your fingertips</span>
-                </div>
-              </Link>
-            </div>
+            <Link to="/" className="flex items-center gap-2">
+              <Logo size="lg" textColor="text-gray-800" />
+            </Link>
           </div>
           <div className="flex items-center gap-4">
             {!isHomePage && (

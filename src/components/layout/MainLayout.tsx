@@ -1,9 +1,7 @@
-
-import React from 'react';
+import React, { useEffect } from 'react';
 import MainNavbar from './MainNavbar';
 import Footer from './Footer';
-import { useEffect } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 interface MainLayoutProps {
   children: React.ReactNode;
@@ -15,7 +13,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
   requireAuth = true 
 }) => {
   const navigate = useNavigate();
-  
+  const location = useLocation();
+
   useEffect(() => {
     if (requireAuth) {
       const currentUser = localStorage.getItem('currentUser');
@@ -23,8 +22,11 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         navigate('/login');
       } else {
         try {
-          // Check if session is expired
           const userData = JSON.parse(currentUser);
+          if (userData.needsProfileSetup) {
+            navigate('/profile-setup');
+            return;
+          }
           const expiryDate = new Date(userData.sessionExpiry);
           if (expiryDate < new Date()) {
             localStorage.removeItem('currentUser');
@@ -39,10 +41,19 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     }
   }, [navigate, requireAuth]);
 
+  let backgroundClass = 'page-background';
+  if (location.pathname.startsWith('/dashboard')) {
+    backgroundClass = 'dashboard-page-bg';
+  } else if (['/about', '/health-facts'].includes(location.pathname)) {
+    backgroundClass = 'info-pages-bg';
+  } else if (location.pathname === '/team') {
+    backgroundClass = 'team-page-bg';
+  }
+
   return (
-    <div className="flex flex-col min-h-screen page-background">
+    <div className={`page-container ${backgroundClass}`}>
       <MainNavbar />
-      <main className="flex-grow">
+      <main className="page-content-overlay flex-grow">
         {children}
       </main>
       <Footer />
