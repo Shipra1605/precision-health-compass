@@ -33,10 +33,10 @@ const ProfileSetup: React.FC = () => {
       setFormData(prev => ({
         ...prev,
         fullName: user.fullName || user.name || '',
-        age: user.age?.toString() || '',
+        age: user.age || '', // user.age is already string? or undefined
         gender: user.gender || '',
-        heightCm: user.heightCm?.toString() || '',
-        weightKg: user.weightKg?.toString() || '',
+        heightCm: user.heightCm || '', // user.heightCm is already string? or undefined
+        weightKg: user.weightKg || '', // user.weightKg is already string? or undefined
         existingIllness: user.existingIllness || '',
       }));
     } else {
@@ -64,23 +64,23 @@ const ProfileSetup: React.FC = () => {
       ...currentUser, // Spread currentUser first to allow overrides
 
       // Base user data - ensure these are present and correctly typed
-      id: currentUser.id, // Already checked for non-null
-      email: currentUser.email, // Already checked for non-null
-      name: formData.fullName || currentUser.name || '', // Prioritize new full name, fallback to existing name
-      password: currentUser.password || '', // Keep existing password
+      id: currentUser.id, 
+      email: currentUser.email, 
+      name: formData.fullName || currentUser.name || '', 
+      password: currentUser.password || '', 
 
       // Form data - these will override any conflicting fields from ...currentUser
       fullName: formData.fullName,
-      age: formData.age ? parseInt(formData.age, 10) : undefined,
+      age: formData.age || undefined, // Assign string value or undefined if empty
       gender: formData.gender || undefined,
-      heightCm: formData.heightCm ? parseInt(formData.heightCm, 10) : undefined,
-      weightKg: formData.weightKg ? parseInt(formData.weightKg, 10) : undefined,
+      heightCm: formData.heightCm || undefined, // Assign string value or undefined if empty
+      weightKg: formData.weightKg || undefined, // Assign string value or undefined if empty
       existingIllness: formData.existingIllness || undefined,
       
       // Profile setup specific properties
-      profileImageBase64: currentUser.profileImageBase64 || '', // Keep existing or default
-      needsProfileSetup: false, // Mark profile setup as complete
-      sessionExpiry: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString() // Set session expiry
+      profileImageBase64: currentUser.profileImageBase64 || '', 
+      needsProfileSetup: false, 
+      sessionExpiry: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString()
     };
 
     const registeredUsersString = localStorage.getItem('registeredUsers');
@@ -90,13 +90,16 @@ const ProfileSetup: React.FC = () => {
     if (userIndex !== -1) {
       registeredUsers[userIndex] = updatedUserData;
     } else {
-      // This case should ideally not happen if user is completing profile after signup
-      // but as a fallback, add them.
       registeredUsers.push(updatedUserData);
     }
     localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
     localStorage.setItem('currentUser', JSON.stringify(updatedUserData));
     
+    toast({
+      title: 'Profile Saved!',
+      description: 'Your profile information has been updated successfully.',
+      className: 'bg-green-500 text-white',
+    });
     setProfileSetupComplete(true);
   };
 
