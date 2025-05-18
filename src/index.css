@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    /* Light Mode - New Palette */
+    /* Light Mode - Palette from config */
     --background: 220 20% 97%; /* Off-white/Pearl Gray: F6F6F7 */
     --foreground: 225 15% 15%; /* Navy Blue: #222635 */
 
@@ -17,7 +17,7 @@
     --popover: 0 0% 100%;
     --popover-foreground: 225 15% 15%;
 
-    --primary: 200 82% 50%; /* Teal/Deep Sky Blue: #0EA5E9 */
+    --primary: 200 82% 50%; /* Teal/Deep Sky Blue: #0EA5E9 - Matches brand-teal */
     --primary-foreground: 0 0% 100%; /* White for text on primary */
 
     --secondary: 195 75% 55%; /* Lighter Teal/Sky Blue: #33C3F0 */
@@ -38,8 +38,7 @@
 
     --radius: 0.5rem;
 
-    /* Dark mode variables (can be refined later if dark mode is fully implemented) */
-    /* ... keep existing dark mode variables or update them similarly ... */
+    /* ... keep existing dark mode variables and sidebar variables ... */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -83,103 +82,90 @@
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading text-foreground; /* Ensure headings use foreground color */
+    @apply font-heading text-foreground; 
     font-family: 'Montserrat', sans-serif;
   }
 }
 
 @layer components {
-  .health-card { /* For general dashboard cards, can be used by professional-card */
+  .health-card { 
     @apply bg-card/80 backdrop-blur-lg rounded-xl shadow-lg hover:shadow-xl transition-shadow p-5 border border-border/30;
   }
 
-  .glass-panel { /* More pronounced glass effect */
-    @apply bg-card/70 backdrop-blur-xl border border-border/20 shadow-xl hover:shadow-2xl transition-shadow rounded-xl;
+  .glass-panel { /* For content panels over complex backgrounds */
+    @apply bg-card/80 dark:bg-neutral-800/80 backdrop-blur-lg border border-white/20 dark:border-neutral-700/30 shadow-xl hover:shadow-2xl transition-shadow rounded-xl;
   }
   
-  .professional-card { /* For dashboard cards, applying new design */
+  .professional-card {
     @apply bg-white/90 dark:bg-neutral-800/90 backdrop-blur-md border border-neutral-200/60 dark:border-neutral-700/60 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
   }
 
-  /* Page container and overlay for background images */
   .page-container {
     @apply min-h-screen flex flex-col bg-cover bg-center bg-no-repeat bg-fixed relative;
   }
   
   .page-content-overlay {
     @apply relative z-10 flex-grow;
-    /* Consider a subtle overlay for all pages if backgrounds are very busy */
-    /* background-color: rgba(255, 255, 255, 0.1); */
+    /* Add a very subtle overlay if backgrounds are too busy globally, or rely on specific page bg styles */
+    /* background-color: hsla(var(--background), 0.1); */
   }
 
-  /* Homepage Specific Backgrounds */
+  /* Homepage Specific Backgrounds (Image 2 + Image 3) */
   .homepage-bg {
-    /* Image 2: /lovable-uploads/fea8ddf5-433a-4ac7-bed5-8665242fcd17.png (lighter full bg) */
-    background-image: linear-gradient(rgba(240, 248, 255, 0.7), rgba(230, 240, 250, 0.7)), url('/lovable-uploads/fea8ddf5-433a-4ac7-bed5-8665242fcd17.png');
+    /* Image 2: /lovable-uploads/f1285aef-cb05-42af-9280-c798fb8c0cc2.png (lighter full bg) */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(245, 248, 252, 0.85)), url('/lovable-uploads/f1285aef-cb05-42af-9280-c798fb8c0cc2.png');
   }
-  .homepage-bg::after { /* Image 3: /lovable-uploads/1c971892-9c6c-466c-b843-23aa12fcf7ab.png (right side element) */
+  .homepage-bg::after { /* Image 3: /lovable-uploads/12ff020d-6bcb-4cf9-b332-7ccc18598c37.png (right side element) */
     content: "";
-    background-image: url('/lovable-uploads/1c971892-9c6c-466c-b843-23aa12fcf7ab.png');
-    background-size: contain; /* Or 'auto 50%' to control height */
+    background-image: url('/lovable-uploads/12ff020d-6bcb-4cf9-b332-7ccc18598c37.png');
+    background-size: auto 60%; /* Control size, e.g., 60% of viewport height */
     background-position: right center;
     background-repeat: no-repeat;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 40%; /* Adjust width as needed */
-    opacity: 0.15; /* Subtle presence */
-    z-index: 0; /* Behind content */
+    width: 45%; /* Adjust width as needed */
+    opacity: 0.4; /* Make it visible but not overpowering */
+    z-index: 0; 
+    mix-blend-mode: luminosity; /* Blend mode for better integration */
   }
 
-  /* Auth Pages (Login, Signup, ProfileSetup) Backgrounds */
-  .auth-pages-bg {
-    /* Image 4: /lovable-uploads/8457aa07-a6aa-4abf-b854-75e35b107333.png 
-       Image 5: /lovable-uploads/9734f78e-1fbb-466f-a4c4-cb2c6442608d.png (Maybe use one primarily and other as accent or blend) */
-    background-image: linear-gradient(rgba(230, 240, 255, 0.85), rgba(220, 235, 250, 0.85)), url('/lovable-uploads/8457aa07-a6aa-4abf-b854-75e35b107333.png');
-    /* To blend Image 5 subtly, could use a pseudo-element if needed, or a more complex background stack */
+  /* Auth Pages (Login, Signup, ProfileSetup) & About Page Backgrounds (Image 4 + Image 5) */
+  .auth-pages-bg, .info-pages-bg { /* Grouping for similar styling */
+    /* Image 4: /lovable-uploads/8d82980b-3236-4631-be67-e536dfe26234.png */
+    /* Image 5: /lovable-uploads/f7ced12d-8054-4a3a-9635-1cd7d64d8444.png */
+    /* Using Image 4 as main, Image 5 could be an accent via pseudo-element if desired, or blended */
+    background-image: linear-gradient(rgba(230, 240, 255, 0.9), rgba(220, 235, 250, 0.9)), url('/lovable-uploads/8d82980b-3236-4631-be67-e536dfe26234.png');
+    /* Consider adding Image 5 as another layer if design allows */
+    /* e.g., .auth-pages-bg::before { content: ""; background-image: url('/lovable-uploads/f7ced12d-8054-4a3a-9635-1cd7d64d8444.png'); ... } */
   }
-  /* Example for blending another image on auth pages if desired */
-  /* .auth-pages-bg::before {
-    content: "";
-    background-image: url('/lovable-uploads/9734f78e-1fbb-466f-a4c4-cb2c6442608d.png');
-    background-size: cover;
-    background-position: bottom right;
-    background-repeat: no-repeat;
-    position: absolute;
-    inset: 0;
-    opacity: 0.1;
-    z-index: 0;
-  } */
   
-  /* Dashboard Page Backgrounds */
+  /* Dashboard Page Backgrounds (Image 7 + Image 6) */
   .dashboard-page-bg {
-    /* Image 7: /lovable-uploads/a27b5a77-ec82-42f3-ae74-f25f6a23a5ef.png (subtle full bg) */
-    background-image: linear-gradient(rgba(235, 245, 255, 0.9), rgba(225, 240, 255, 0.9)), url('/lovable-uploads/a27b5a77-ec82-42f3-ae74-f25f6a23a5ef.png');
+    /* Image 7: /lovable-uploads/59b74199-cea3-4fe0-a3af-28e7a9f6e2f0.png (subtle full bg) */
+    background-image: linear-gradient(rgba(235, 245, 255, 0.92), rgba(225, 240, 255, 0.92)), url('/lovable-uploads/59b74199-cea3-4fe0-a3af-28e7a9f6e2f0.png');
   }
-  .dashboard-page-bg::after { /* Image 6: /lovable-uploads/02299a52-de77-4802-9fed-2a542e613102.png (right side element) */
+  .dashboard-page-bg::after { /* Image 6: /lovable-uploads/8f598d21-e6c9-4a1a-b7b8-a69f3d3ee571.png (right side element) */
     content: "";
-    background-image: url('/lovable-uploads/02299a52-de77-4802-9fed-2a542e613102.png');
-    background-size: contain; /* or 'auto 60%' etc. */
-    background-position: right center;
+    background-image: url('/lovable-uploads/8f598d21-e6c9-4a1a-b7b8-a69f3d3ee571.png');
+    background-size: auto 65%; 
+    background-position: right 10% center; /* Adjust vertical position slightly */
     background-repeat: no-repeat;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 35%; /* Adjust */
-    opacity: 0.1; /* Subtle */
+    width: 40%; 
+    opacity: 0.3; 
     z-index: 0;
+    mix-blend-mode: soft-light;
   }
   
-  /* Info Pages (About, HealthFacts, Team) Backgrounds - General fallback if specific components not editable */
-  .info-pages-bg { /* For health-facts, about, team */
-     /* Using image 5 from previous instructions: /lovable-uploads/62c5df4e-e08a-4e1e-aad8-eece213af7b5.png */
-     /* Re-using an auth image if those are suitable or image 5 mentioned before */
-     background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/lovable-uploads/62c5df4e-e08a-4e1e-aad8-eece213af7b5.png');
-  }
-  .team-page-bg { /* Image 8: /lovable-uploads/c3195bfd-4e1f-4e76-917b-9e2a84a88977.png */
-    background-image: linear-gradient(rgba(220, 230, 245, 0.8), rgba(210, 225, 240, 0.8)), url('/lovable-uploads/c3195bfd-4e1f-4e76-917b-9e2a84a88977.png');
+  /* Team Page Background (Image 8) */
+  .team-page-bg { 
+    /* Image 8: /lovable-uploads/3b31d14e-49a4-4894-be14-5253125a4e8e.png */
+    background-image: linear-gradient(rgba(220, 230, 245, 0.85), rgba(210, 225, 240, 0.85)), url('/lovable-uploads/3b31d14e-49a4-4894-be14-5253125a4e8e.png');
   }
 
   /* Fallback page-background for pages not explicitly set */
@@ -187,8 +173,8 @@
     @apply min-h-screen bg-gradient-to-br from-sky-50 via-slate-100 to-teal-50 dark:from-neutral-900 dark:via-neutral-800 dark:to-sky-900 bg-fixed;
   }
   
-  .section-background { /* For inner sections on pages */
-    @apply bg-card/60 backdrop-blur-md border border-border/10 rounded-lg shadow-md;
+  .section-background { /* For inner sections on pages, enhance for new BGs */
+    @apply bg-card/70 backdrop-blur-lg border border-white/20 rounded-lg shadow-lg;
   }
 
   /* ... keep existing progress styles, medical-gradient-bg, gradient-border ... */
@@ -219,4 +205,3 @@
     @apply font-montserrat font-semibold tracking-tight text-brand-navy dark:text-brand-pearl-gray-light;
   }
 }
-

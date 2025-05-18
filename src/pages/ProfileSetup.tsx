@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
@@ -19,10 +18,10 @@ const ProfileSetup: React.FC = () => {
 
   const [formData, setFormData] = useState({
     fullName: '',
-    age: '', // Keep as string for form input
+    age: '',
     gender: '',
-    heightCm: '', // Keep as string
-    weightKg: '', // Keep as string
+    heightCm: '',
+    weightKg: '',
     existingIllness: '',
   });
 
@@ -34,10 +33,10 @@ const ProfileSetup: React.FC = () => {
       setFormData(prev => ({
         ...prev,
         fullName: user.fullName || user.name || '',
-        age: user.age?.toString() || '', // Convert number to string for input
+        age: user.age?.toString() || '',
         gender: user.gender || '',
-        heightCm: user.heightCm?.toString() || '', // Convert to string
-        weightKg: user.weightKg?.toString() || '', // Convert to string
+        heightCm: user.heightCm?.toString() || '',
+        weightKg: user.weightKg?.toString() || '',
         existingIllness: user.existingIllness || '',
       }));
     } else {
@@ -55,20 +54,22 @@ const ProfileSetup: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!currentUser || !currentUser.id || !currentUser.email) { // Added email check for type safety
+    if (!currentUser || !currentUser.id || !currentUser.email) {
       toast({ title: 'Error', description: 'User session not found.', variant: 'destructive' });
       navigate('/login');
       return;
     }
 
     const updatedUserData: UserData = {
-      // Base user data that must exist
-      id: currentUser.id,
-      email: currentUser.email,
-      name: currentUser.name || formData.fullName, // Ensure name exists
-      password: currentUser.password || '', // Ensure password exists (even if empty, UserData expects it)
-      
-      // Form data
+      ...currentUser, // Spread currentUser first to allow overrides
+
+      // Base user data - ensure these are present and correctly typed
+      id: currentUser.id, // Already checked for non-null
+      email: currentUser.email, // Already checked for non-null
+      name: formData.fullName || currentUser.name || '', // Prioritize new full name, fallback to existing name
+      password: currentUser.password || '', // Keep existing password
+
+      // Form data - these will override any conflicting fields from ...currentUser
       fullName: formData.fullName,
       age: formData.age ? parseInt(formData.age, 10) : undefined,
       gender: formData.gender || undefined,
@@ -76,13 +77,10 @@ const ProfileSetup: React.FC = () => {
       weightKg: formData.weightKg ? parseInt(formData.weightKg, 10) : undefined,
       existingIllness: formData.existingIllness || undefined,
       
-      // Merge other existing currentUser properties
-      ...currentUser,
-
-      // Profile setup specific
-      profileImageBase64: currentUser.profileImageBase64 || '',
-      needsProfileSetup: false,
-      sessionExpiry: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString()
+      // Profile setup specific properties
+      profileImageBase64: currentUser.profileImageBase64 || '', // Keep existing or default
+      needsProfileSetup: false, // Mark profile setup as complete
+      sessionExpiry: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString() // Set session expiry
     };
 
     const registeredUsersString = localStorage.getItem('registeredUsers');
@@ -92,10 +90,11 @@ const ProfileSetup: React.FC = () => {
     if (userIndex !== -1) {
       registeredUsers[userIndex] = updatedUserData;
     } else {
+      // This case should ideally not happen if user is completing profile after signup
+      // but as a fallback, add them.
       registeredUsers.push(updatedUserData);
     }
     localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
-    
     localStorage.setItem('currentUser', JSON.stringify(updatedUserData));
     
     setProfileSetupComplete(true);
@@ -107,16 +106,16 @@ const ProfileSetup: React.FC = () => {
         <Navbar />
         <main className="page-content-overlay flex-grow flex flex-col items-center justify-center p-6 text-center">
           <div className="glass-panel p-8 md:p-12 rounded-xl shadow-2xl max-w-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4 font-heading">🎉 Welcome, {formData.fullName || currentUser?.name}!</h2>
-            <p className="text-lg text-gray-700 mb-8">Your account has been successfully created.</p>
+            <h2 className="text-3xl font-bold text-brand-navy mb-4 font-heading">🎉 Welcome, {formData.fullName || currentUser?.name}!</h2>
+            <p className="text-lg text-brand-navy/80 mb-8">Your account has been successfully created.</p>
             <div className="space-y-4">
               <Link to="/login">
-                <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3">
+                <Button className="w-full bg-brand-teal hover:bg-brand-teal-dark text-white py-3">
                   Login Now
                 </Button>
               </Link>
               <Link to="/">
-                <Button variant="outline" className="w-full border-teal-300 text-teal-700 hover:bg-teal-50 py-3">
+                <Button variant="outline" className="w-full border-brand-teal text-brand-teal hover:bg-brand-teal/10 hover:text-brand-teal-dark py-3">
                   Go to Homepage
                 </Button>
               </Link>
@@ -138,23 +137,23 @@ const ProfileSetup: React.FC = () => {
             className="glass-panel p-8 md:p-10 rounded-xl shadow-2xl space-y-6"
           >
             <div className="text-center">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-heading">Complete Your Profile</h2>
-              <p className="text-gray-600 mt-1">Tell us a bit more about yourself.</p>
+              <h2 className="text-2xl md:text-3xl font-bold text-brand-navy font-heading">Complete Your Profile</h2>
+              <p className="text-brand-navy/70 mt-1">Tell us a bit more about yourself.</p>
             </div>
             
             <div>
-              <Label htmlFor="fullName">Full Name</Label>
-              <Input id="fullName" value={formData.fullName} onChange={handleChange} placeholder="John Doe" required className="bg-white/70"/>
+              <Label htmlFor="fullName" className="text-brand-navy/90">Full Name</Label>
+              <Input id="fullName" value={formData.fullName} onChange={handleChange} placeholder="John Doe" required className="bg-white/80 border-border focus:bg-white focus:border-brand-teal"/>
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="age">Age (Years)</Label>
-                <Input id="age" type="number" value={formData.age} onChange={handleChange} placeholder="30" required className="bg-white/70"/>
+                <Label htmlFor="age" className="text-brand-navy/90">Age (Years)</Label>
+                <Input id="age" type="number" value={formData.age} onChange={handleChange} placeholder="30" required className="bg-white/80 border-border focus:bg-white focus:border-brand-teal"/>
               </div>
               <div>
-                <Label htmlFor="gender">Gender</Label>
+                <Label htmlFor="gender" className="text-brand-navy/90">Gender</Label>
                 <Select onValueChange={(value) => handleSelectChange('gender', value)} value={formData.gender}>
-                  <SelectTrigger className="w-full bg-white/70"><SelectValue placeholder="Select gender" /></SelectTrigger>
+                  <SelectTrigger className="w-full bg-white/80 border-border focus:bg-white focus:border-brand-teal"><SelectValue placeholder="Select gender" /></SelectTrigger>
                   <SelectContent>
                     <SelectItem value="Male">Male</SelectItem>
                     <SelectItem value="Female">Female</SelectItem>
@@ -166,29 +165,29 @@ const ProfileSetup: React.FC = () => {
             </div>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <Label htmlFor="heightCm">Height (cm)</Label>
-                <Input id="heightCm" type="number" value={formData.heightCm} onChange={handleChange} placeholder="175" className="bg-white/70"/>
+                <Label htmlFor="heightCm" className="text-brand-navy/90">Height (cm)</Label>
+                <Input id="heightCm" type="number" value={formData.heightCm} onChange={handleChange} placeholder="175" className="bg-white/80 border-border focus:bg-white focus:border-brand-teal"/>
               </div>
               <div>
-                <Label htmlFor="weightKg">Weight (kg)</Label>
-                <Input id="weightKg" type="number" value={formData.weightKg} onChange={handleChange} placeholder="70" className="bg-white/70"/>
+                <Label htmlFor="weightKg" className="text-brand-navy/90">Weight (kg)</Label>
+                <Input id="weightKg" type="number" value={formData.weightKg} onChange={handleChange} placeholder="70" className="bg-white/80 border-border focus:bg-white focus:border-brand-teal"/>
               </div>
             </div>
             <div>
-              <Label htmlFor="existingIllness">Existing Medical Conditions (comma-separated)</Label>
+              <Label htmlFor="existingIllness" className="text-brand-navy/90">Existing Medical Conditions (comma-separated)</Label>
               <Textarea
                 id="existingIllness"
                 value={formData.existingIllness}
                 onChange={handleChange}
                 placeholder="e.g., Asthma, Diabetes, None"
                 rows={3}
-                className="bg-white/70"
+                className="bg-white/80 border-border focus:bg-white focus:border-brand-teal"
               />
             </div>
-            <Button type="submit" className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3">
+            <Button type="submit" className="w-full bg-brand-teal hover:bg-brand-teal-dark text-white py-3 shadow-md hover:shadow-lg">
               Save Profile
             </Button>
-             <p className="text-center text-sm text-gray-500">
+             <p className="text-center text-sm text-brand-navy/70">
               You can update this information later from your dashboard.
             </p>
           </form>
@@ -200,4 +199,3 @@ const ProfileSetup: React.FC = () => {
 };
 
 export default ProfileSetup;
-
