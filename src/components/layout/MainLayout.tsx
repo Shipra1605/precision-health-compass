@@ -3,17 +3,14 @@ import React, { useEffect } from 'react';
 import MainNavbar from './MainNavbar';
 import Footer from './Footer';
 import { useNavigate, useLocation } from 'react-router-dom';
-import { UserData } from '@/types'; // Ensure UserData is imported
+import { UserData } from '@/types';
 
 interface MainLayoutProps {
   children: React.ReactNode;
   requireAuth?: boolean;
 }
 
-interface CurrentUserStored extends UserData { // To handle needsProfileSetup
-  needsProfileSetup?: boolean;
-  sessionExpiry?: string;
-}
+// CurrentUserStored interface is no longer needed here as UserData now includes these optional fields.
 
 const MainLayout: React.FC<MainLayoutProps> = ({ 
   children, 
@@ -29,8 +26,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         navigate('/login');
       } else {
         try {
-          const userData: CurrentUserStored = JSON.parse(currentUserString); // Use temporary interface
-          if (userData.needsProfileSetup === true) { // Explicitly check for true
+          const userData: UserData = JSON.parse(currentUserString); // Use UserData directly
+          if (userData.needsProfileSetup === true) { 
             navigate('/profile-setup');
             return;
           }
@@ -40,7 +37,7 @@ const MainLayout: React.FC<MainLayoutProps> = ({
               localStorage.removeItem('currentUser');
               navigate('/login');
             }
-          } else { // If no sessionExpiry, consider it expired or invalid
+          } else { 
             localStorage.removeItem('currentUser');
             navigate('/login');
           }
@@ -51,9 +48,8 @@ const MainLayout: React.FC<MainLayoutProps> = ({
         }
       }
     }
-  }, [navigate, requireAuth, location.pathname]); // Add location.pathname to re-run on navigation
+  }, [navigate, requireAuth, location.pathname]);
 
-  // Determine background class based on current path
   let backgroundClass = 'page-background'; // Default fallback
   if (location.pathname === '/') {
     backgroundClass = 'homepage-bg';
@@ -61,15 +57,15 @@ const MainLayout: React.FC<MainLayoutProps> = ({
     backgroundClass = 'dashboard-page-bg';
   } else if (['/login', '/signup', '/profile-setup'].includes(location.pathname)) {
     backgroundClass = 'auth-pages-bg';
-  } else if (['/about', '/health-facts'].includes(location.pathname)) {
-    // Assuming 'info-pages-bg' is defined and suitable, or use a generic one
-    // For now, specific backgrounds for About and HealthFacts are not directly editable via their components
-    // but could be handled if they use this MainLayout with a distinct path.
-    // Using 'info-pages-bg' which was defined in previous CSS.
-    backgroundClass = 'info-pages-bg'; 
+  } else if (location.pathname === '/health-facts') {
+    backgroundClass = 'health-facts-bg'; // New class for Health Facts
   } else if (location.pathname === '/team') {
-    backgroundClass = 'team-page-bg';
+    backgroundClass = 'team-page-bg'; // Updated for Team Page
+  } else if (location.pathname === '/about') {
+    backgroundClass = 'about-page-bg'; // New class for About Page
   }
+  // Note: `info-pages-bg` was a generic class, now specific pages have their own.
+  // If other pages used info-pages-bg, they will now use `page-background` unless specified.
 
   return (
     <div className={`page-container ${backgroundClass}`}>

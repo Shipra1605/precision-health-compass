@@ -7,7 +7,7 @@
 
 @layer base {
   :root {
-    /* Light Mode - Palette from config */
+    /* ... keep existing light mode variables ... */
     --background: 220 20% 97%; /* Off-white/Pearl Gray: F6F6F7 */
     --foreground: 225 15% 15%; /* Navy Blue: #222635 */
 
@@ -37,8 +37,6 @@
     --ring: 200 82% 50%; /* Primary color for focus rings */
 
     --radius: 0.5rem;
-
-    /* ... keep existing dark mode variables and sidebar variables ... */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -50,7 +48,7 @@
   }
 
   .dark {
-    /* Basic dark mode overrides - can be expanded */
+    /* ... keep existing dark mode variables ... */
     --background: 225 15% 12%; /* Dark Navy */
     --foreground: 220 20% 92%; /* Light Gray text */
     --card: 225 15% 18%;
@@ -67,7 +65,6 @@
     --accent-foreground: 225 15% 12%;
     --border: 225 15% 30%;
     --input: 225 15% 30%;
-    /* ... keep existing dark mode sidebar variables or update them ... */
   }
 }
 
@@ -88,6 +85,7 @@
 }
 
 @layer components {
+  /* ... keep existing .health-card, .glass-panel, .professional-card ... */
   .health-card { 
     @apply bg-card/80 backdrop-blur-lg rounded-xl shadow-lg hover:shadow-xl transition-shadow p-5 border border-border/30;
   }
@@ -106,70 +104,68 @@
   
   .page-content-overlay {
     @apply relative z-10 flex-grow;
-    /* Add a very subtle overlay if backgrounds are too busy globally, or rely on specific page bg styles */
-    /* background-color: hsla(var(--background), 0.1); */
+    /* background-color: hsla(var(--background), 0.1); /* Subtle global overlay, adjust per page if needed */
   }
 
-  /* Homepage Specific Backgrounds (Image 2 + Image 3) */
+  /* Homepage Background (Image 3) */
   .homepage-bg {
-    /* Image 2: /lovable-uploads/f1285aef-cb05-42af-9280-c798fb8c0cc2.png (lighter full bg) */
-    background-image: linear-gradient(rgba(255, 255, 255, 0.85), rgba(245, 248, 252, 0.85)), url('/lovable-uploads/f1285aef-cb05-42af-9280-c798fb8c0cc2.png');
+    /* Image 3: /lovable-uploads/e1692878-1dbf-4ad6-a789-9aee42dc4bce.png */
+    /* Opacity ~0.5 means a somewhat strong overlay */
+    background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(245, 248, 252, 0.5)), url('/lovable-uploads/e1692878-1dbf-4ad6-a789-9aee42dc4bce.png');
   }
-  .homepage-bg::after { /* Image 3: /lovable-uploads/12ff020d-6bcb-4cf9-b332-7ccc18598c37.png (right side element) */
+  /* Remove old ::after for homepage-bg if it conflicts */
+  /* .homepage-bg::after { content: none; } */
+
+
+  /* Auth Pages (Login, Signup, ProfileSetup) Background (Image 4) */
+  .auth-pages-bg {
+    /* Image 4: /lovable-uploads/40801bcb-dae7-4a70-9e44-2b1ab4d2db03.png */
+    /* Using a slightly more opaque overlay for better form readability */
+    background-image: linear-gradient(rgba(230, 240, 255, 0.8), rgba(220, 235, 250, 0.8)), url('/lovable-uploads/40801bcb-dae7-4a70-9e44-2b1ab4d2db03.png');
+  }
+  
+  /* Dashboard Page Background (Image 5 - right aligned) */
+  .dashboard-page-bg {
+    /* Using a very subtle main background to not clash with the right-side image */
+    background-image: linear-gradient(rgba(240, 245, 250, 0.95), rgba(235, 242, 248, 0.95)); /* Almost solid light color */
+  }
+  .dashboard-page-bg::after { /* Image 5: /lovable-uploads/9605d9cb-091c-4d10-9e40-9ed4bbccb513.png (right side element) */
     content: "";
-    background-image: url('/lovable-uploads/12ff020d-6bcb-4cf9-b332-7ccc18598c37.png');
-    background-size: auto 60%; /* Control size, e.g., 60% of viewport height */
+    background-image: url('/lovable-uploads/9605d9cb-091c-4d10-9e40-9ed4bbccb513.png');
+    background-size: auto 70%; /* Control size, e.g., 70% of viewport height */
     background-position: right center;
     background-repeat: no-repeat;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 45%; /* Adjust width as needed */
-    opacity: 0.4; /* Make it visible but not overpowering */
-    z-index: 0; 
+    width: 50%; /* Adjust width as needed */
+    opacity: 0.35; /* Make it visible but not overpowering */
+    z-index: 0;
     mix-blend-mode: luminosity; /* Blend mode for better integration */
   }
+  
+  /* Health Facts Page Background (Image 6) */
+  .health-facts-bg { 
+    /* Image 6: /lovable-uploads/217ff6e6-a6dc-4e2b-aaf4-c19b5b345757.png */
+    /* Using gradient overlay for contrast */
+    background-image: linear-gradient(to bottom, rgba(220, 230, 245, 0.7), rgba(210, 225, 240, 0.85)), url('/lovable-uploads/217ff6e6-a6dc-4e2b-aaf4-c19b5b345757.png');
+  }
 
-  /* Auth Pages (Login, Signup, ProfileSetup) & About Page Backgrounds (Image 4 + Image 5) */
-  .auth-pages-bg, .info-pages-bg { /* Grouping for similar styling */
-    /* Image 4: /lovable-uploads/8d82980b-3236-4631-be67-e536dfe26234.png */
-    /* Image 5: /lovable-uploads/f7ced12d-8054-4a3a-9635-1cd7d64d8444.png */
-    /* Using Image 4 as main, Image 5 could be an accent via pseudo-element if desired, or blended */
-    background-image: linear-gradient(rgba(230, 240, 255, 0.9), rgba(220, 235, 250, 0.9)), url('/lovable-uploads/8d82980b-3236-4631-be67-e536dfe26234.png');
-    /* Consider adding Image 5 as another layer if design allows */
-    /* e.g., .auth-pages-bg::before { content: ""; background-image: url('/lovable-uploads/f7ced12d-8054-4a3a-9635-1cd7d64d8444.png'); ... } */
-  }
-  
-  /* Dashboard Page Backgrounds (Image 7 + Image 6) */
-  .dashboard-page-bg {
-    /* Image 7: /lovable-uploads/59b74199-cea3-4fe0-a3af-28e7a9f6e2f0.png (subtle full bg) */
-    background-image: linear-gradient(rgba(235, 245, 255, 0.92), rgba(225, 240, 255, 0.92)), url('/lovable-uploads/59b74199-cea3-4fe0-a3af-28e7a9f6e2f0.png');
-  }
-  .dashboard-page-bg::after { /* Image 6: /lovable-uploads/8f598d21-e6c9-4a1a-b7b8-a69f3d3ee571.png (right side element) */
-    content: "";
-    background-image: url('/lovable-uploads/8f598d21-e6c9-4a1a-b7b8-a69f3d3ee571.png');
-    background-size: auto 65%; 
-    background-position: right 10% center; /* Adjust vertical position slightly */
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 40%; 
-    opacity: 0.3; 
-    z-index: 0;
-    mix-blend-mode: soft-light;
-  }
-  
-  /* Team Page Background (Image 8) */
+  /* Team Page Background (Image 7) */
   .team-page-bg { 
-    /* Image 8: /lovable-uploads/3b31d14e-49a4-4894-be14-5253125a4e8e.png */
-    background-image: linear-gradient(rgba(220, 230, 245, 0.85), rgba(210, 225, 240, 0.85)), url('/lovable-uploads/3b31d14e-49a4-4894-be14-5253125a4e8e.png');
+    /* Image 7: /lovable-uploads/9b4f6247-538b-4d61-8bde-e448f6a9ba5b.png */
+    background-image: linear-gradient(rgba(220, 230, 245, 0.8), rgba(210, 225, 240, 0.8)), url('/lovable-uploads/9b4f6247-538b-4d61-8bde-e448f6a9ba5b.png');
+  }
+
+  /* About Page Background (Image 8) */
+  .about-page-bg {
+    /* Image 8: /lovable-uploads/e31a0e8f-8c7f-4ec9-8ae4-e09f63686b05.png */
+    background-image: linear-gradient(rgba(235, 240, 250, 0.85), rgba(225, 235, 248, 0.85)), url('/lovable-uploads/e31a0e8f-8c7f-4ec9-8ae4-e09f63686b05.png');
   }
 
   /* Fallback page-background for pages not explicitly set */
-  .page-background {
+  .page-background { /* This is also the default for pages not matching specific paths in MainLayout */
     @apply min-h-screen bg-gradient-to-br from-sky-50 via-slate-100 to-teal-50 dark:from-neutral-900 dark:via-neutral-800 dark:to-sky-900 bg-fixed;
   }
   
@@ -189,13 +185,13 @@
 @layer utilities {
   /* ... keep existing animation utilities ... */
   .animate-pulse-subtle { animation: pulse-subtle 3s ease-in-out infinite; }
-  @keyframes pulse-subtle { /* ... */ }
+  @keyframes pulse-subtle { '0%, 100%': { opacity: '1' }, '50%': { opacity: '0.8' } }
   .hover-scale { @apply transition-transform duration-200 hover:scale-105; }
   .hover-lift { @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg; }
   .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
-  @keyframes fadeIn { /* ... */ }
+  @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
   .animate-slide-in { animation: slideIn 0.8s ease-out forwards; }
-  @keyframes slideIn { /* ... */ }
+  @keyframes slideIn { from { opacity: 0; transform: translateX(-20px); } to { opacity: 1; transform: translateX(0); } }
   
   /* Updated font utilities */
   .modern-text {
@@ -205,3 +201,4 @@
     @apply font-montserrat font-semibold tracking-tight text-brand-navy dark:text-brand-pearl-gray-light;
   }
 }
+

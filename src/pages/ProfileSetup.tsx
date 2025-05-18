@@ -13,30 +13,31 @@ import { UserData } from '@/types';
 const ProfileSetup: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [currentUser, setCurrentUser] = useState<Partial<UserData> & { email?: string; id?: string; name?: string; password?: string; needsProfileSetup?: boolean } | null>(null);
+  // currentUser type now directly uses UserData from '@/types' which includes optional needsProfileSetup and sessionExpiry
+  const [currentUser, setCurrentUser] = useState<UserData | null>(null);
   const [profileSetupComplete, setProfileSetupComplete] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: '',
-    age: '',
+    age: '', // Expects string
     gender: '',
-    heightCm: '',
-    weightKg: '',
+    heightCm: '', // Expects string
+    weightKg: '', // Expects string
     existingIllness: '',
   });
 
   useEffect(() => {
     const userString = localStorage.getItem('currentUser');
     if (userString) {
-      const user = JSON.parse(userString);
+      const user: UserData = JSON.parse(userString); // UserData type
       setCurrentUser(user);
       setFormData(prev => ({
         ...prev,
         fullName: user.fullName || user.name || '',
-        age: user.age || '', // user.age is already string? or undefined
+        age: user.age || '', // UserData.age is string | undefined
         gender: user.gender || '',
-        heightCm: user.heightCm || '', // user.heightCm is already string? or undefined
-        weightKg: user.weightKg || '', // user.weightKg is already string? or undefined
+        heightCm: user.heightCm || '', // UserData.heightCm is string | undefined
+        weightKg: user.weightKg || '', // UserData.weightKg is string | undefined
         existingIllness: user.existingIllness || '',
       }));
     } else {
@@ -60,24 +61,28 @@ const ProfileSetup: React.FC = () => {
       return;
     }
 
+    // Construct updatedUserData ensuring all required fields of UserData are present
+    // and optional fields are correctly handled.
     const updatedUserData: UserData = {
-      ...currentUser, // Spread currentUser first to allow overrides
+      // Spread existing currentUser data first
+      ...currentUser,
+      
+      // Explicitly set required fields from currentUser if not changed by form
+      id: currentUser.id,
+      email: currentUser.email,
+      // name is optional, can be derived from fullName or kept if already there
+      name: formData.fullName || currentUser.name || currentUser.fullName || '', 
+      password: currentUser.password || '', // Keep existing password if any
 
-      // Base user data - ensure these are present and correctly typed
-      id: currentUser.id, 
-      email: currentUser.email, 
-      name: formData.fullName || currentUser.name || '', 
-      password: currentUser.password || '', 
-
-      // Form data - these will override any conflicting fields from ...currentUser
+      // Override with form data
       fullName: formData.fullName,
-      age: formData.age || undefined, // Assign string value or undefined if empty
+      age: formData.age || undefined, 
       gender: formData.gender || undefined,
-      heightCm: formData.heightCm || undefined, // Assign string value or undefined if empty
-      weightKg: formData.weightKg || undefined, // Assign string value or undefined if empty
+      heightCm: formData.heightCm || undefined, 
+      weightKg: formData.weightKg || undefined, 
       existingIllness: formData.existingIllness || undefined,
       
-      // Profile setup specific properties
+      // Profile setup specific properties (now part of UserData type)
       profileImageBase64: currentUser.profileImageBase64 || '', 
       needsProfileSetup: false, 
       sessionExpiry: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString()
