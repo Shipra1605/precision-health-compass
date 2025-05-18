@@ -1,6 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
-import { useNavigate, Link } from 'react-router-dom'; // Added Link
+import { useNavigate, Link } from 'react-router-dom';
 import Navbar from '@/components/layout/Navbar';
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
@@ -14,15 +14,15 @@ import { UserData } from '@/types';
 const ProfileSetup: React.FC = () => {
   const navigate = useNavigate();
   const { toast } = useToast();
-  const [currentUser, setCurrentUser] = useState<Partial<UserData> | null>(null);
-  const [profileSetupComplete, setProfileSetupComplete] = useState(false); // New state
+  const [currentUser, setCurrentUser] = useState<Partial<UserData> & { email?: string; id?: string; name?: string; password?: string; needsProfileSetup?: boolean } | null>(null);
+  const [profileSetupComplete, setProfileSetupComplete] = useState(false);
 
   const [formData, setFormData] = useState({
     fullName: '',
-    age: '',
+    age: '', // Keep as string for form input
     gender: '',
-    heightCm: '',
-    weightKg: '',
+    heightCm: '', // Keep as string
+    weightKg: '', // Keep as string
     existingIllness: '',
   });
 
@@ -30,17 +30,18 @@ const ProfileSetup: React.FC = () => {
     const userString = localStorage.getItem('currentUser');
     if (userString) {
       const user = JSON.parse(userString);
-      // if (!user.needsProfileSetup) { // If profile is already set up, redirect
-      //   navigate('/dashboard');
-      //   return;
-      // }
       setCurrentUser(user);
       setFormData(prev => ({
         ...prev,
-        fullName: user.fullName || user.name || '', // Prefer fullName, fallback to name
+        fullName: user.fullName || user.name || '',
+        age: user.age?.toString() || '', // Convert number to string for input
+        gender: user.gender || '',
+        heightCm: user.heightCm?.toString() || '', // Convert to string
+        weightKg: user.weightKg?.toString() || '', // Convert to string
+        existingIllness: user.existingIllness || '',
       }));
     } else {
-      navigate('/login'); // If no user, redirect to login
+      navigate('/login');
     }
   }, [navigate]);
 
@@ -54,28 +55,36 @@ const ProfileSetup: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (!currentUser || !currentUser.id) {
+    if (!currentUser || !currentUser.id || !currentUser.email) { // Added email check for type safety
       toast({ title: 'Error', description: 'User session not found.', variant: 'destructive' });
       navigate('/login');
       return;
     }
 
     const updatedUserData: UserData = {
+      // Base user data that must exist
+      id: currentUser.id,
+      email: currentUser.email,
+      name: currentUser.name || formData.fullName, // Ensure name exists
+      password: currentUser.password || '', // Ensure password exists (even if empty, UserData expects it)
+      
+      // Form data
+      fullName: formData.fullName,
+      age: formData.age ? parseInt(formData.age, 10) : undefined,
+      gender: formData.gender || undefined,
+      heightCm: formData.heightCm ? parseInt(formData.heightCm, 10) : undefined,
+      weightKg: formData.weightKg ? parseInt(formData.weightKg, 10) : undefined,
+      existingIllness: formData.existingIllness || undefined,
+      
+      // Merge other existing currentUser properties
       ...currentUser,
-      ...formData,
-      id: currentUser.id!, // id is guaranteed by effect
-      email: currentUser.email!, // email is guaranteed
-      name: currentUser.name || formData.fullName, // ensure name exists, prefer fullName
-      password: currentUser.password!, // password should be there from initial signup
-      age: parseInt(formData.age, 10) || undefined,
-      heightCm: parseInt(formData.heightCm, 10) || undefined,
-      weightKg: parseInt(formData.weightKg, 10) || undefined,
-      profileImageBase64: currentUser.profileImageBase64 || '', // Keep existing if any
-      needsProfileSetup: false, // Mark profile as complete
-      sessionExpiry: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString() // Set session expiry
+
+      // Profile setup specific
+      profileImageBase64: currentUser.profileImageBase64 || '',
+      needsProfileSetup: false,
+      sessionExpiry: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString()
     };
 
-    // Update registeredUsers list
     const registeredUsersString = localStorage.getItem('registeredUsers');
     let registeredUsers: UserData[] = registeredUsersString ? JSON.parse(registeredUsersString) : [];
     const userIndex = registeredUsers.findIndex(u => u.id === currentUser.id);
@@ -83,26 +92,23 @@ const ProfileSetup: React.FC = () => {
     if (userIndex !== -1) {
       registeredUsers[userIndex] = updatedUserData;
     } else {
-      // This case should ideally not happen if signup flow is correct
       registeredUsers.push(updatedUserData);
     }
     localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
     
-    // Update currentUser in localStorage for immediate use by dashboard etc.
     localStorage.setItem('currentUser', JSON.stringify(updatedUserData));
     
-    setProfileSetupComplete(true); // Trigger success message
-    // Toast moved to after success state is set
+    setProfileSetupComplete(true);
   };
 
   if (profileSetupComplete) {
     return (
-      <div className="page-container auth-pages-bg">
+      <div className="page-container auth-pages-bg"> {/* Will be updated by CSS changes */}
         <Navbar />
         <main className="page-content-overlay flex-grow flex flex-col items-center justify-center p-6 text-center">
           <div className="glass-panel p-8 md:p-12 rounded-xl shadow-2xl max-w-lg">
-            <h2 className="text-3xl font-bold text-gray-800 mb-4 font-heading">Welcome, {formData.fullName || currentUser?.name}!</h2>
-            <p className="text-lg text-gray-700 mb-8">Your profile has been successfully set up.</p>
+            <h2 className="text-3xl font-bold text-gray-800 mb-4 font-heading">🎉 Welcome, {formData.fullName || currentUser?.name}!</h2>
+            <p className="text-lg text-gray-700 mb-8">Your account has been successfully created.</p>
             <div className="space-y-4">
               <Link to="/login">
                 <Button className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3">
@@ -122,15 +128,14 @@ const ProfileSetup: React.FC = () => {
     );
   }
 
-
   return (
-    <div className="page-container auth-pages-bg"> {/* Applied auth-pages-bg */}
+    <div className="page-container auth-pages-bg"> {/* Will be updated by CSS changes */}
       <Navbar />
       <main className="page-content-overlay flex-grow flex items-center justify-center p-4">
         <div className="w-full max-w-lg">
           <form
             onSubmit={handleSubmit}
-            className="glass-panel p-8 md:p-10 rounded-xl shadow-2xl space-y-6" // Enhanced panel
+            className="glass-panel p-8 md:p-10 rounded-xl shadow-2xl space-y-6"
           >
             <div className="text-center">
               <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-heading">Complete Your Profile</h2>
@@ -195,3 +200,4 @@ const ProfileSetup: React.FC = () => {
 };
 
 export default ProfileSetup;
+

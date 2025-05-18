@@ -7,6 +7,7 @@ import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
 import React, { useState } from 'react';
 import { UserData } from '@/types';
+import Logo from '@/components/layout/Logo'; // For signup form header
 
 
 const Signup: React.FC = () => {
@@ -33,43 +34,61 @@ const Signup: React.FC = () => {
       return;
     }
 
-    const newUser: UserData = {
+    // Create a partial user object for UserData type compatibility
+    const newUserBase: Pick<UserData, 'id' | 'name' | 'email' | 'password'> = {
       id: Date.now().toString(),
-      name, // This is the initial name (e.g. username)
+      name,
       email,
       password,
-      // Full profile details will be collected in ProfileSetup
     };
     
-    // Store minimal info to indicate user is mid-signup for profile setup
-    localStorage.setItem('currentUser', JSON.stringify({ id: newUser.id, email: newUser.email, name: newUser.name, needsProfileSetup: true }));
+    // UserData requires all fields, so provide defaults or undefined for optional ones not yet collected
+    const newUserForStorage: UserData = {
+      ...newUserBase,
+      fullName: name, // Use initial name as fullName temporarily
+      // other UserData fields will be undefined or have default values
+      // They will be properly set in ProfileSetup
+    };
     
-    // Add to registered users list (without full profile yet)
-    registeredUsers.push(newUser); // Store the user object as is for now
+    // Store minimal info for profile setup redirection, including `needsProfileSetup`
+    const currentUserForSetup = { 
+      id: newUserBase.id, 
+      email: newUserBase.email, 
+      name: newUserBase.name, 
+      password: newUserBase.password, // Pass password for UserData consistency
+      needsProfileSetup: true 
+    };
+    localStorage.setItem('currentUser', JSON.stringify(currentUserForSetup));
+    
+    registeredUsers.push(newUserForStorage);
     localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
 
     toast({
       title: 'Account Created!',
-      description: 'Please complete your profile.',
+      description: 'Please complete your profile to continue.',
+      className: "bg-brand-teal text-white"
     });
     navigate('/profile-setup');
   };
 
   return (
-    <div className="page-container auth-pages-bg"> {/* Applied auth-pages-bg */}
+    <div className="page-container auth-pages-bg">
       <Navbar />
       <main className="page-content-overlay flex-grow flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <form
             onSubmit={handleSignup}
-            className="glass-panel p-8 md:p-10 rounded-xl shadow-2xl space-y-6" // Enhanced panel
+            className="glass-panel p-8 md:p-10 rounded-xl shadow-2xl space-y-6"
           >
-            <div className="text-center">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-heading">Create Account</h2>
-              <p className="text-gray-600 mt-1">Start your journey with MediCare AI.</p>
+            <div className="text-center mb-4">
+              <div className="inline-block mb-4">
+                <Logo size="xl" textColor="text-brand-navy"/>
+              </div>
+              <h2 className="text-3xl font-bold text-brand-navy font-heading">Create Account</h2>
+              <p className="text-brand-navy/70 mt-1">Start your journey with MediCare AI.</p>
             </div>
              <div className="space-y-2">
-              <Label htmlFor="name">Name</Label>
+              <Label htmlFor="name" className="text-brand-navy/90">Name</Label>
               <Input
                 id="name"
                 type="text"
@@ -77,11 +96,11 @@ const Signup: React.FC = () => {
                 value={name}
                 onChange={(e) => setName(e.target.value)}
                 required
-                className="bg-white/70"
+                className="bg-white/80 border-border focus:bg-white focus:border-brand-teal"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-brand-navy/90">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -89,27 +108,27 @@ const Signup: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-white/70"
+                className="bg-white/80 border-border focus:bg-white focus:border-brand-teal"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-brand-navy/90">Password</Label>
               <Input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Choose a strong password"
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="bg-white/70"
+                className="bg-white/80 border-border focus:bg-white focus:border-brand-teal"
               />
             </div>
-            <Button type="submit" className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3">
+            <Button type="submit" className="w-full bg-brand-teal hover:bg-brand-teal-dark text-white py-3 text-base shadow-md hover:shadow-lg">
               Sign Up
             </Button>
-            <p className="text-center text-sm text-gray-600">
+            <p className="text-center text-sm text-brand-navy/70">
               Already have an account?{' '}
-              <Link to="/login" className="font-medium text-teal-600 hover:text-teal-700">
+              <Link to="/login" className="font-medium text-brand-teal hover:text-brand-teal-dark hover:underline">
                 Sign In
               </Link>
             </p>

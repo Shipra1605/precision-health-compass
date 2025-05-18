@@ -1,5 +1,5 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700&family=Raleway:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Poppins:wght@400;500;600;700&family=Montserrat:wght@400;500;600;700;700i;800&family=Raleway:wght@300;400;500;600;700&display=swap');
 
 @tailwind base;
 @tailwind components;
@@ -7,37 +7,39 @@
 
 @layer base {
   :root {
-    --background: 0 0% 98%; /* Light mode background */
-    --foreground: 224 71.4% 4.1%; /* Light mode text */
+    /* Light Mode - New Palette */
+    --background: 220 20% 97%; /* Off-white/Pearl Gray: F6F6F7 */
+    --foreground: 225 15% 15%; /* Navy Blue: #222635 */
 
-    --card: 0 0% 100%;
-    --card-foreground: 224 71.4% 4.1%;
+    --card: 0 0% 100%; /* White */
+    --card-foreground: 225 15% 15%;
 
     --popover: 0 0% 100%;
-    --popover-foreground: 224 71.4% 4.1%;
+    --popover-foreground: 225 15% 15%;
 
-    --primary: 359 100% 66%; /* Adjusted primary for better contrast with new BGs */
-    --primary-foreground: 210 20% 98%;
+    --primary: 200 82% 50%; /* Teal/Deep Sky Blue: #0EA5E9 */
+    --primary-foreground: 0 0% 100%; /* White for text on primary */
 
-    --secondary: 220 100% 66%; /* Adjusted secondary */
-    --secondary-foreground: 0 0% 98%;
+    --secondary: 195 75% 55%; /* Lighter Teal/Sky Blue: #33C3F0 */
+    --secondary-foreground: 225 15% 15%;
 
-    --muted: 220 20% 94%;
-    --muted-foreground: 220 8.9% 46.1%;
+    --muted: 220 20% 90%; /* Light Gray */
+    --muted-foreground: 220 10% 40%;
 
-    --accent: 220 76% 59%; /* Teal accent */
-    --accent-foreground: 0 0% 98%;
+    --accent: 210 70% 80%; /* Pastel Blue: #D3E4FD */
+    --accent-foreground: 225 15% 15%;
 
-    --destructive: 0 84.2% 60.2%;
-    --destructive-foreground: 210 20% 98%;
+    --destructive: 0 72% 51%; /* A clear red */
+    --destructive-foreground: 0 0% 100%;
 
-    --border: 220 13% 91%;
-    --input: 220 13% 91%;
-    --ring: 224 71.4% 4.1%;
+    --border: 220 15% 88%; /* Light border color */
+    --input: 220 15% 88%; /* Input border */
+    --ring: 200 82% 50%; /* Primary color for focus rings */
 
     --radius: 0.5rem;
 
-    /* ... keep existing dark mode variables ... */
+    /* Dark mode variables (can be refined later if dark mode is fully implemented) */
+    /* ... keep existing dark mode variables or update them similarly ... */
     --sidebar-background: 0 0% 98%;
     --sidebar-foreground: 240 5.3% 26.1%;
     --sidebar-primary: 240 5.9% 10%;
@@ -49,33 +51,24 @@
   }
 
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
-    --card: 222.2 84% 4.9%;
-    --card-foreground: 210 40% 98%;
-    --popover: 222.2 84% 4.9%;
-    --popover-foreground: 210 40% 98%;
-    --primary: 359 85% 65%;
-    --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
-    --secondary-foreground: 210 40% 98%;
-    --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 215 20.2% 65.1%;
-    --accent: 220 70% 50%;
-    --accent-foreground: 210 40% 98%;
-    --destructive: 0 62.8% 30.6%;
-    --destructive-foreground: 210 40% 98%;
-    --border: 217.2 32.6% 17.5%;
-    --input: 217.2 32.6% 17.5%;
-    --ring: 212.7 26.8% 83.9%;
-    --sidebar-background: 240 5.9% 10%;
-    --sidebar-foreground: 240 4.8% 95.9%;
-    --sidebar-primary: 224.3 76.3% 48%;
-    --sidebar-primary-foreground: 0 0% 100%;
-    --sidebar-accent: 240 3.7% 15.9%;
-    --sidebar-accent-foreground: 240 4.8% 95.9%;
-    --sidebar-border: 240 3.7% 15.9%;
-    --sidebar-ring: 217.2 91.2% 59.8%;
+    /* Basic dark mode overrides - can be expanded */
+    --background: 225 15% 12%; /* Dark Navy */
+    --foreground: 220 20% 92%; /* Light Gray text */
+    --card: 225 15% 18%;
+    --card-foreground: 220 20% 92%;
+    --popover: 225 15% 18%;
+    --popover-foreground: 220 20% 92%;
+    --primary: 200 75% 55%; /* Slightly brighter Teal for dark mode */
+    --primary-foreground: 225 15% 10%;
+    --secondary: 195 70% 60%;
+    --secondary-foreground: 220 20% 92%;
+    --muted: 225 15% 25%;
+    --muted-foreground: 220 15% 65%;
+    --accent: 210 60% 70%;
+    --accent-foreground: 225 15% 12%;
+    --border: 225 15% 30%;
+    --input: 225 15% 30%;
+    /* ... keep existing dark mode sidebar variables or update them ... */
   }
 }
 
@@ -85,196 +78,145 @@
   }
 
   body {
-    @apply bg-background text-foreground font-sans;
+    @apply bg-background text-foreground font-sans antialiased;
+    font-family: 'Inter', sans-serif;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    @apply font-heading;
+    @apply font-heading text-foreground; /* Ensure headings use foreground color */
+    font-family: 'Montserrat', sans-serif;
   }
 }
 
 @layer components {
-  .health-card {
-    @apply bg-white/90 backdrop-blur-sm rounded-lg shadow-md hover:shadow-lg transition-shadow p-5 border border-gray-100;
+  .health-card { /* For general dashboard cards, can be used by professional-card */
+    @apply bg-card/80 backdrop-blur-lg rounded-xl shadow-lg hover:shadow-xl transition-shadow p-5 border border-border/30;
   }
 
-  .health-stat {
-    @apply flex flex-col items-center justify-center p-4 rounded-lg;
+  .glass-panel { /* More pronounced glass effect */
+    @apply bg-card/70 backdrop-blur-xl border border-border/20 shadow-xl hover:shadow-2xl transition-shadow rounded-xl;
+  }
+  
+  .professional-card { /* For dashboard cards, applying new design */
+    @apply bg-white/90 dark:bg-neutral-800/90 backdrop-blur-md border border-neutral-200/60 dark:border-neutral-700/60 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300;
   }
 
-  /* ... keep existing progress styles ... */
-  .progress-excellent {
-    @apply bg-green-500;
+  /* Page container and overlay for background images */
+  .page-container {
+    @apply min-h-screen flex flex-col bg-cover bg-center bg-no-repeat bg-fixed relative;
   }
   
-  .progress-good {
-    @apply bg-blue-500;
-  }
-  
-  .progress-fair {
-    @apply bg-yellow-500;
-  }
-  
-  .progress-poor {
-    @apply bg-red-500;
-  }
-  
-  .glass-panel {
-    @apply bg-white/80 backdrop-blur-md border border-gray-200/60 shadow-lg hover:shadow-xl transition-shadow; /* Enhanced glass panel */
-  }
-  
-  .gradient-border {
-    @apply relative before:absolute before:inset-0 before:p-[1px] before:rounded-lg before:bg-gradient-to-r before:from-teal-400 before:to-blue-400 before:-z-10;
-  }
-  
-  .medical-gradient-bg {
-    @apply bg-gradient-to-br from-blue-50 to-teal-50;
-  }
-  
-  .page-container { /* Generic container for pages that might have BGs */
-    @apply min-h-screen flex flex-col;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    position: relative; /* For pseudo-elements */
-  }
-  
-  .page-content-overlay { /* To ensure content is readable over backgrounds */
-    @apply relative z-10 flex-grow; /* flex-grow needed if page-container is flex-col */
-    /* Add padding or other layout styles as needed here or in specific page components */
+  .page-content-overlay {
+    @apply relative z-10 flex-grow;
+    /* Consider a subtle overlay for all pages if backgrounds are very busy */
+    /* background-color: rgba(255, 255, 255, 0.1); */
   }
 
+  /* Homepage Specific Backgrounds */
   .homepage-bg {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.3)), url('/lovable-uploads/eefc0b2d-4141-4f45-b14a-8fc54aee98d2.png'); /* image 2 with light overlay */
+    /* Image 2: /lovable-uploads/fea8ddf5-433a-4ac7-bed5-8665242fcd17.png (lighter full bg) */
+    background-image: linear-gradient(rgba(240, 248, 255, 0.7), rgba(230, 240, 250, 0.7)), url('/lovable-uploads/fea8ddf5-433a-4ac7-bed5-8665242fcd17.png');
   }
-  .homepage-bg::after {
+  .homepage-bg::after { /* Image 3: /lovable-uploads/1c971892-9c6c-466c-b843-23aa12fcf7ab.png (right side element) */
     content: "";
-    background-image: url('/lovable-uploads/bc87be0f-f706-4edb-aecf-cd934d06a4f2.png'); /* image 3 */
-    background-size: contain;
+    background-image: url('/lovable-uploads/1c971892-9c6c-466c-b843-23aa12fcf7ab.png');
+    background-size: contain; /* Or 'auto 50%' to control height */
     background-position: right center;
     background-repeat: no-repeat;
     position: absolute;
     top: 0;
     right: 0;
     bottom: 0;
-    width: 45%; /* Adjust as needed */
-    opacity: 0.25; /* Make it subtle */
-    z-index: 0; /* Behind page-content-overlay */
+    width: 40%; /* Adjust width as needed */
+    opacity: 0.15; /* Subtle presence */
+    z-index: 0; /* Behind content */
   }
 
-  .auth-pages-bg { /* For login, signup */
-     background-image: linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.5)), url('/lovable-uploads/7e88c256-f9b4-45a9-b74e-1123997db7b5.png'); /* image 4 with overlay */
-     /* Or blend with image 5: 
-     background-image: linear-gradient(to bottom, rgba(0,0,0,0.1), rgba(0,0,0,0.1)), url('/lovable-uploads/7e88c256-f9b4-45a9-b74e-1123997db7b5.png'), url('/lovable-uploads/62c5df4e-e08a-4e1e-aad8-eece213af7b5.png');
-     background-blend-mode: overlay, normal;
-     background-size: cover, 50% auto, 50% auto;
-     background-position: center, top left, bottom right; */
+  /* Auth Pages (Login, Signup, ProfileSetup) Backgrounds */
+  .auth-pages-bg {
+    /* Image 4: /lovable-uploads/8457aa07-a6aa-4abf-b854-75e35b107333.png 
+       Image 5: /lovable-uploads/9734f78e-1fbb-466f-a4c4-cb2c6442608d.png (Maybe use one primarily and other as accent or blend) */
+    background-image: linear-gradient(rgba(230, 240, 255, 0.85), rgba(220, 235, 250, 0.85)), url('/lovable-uploads/8457aa07-a6aa-4abf-b854-75e35b107333.png');
+    /* To blend Image 5 subtly, could use a pseudo-element if needed, or a more complex background stack */
+  }
+  /* Example for blending another image on auth pages if desired */
+  /* .auth-pages-bg::before {
+    content: "";
+    background-image: url('/lovable-uploads/9734f78e-1fbb-466f-a4c4-cb2c6442608d.png');
+    background-size: cover;
+    background-position: bottom right;
+    background-repeat: no-repeat;
+    position: absolute;
+    inset: 0;
+    opacity: 0.1;
+    z-index: 0;
+  } */
+  
+  /* Dashboard Page Backgrounds */
+  .dashboard-page-bg {
+    /* Image 7: /lovable-uploads/a27b5a77-ec82-42f3-ae74-f25f6a23a5ef.png (subtle full bg) */
+    background-image: linear-gradient(rgba(235, 245, 255, 0.9), rgba(225, 240, 255, 0.9)), url('/lovable-uploads/a27b5a77-ec82-42f3-ae74-f25f6a23a5ef.png');
+  }
+  .dashboard-page-bg::after { /* Image 6: /lovable-uploads/02299a52-de77-4802-9fed-2a542e613102.png (right side element) */
+    content: "";
+    background-image: url('/lovable-uploads/02299a52-de77-4802-9fed-2a542e613102.png');
+    background-size: contain; /* or 'auto 60%' etc. */
+    background-position: right center;
+    background-repeat: no-repeat;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 35%; /* Adjust */
+    opacity: 0.1; /* Subtle */
+    z-index: 0;
   }
   
+  /* Info Pages (About, HealthFacts, Team) Backgrounds - General fallback if specific components not editable */
   .info-pages-bg { /* For health-facts, about, team */
-     background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/lovable-uploads/62c5df4e-e08a-4e1e-aad8-eece213af7b5.png'); /* image 5 with overlay */
+     /* Using image 5 from previous instructions: /lovable-uploads/62c5df4e-e08a-4e1e-aad8-eece213af7b5.png */
+     /* Re-using an auth image if those are suitable or image 5 mentioned before */
+     background-image: linear-gradient(rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.6)), url('/lovable-uploads/62c5df4e-e08a-4e1e-aad8-eece213af7b5.png');
   }
-  .team-page-bg {
-    background-image: linear-gradient(rgba(255, 255, 255, 0.4), rgba(255, 255, 255, 0.4)), url('/lovable-uploads/2afa7cc2-9706-4f1e-8bdc-d6145b20ca20.png'); /* image 8 with overlay */
-  }
-
-  .dashboard-page-bg {
-    background-image: linear-gradient(rgba(240, 248, 255, 0.3), rgba(240, 248, 255, 0.3)), url('/lovable-uploads/db668ec8-b3a2-44cc-bf04-d3667d2f415b.png'); /* image 7 with overlay */
-  }
-  .dashboard-page-bg::after {
-    content: "";
-    background-image: url('/lovable-uploads/03420be4-e095-471d-9c9e-bd7576558fde.png'); /* image 6 */
-    background-size: contain; /* or 'cover' based on aspect ratio */
-    background-position: right center;
-    background-repeat: no-repeat;
-    position: absolute;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    width: 40%; /* Adjust width */
-    opacity: 0.2; /* Adjust opacity */
-    z-index: 0; /* Behind page-content-overlay */
+  .team-page-bg { /* Image 8: /lovable-uploads/c3195bfd-4e1f-4e76-917b-9e2a84a88977.png */
+    background-image: linear-gradient(rgba(220, 230, 245, 0.8), rgba(210, 225, 240, 0.8)), url('/lovable-uploads/c3195bfd-4e1f-4e76-917b-9e2a84a88977.png');
   }
 
   /* Fallback page-background for pages not explicitly set */
   .page-background {
-    @apply min-h-screen bg-gradient-to-br from-sky-50 via-slate-50 to-teal-50 bg-fixed;
-    /* background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%230ea5e9' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E"); */
+    @apply min-h-screen bg-gradient-to-br from-sky-50 via-slate-100 to-teal-50 dark:from-neutral-900 dark:via-neutral-800 dark:to-sky-900 bg-fixed;
   }
   
-  .section-background {
-    @apply bg-white/90 backdrop-blur-sm border border-white/20 rounded-lg shadow-sm;
+  .section-background { /* For inner sections on pages */
+    @apply bg-card/60 backdrop-blur-md border border-border/10 rounded-lg shadow-md;
   }
 
-  .professional-card {
-    @apply bg-white/95 backdrop-blur-md border border-slate-200/70 rounded-xl shadow-lg transition-all duration-300 hover:shadow-xl;
-  }
+  /* ... keep existing progress styles, medical-gradient-bg, gradient-border ... */
+  .progress-excellent { @apply bg-green-500; }
+  .progress-good { @apply bg-blue-500; }
+  .progress-fair { @apply bg-yellow-500; }
+  .progress-poor { @apply bg-red-500; }
+  .gradient-border { @apply relative before:absolute before:inset-0 before:p-[1px] before:rounded-lg before:bg-gradient-to-r before:from-brand-teal before:to-brand-blue-sky before:-z-10; }
+  .medical-gradient-bg { @apply bg-gradient-to-br from-pastel-blue to-pastel-purple; }
 }
 
 @layer utilities {
   /* ... keep existing animation utilities ... */
-  .animate-pulse-subtle {
-    animation: pulse-subtle 3s ease-in-out infinite;
-  }
-
-  @keyframes pulse-subtle {
-    0%, 100% { 
-      transform: scale(1); 
-      opacity: 1;
-    }
-    50% { 
-      transform: scale(1.05); 
-      opacity: 0.9;
-    }
-  }
-
-  .hover-scale {
-    @apply transition-transform duration-200 hover:scale-105;
-  }
+  .animate-pulse-subtle { animation: pulse-subtle 3s ease-in-out infinite; }
+  @keyframes pulse-subtle { /* ... */ }
+  .hover-scale { @apply transition-transform duration-200 hover:scale-105; }
+  .hover-lift { @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg; }
+  .animate-fade-in { animation: fadeIn 0.8s ease-out forwards; }
+  @keyframes fadeIn { /* ... */ }
+  .animate-slide-in { animation: slideIn 0.8s ease-out forwards; }
+  @keyframes slideIn { /* ... */ }
   
-  .hover-lift {
-    @apply transition-all duration-300 hover:-translate-y-1 hover:shadow-lg;
-  }
-  
-  .animate-fade-in {
-    animation: fadeIn 0.8s ease-out forwards;
-  }
-  
-  @keyframes fadeIn {
-    from {
-      opacity: 0;
-      transform: translateY(10px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-  
-  .animate-slide-in {
-    animation: slideIn 0.8s ease-out forwards;
-  }
-  
-  @keyframes slideIn {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-  
-  .bg-medical-pattern {
-    background-image: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ef4444' fill-opacity='0.1'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
-  }
-  
+  /* Updated font utilities */
   .modern-text {
-    @apply font-raleway tracking-wide;
+    @apply font-raleway tracking-wide text-foreground/90;
   }
-  
   .professional-heading {
-    @apply font-montserrat font-semibold tracking-tight;
+    @apply font-montserrat font-semibold tracking-tight text-brand-navy dark:text-brand-pearl-gray-light;
   }
 }
+

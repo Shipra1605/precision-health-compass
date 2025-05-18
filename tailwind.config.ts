@@ -23,14 +23,14 @@ export default {
 				border: 'hsl(var(--border))',
 				input: 'hsl(var(--input))',
 				ring: 'hsl(var(--ring))',
-				background: 'hsl(var(--background))',
-				foreground: 'hsl(var(--foreground))',
+				background: 'hsl(var(--background))', // Pearl Gray family
+				foreground: 'hsl(var(--foreground))', // Navy Blue family
 				primary: {
-					DEFAULT: 'hsl(var(--primary))',
-					foreground: 'hsl(var(--primary-foreground))'
+					DEFAULT: 'hsl(var(--primary))', // Teal / Deep Sky Blue
+					foreground: 'hsl(var(--primary-foreground))' // White
 				},
 				secondary: {
-					DEFAULT: 'hsl(var(--secondary))',
+					DEFAULT: 'hsl(var(--secondary))', // Lighter Teal or Accent Blue
 					foreground: 'hsl(var(--secondary-foreground))'
 				},
 				destructive: {
@@ -42,18 +42,18 @@ export default {
 					foreground: 'hsl(var(--muted-foreground))'
 				},
 				accent: {
-					DEFAULT: 'hsl(var(--accent))',
+					DEFAULT: 'hsl(var(--accent))', // Could be a pastel accent
 					foreground: 'hsl(var(--accent-foreground))'
 				},
-				popover: {
+        popover: { // ... keep existing code
 					DEFAULT: 'hsl(var(--popover))',
 					foreground: 'hsl(var(--popover-foreground))'
 				},
-				card: {
+				card: { // ... keep existing code
 					DEFAULT: 'hsl(var(--card))',
 					foreground: 'hsl(var(--card-foreground))'
 				},
-				sidebar: {
+				sidebar: { // ... keep existing code
 					DEFAULT: 'hsl(var(--sidebar-background))',
 					foreground: 'hsl(var(--sidebar-foreground))',
 					primary: 'hsl(var(--sidebar-primary))',
@@ -63,28 +63,31 @@ export default {
 					border: 'hsl(var(--sidebar-border))',
 					ring: 'hsl(var(--sidebar-ring))'
 				},
-				// Custom colors for medical theme
-				medical: {
-					primary: '#0077B6',
-					secondary: '#00B4D8',
-					accent: '#48CAE4',
-					light: '#90E0EF',
-					background: '#F8F9FA',
-				}
+				// Custom colors based on user request
+				'brand-teal': '#0EA5E9', // Deep Sky Blue / Teal
+				'brand-teal-dark': '#0FA0CE',
+				'brand-blue-sky': '#33C3F0',
+				'brand-pearl-gray': '#F1F1F1', // Backgrounds
+				'brand-pearl-gray-light': '#F6F6F7',
+				'brand-navy': '#222635', // Headings / Dark Text (was #221F26, adjusted for better foreground)
+				'brand-navy-light': '#333A4C',
+				// Pastel accents
+				'pastel-purple': '#E5DEFF',
+				'pastel-blue': '#D3E4FD',
 			},
-			borderRadius: {
+			borderRadius: { // ... keep existing code
 				lg: 'var(--radius)',
 				md: 'calc(var(--radius) - 2px)',
 				sm: 'calc(var(--radius) - 4px)'
 			},
-			fontFamily: {
+			fontFamily: { // ... keep existing code
 				sans: ['Inter', 'sans-serif'],
 				heading: ['Montserrat', 'sans-serif'],
 				raleway: ['Raleway', 'sans-serif'],
 				montserrat: ['Montserrat', 'sans-serif'],
 				poppins: ['Poppins', 'sans-serif'],
 			},
-			keyframes: {
+			keyframes: { // ... keep existing code
 				'accordion-down': {
 					from: {
 						height: '0'
@@ -106,7 +109,7 @@ export default {
 					'50%': { opacity: '0.8' }
 				}
 			},
-			animation: {
+			animation: { // ... keep existing code
 				'accordion-down': 'accordion-down 0.2s ease-out',
 				'accordion-up': 'accordion-up 0.2s ease-out',
 				'pulse-subtle': 'pulse-subtle 3s ease-in-out infinite'

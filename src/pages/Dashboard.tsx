@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import DashboardNavbar from '@/components/dashboard/DashboardNavbar';
+import MainLayout from '@/components/layout/MainLayout';
 import { useToast } from '@/components/ui/use-toast';
 import PatientInfoCard from '@/components/dashboard/PatientInfoCard';
 import MedicalRecordsCard from '@/components/dashboard/MedicalRecordsCard';
 import PreviousRecommendationsCard from '@/components/dashboard/PreviousRecommendationsCard';
 import SymptomAnalysisCard from '@/components/dashboard/SymptomAnalysisCard';
 import ActiveRecommendationCard from '@/components/dashboard/ActiveRecommendationCard';
-import MainLayout from '@/components/layout/MainLayout';
 import { UserData, MedicalRecord, Recommendation } from '@/types';
+
+// Temporary interface to handle potentially missing needsProfileSetup
+interface CurrentUserStored extends UserData {
+  needsProfileSetup?: boolean;
+  sessionExpiry?: string;
+}
 
 const Dashboard: React.FC = () => {
   const [user, setUser] = useState<UserData | null>(null);
@@ -28,32 +33,36 @@ const Dashboard: React.FC = () => {
       return;
     }
     
-    let loadedUser: UserData;
+    let loadedUser: CurrentUserStored;
     try {
       loadedUser = JSON.parse(currentUserString);
-      if (loadedUser.needsProfileSetup) {
+      // Check for needsProfileSetup, which is not part of UserData type but added dynamically
+      if (loadedUser.needsProfileSetup === true) { 
         navigate('/profile-setup');
         return;
       }
+      // Ensure fullName is present, fallback to name if necessary
       if (!loadedUser.fullName && loadedUser.name) {
         loadedUser.fullName = loadedUser.name;
       }
-      setUser(loadedUser);
+      setUser(loadedUser as UserData); // Cast to UserData after checks
       
-      const savedRecords = localStorage.getItem(`records_${loadedUser.id}`);
-      if (savedRecords) {
-        setMedicalRecords(JSON.parse(savedRecords).map((record: any) => ({
-          ...record,
-          date: new Date(record.date)
-        })));
-      }
-      
-      const savedRecommendations = localStorage.getItem(`recommendations_${loadedUser.id}`);
-      if (savedRecommendations) {
-        setRecommendations(JSON.parse(savedRecommendations).map((rec: any) => ({
-          ...rec,
-          date: new Date(rec.date)
-        })));
+      if (loadedUser.id) {
+        const savedRecords = localStorage.getItem(`records_${loadedUser.id}`);
+        if (savedRecords) {
+          setMedicalRecords(JSON.parse(savedRecords).map((record: any) => ({
+            ...record,
+            date: new Date(record.date)
+          })));
+        }
+        
+        const savedRecommendations = localStorage.getItem(`recommendations_${loadedUser.id}`);
+        if (savedRecommendations) {
+          setRecommendations(JSON.parse(savedRecommendations).map((rec: any) => ({
+            ...rec,
+            date: new Date(rec.date)
+          })));
+        }
       }
     } catch (error) {
       console.error("Error processing user data for dashboard:", error);
@@ -66,12 +75,26 @@ const Dashboard: React.FC = () => {
     setUser(prevUser => {
       if (!prevUser) return null;
       const newUser = { ...prevUser, ...updatedData };
+      // Persist these changes to localStorage as well for currentUser
+      localStorage.setItem('currentUser', JSON.stringify(newUser));
+      // And update registeredUsers if this user is in there
+      if (newUser.id) {
+        const registeredUsersString = localStorage.getItem('registeredUsers');
+        if (registeredUsersString) {
+          let registeredUsers: UserData[] = JSON.parse(registeredUsersString);
+          const userIndex = registeredUsers.findIndex(u => u.id === newUser.id);
+          if (userIndex !== -1) {
+            registeredUsers[userIndex] = { ...registeredUsers[userIndex], ...updatedData };
+            localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+          }
+        }
+      }
       return newUser;
     });
   };
 
   const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files.length > 0 && user) {
+    if (e.target.files && e.target.files.length > 0 && user && user.id) {
       const file = e.target.files[0];
       const newRecord: MedicalRecord = {
         id: Date.now().toString(),
@@ -85,12 +108,12 @@ const Dashboard: React.FC = () => {
         title: "Success",
         description: "Medical record uploaded successfully",
       });
-      e.target.value = ''; // Clear file input
+      e.target.value = ''; 
     }
   };
 
   const handleDeleteRecord = (recordId: string) => {
-    if (!user) return;
+    if (!user || !user.id) return;
     const updatedRecords = medicalRecords.filter(record => record.id !== recordId);
     setMedicalRecords(updatedRecords);
     localStorage.setItem(`records_${user.id}`, JSON.stringify(updatedRecords));
@@ -111,7 +134,7 @@ const Dashboard: React.FC = () => {
       return;
     }
     
-    if (user) {
+    if (user && user.id) {
       setIsAnalyzing(true);
       setTimeout(() => {
         const treatmentOptions = [
@@ -170,6 +193,7 @@ const Dashboard: React.FC = () => {
   return (
     <MainLayout requireAuth={true}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* The "MediCare AI Dashboard" title is handled by the Logo in MainNavbar */}
         <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
           <div className="lg:col-span-1 space-y-6">
             <PatientInfoCard patient={user} onUpdatePatient={handlePatientUpdate} />
@@ -177,7 +201,7 @@ const Dashboard: React.FC = () => {
               user={user}
               medicalRecords={medicalRecords}
               onFileUpload={handleFileUpload}
-              onDeleteRecord={handleDeleteRecord}
+              onDeleteRecord={handleDeleteRecord} // This prop makes the delete button functional
             />
           </div>
           
@@ -192,6 +216,8 @@ const Dashboard: React.FC = () => {
               recommendations={recommendations}
               onViewRecommendation={viewRecommendationDetails}
             />
+            {/* ActiveRecommendationCard's heading is internal and cannot be changed as it's read-only.
+                I will note this to the user. The request was "Get Your Personalized Medical Treatment". */}
             <ActiveRecommendationCard recommendation={activeRecommendationDetails} />
           </div>
         </div>

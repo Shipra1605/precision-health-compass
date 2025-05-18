@@ -1,38 +1,76 @@
 
 import React from 'react';
-import { Stethoscope, Brain } from 'lucide-react';
+import { Stethoscope, Brain, HeartPulse } from 'lucide-react'; // Added HeartPulse
 
 interface LogoProps {
-  size?: 'md' | 'lg' | 'xl';
+  size?: 'sm' | 'md' | 'lg' | 'xl';
   textColor?: string;
   wrapperClassName?: string;
+  iconColor?: string; // For overriding default icon colors if needed
 }
 
 const Logo: React.FC<LogoProps> = ({ 
   size = "xl", 
-  textColor = "text-gray-800",
-  wrapperClassName = "" 
+  textColor = "text-navy-700", // Updated to new palette
+  wrapperClassName = "",
+  iconColor = "text-white"
 }) => {
-  const iconSizeClass = size === 'xl' ? 'h-6 w-6' : (size === 'lg' ? 'h-5 w-5' : 'h-4 w-4');
-  const brainIconSizeClass = size === 'xl' ? 'h-3 w-3' : (size === 'lg' ? 'h-2.5 w-2.5' : 'h-2 w-2');
-  const brainPositionClass = size === 'xl' ? 'top-1 right-1' : (size === 'lg' ? 'top-0.5 right-0.5' : 'top-0.5 right-0.5');
-  const containerSizeClass = size === 'xl' ? 'h-10 w-10' : (size === 'lg' ? 'h-8 w-8' : 'h-7 w-7');
-  const textSizeClass = size === 'xl' ? 'text-xl' : (size === 'lg' ? 'text-lg' : 'text-base');
-  const subTextSizeClass = size === 'xl' ? 'text-xs' : (size === 'lg' ? 'text-xs' : 'text-[10px]');
+  // Base sizes
+  let iconMainSize = 24; // for Stethoscope
+  let iconSubSize = 10;  // for Brain/Heart
+  let textSize = 'text-xl';
+  let containerPadding = 'p-2.5'; // Control overall icon container size via padding
+  let brainOffset = 'top-1 right-1';
+  let heartOffset = 'top-1.5 left-1.5';
+
+  if (size === 'lg') {
+    iconMainSize = 20;
+    iconSubSize = 8;
+    textSize = 'text-lg';
+    containerPadding = 'p-2';
+    brainOffset = 'top-0.5 right-0.5';
+    heartOffset = 'top-1 left-1';
+  } else if (size === 'md') {
+    iconMainSize = 18;
+    iconSubSize = 7;
+    textSize = 'text-base';
+    containerPadding = 'p-1.5';
+    brainOffset = 'top-0.5 right-0.5';
+    heartOffset = 'top-0.5 left-0.5';
+  } else if (size === 'sm') {
+    iconMainSize = 16;
+    iconSubSize = 6;
+    textSize = 'text-sm';
+    containerPadding = 'p-1';
+    brainOffset = 'top-0 right-0';
+    heartOffset = 'top-0.5 left-0.5';
+  }
 
   return (
-    <div className={`flex items-center gap-2 ${wrapperClassName}`}>
-      <div className={`relative flex items-center justify-center ${containerSizeClass} bg-gradient-to-br from-teal-500 to-blue-600 rounded-full shadow`}>
-        <Stethoscope className={`text-white ${iconSizeClass}`} />
-        <Brain className={`absolute text-white opacity-80 ${brainIconSizeClass} ${brainPositionClass}`} />
+    <div className={`flex items-center gap-2 group transition-transform duration-300 ease-out hover:scale-105 ${wrapperClassName}`}>
+      <div 
+        className={`relative flex items-center justify-center rounded-lg shadow-md ${containerPadding} 
+                   bg-gradient-to-br from-teal-500 via-sky-500 to-blue-600 
+                   group-hover:from-teal-400 group-hover:via-sky-400 group-hover:to-blue-500 transition-all duration-300`}
+      >
+        <Stethoscope size={iconMainSize} className={`${iconColor} z-10 transition-transform duration-300 group-hover:rotate-[-6deg]`} strokeWidth={2}/>
+        <Brain 
+            size={iconSubSize} 
+            className={`${iconColor} absolute ${brainOffset} opacity-70 z-0 transition-all duration-300 group-hover:opacity-90 group-hover:scale-110`} 
+            strokeWidth={1.5}
+        />
+         <HeartPulse 
+            size={iconSubSize} 
+            className={`${iconColor} absolute ${heartOffset} opacity-60 z-0 transition-all duration-300 group-hover:opacity-80 group-hover:scale-105`} 
+            strokeWidth={1.5}
+        />
       </div>
-      <div className="flex flex-col items-start">
-        <span className={`font-bold ${textColor} ${textSizeClass} font-heading leading-tight`}>MediCare AI</span>
-        {/* You can add a tagline here if desired in the future */}
-        {/* <span className={`text-gray-500 ${subTextSizeClass}`}>Your Health Companion</span> */}
-      </div>
+      <span className={`font-bold ${textColor} ${textSize} font-heading leading-tight tracking-tight`}>
+        MediCare AI
+      </span>
     </div>
   );
 };
 
 export default Logo;
+

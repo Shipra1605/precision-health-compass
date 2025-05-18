@@ -2,9 +2,9 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/components/ui/button';
-import { LogOut } from 'lucide-react';
+import { LogOut, Menu, X } from 'lucide-react'; // Using Menu and X for toggle
 import { useToast } from '@/components/ui/use-toast';
-import Logo from './Logo'; // Import the new Logo component
+import Logo from './Logo';
 
 const MainNavbar = () => {
   const navigate = useNavigate();
@@ -15,18 +15,20 @@ const MainNavbar = () => {
     localStorage.removeItem('currentUser');
     toast({
       title: "Logged Out",
-      description: "You have been successfully logged out",
+      description: "You have been successfully logged out.",
+      className: "bg-brand-teal text-white", // Example custom toast styling
     });
     navigate('/');
   };
 
   return (
-    <header className="bg-white/90 backdrop-blur-sm border-b border-gray-100 sticky top-0 z-30 shadow-sm">
+    <header className="bg-card/80 backdrop-blur-md border-b border-border/30 sticky top-0 z-50 shadow-md">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16 items-center"> {/* Added items-center */}
-          <div className="flex items-center"> {/* Ensure logo container is centered */}
-            <Logo size="lg" textColor="text-gray-800" />
-            {/* Removed the "Patient Dashboard" text, as the logo now implies the app context */}
+        <div className="flex justify-between h-16 items-center">
+          <div className="flex items-center">
+            {/* Logo takes user to dashboard if logged in, or home if not. Here it's MainNavbar, so always dashboard context. */}
+            {/* Link to="/dashboard" if appropriate, or just rely on it being the app's main internal navbar */}
+            <Logo size="lg" textColor="text-brand-navy dark:text-brand-pearl-gray-light" />
           </div>
           
           {/* Desktop Navigation */}
@@ -35,7 +37,7 @@ const MainNavbar = () => {
               variant="outline" 
               size="sm" 
               onClick={handleLogout}
-              className="flex items-center gap-2 border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700"
+              className="flex items-center gap-2 border-brand-teal text-brand-teal hover:bg-brand-teal/10 hover:text-brand-teal-dark"
             >
               <LogOut className="h-4 w-4" />
               <span>Sign Out</span>
@@ -49,24 +51,17 @@ const MainNavbar = () => {
               size="icon" 
               onClick={() => setMenuOpen(!menuOpen)}
               aria-label="Toggle menu"
+              className="text-brand-navy dark:text-brand-pearl-gray-light hover:bg-foreground/10"
             >
-              {menuOpen ? (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                </svg>
-              ) : (
-                <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
-                </svg>
-              )}
+              {menuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
         
         {/* Mobile Navigation */}
         {menuOpen && (
-          <div className="md:hidden py-3 pb-4 border-t animate-fade-in">
-            <nav className="flex flex-col space-y-1">
+          <div className="md:hidden py-3 pb-4 border-t border-border/30 animate-fade-in">
+            <nav className="flex flex-col space-y-2 px-2">
               <Button 
                 variant="outline" 
                 size="sm" 
@@ -74,7 +69,7 @@ const MainNavbar = () => {
                   handleLogout();
                   setMenuOpen(false);
                 }}
-                className="flex items-center ml-3 mr-3 mt-3 border-teal-200 text-teal-600 hover:bg-teal-50 hover:text-teal-700"
+                className="w-full flex items-center justify-center gap-2 border-brand-teal text-brand-teal hover:bg-brand-teal/10 hover:text-brand-teal-dark py-2.5"
               >
                 <LogOut className="h-4 w-4 mr-2" />
                 <span>Sign Out</span>
@@ -88,3 +83,4 @@ const MainNavbar = () => {
 };
 
 export default MainNavbar;
+

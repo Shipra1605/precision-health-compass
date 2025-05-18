@@ -1,6 +1,6 @@
 
 import React from 'react';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'; // Added CardDescription
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { Search, Zap } from 'lucide-react';
@@ -14,24 +14,34 @@ interface SymptomAnalysisCardProps {
 
 const SymptomAnalysisCard: React.FC<SymptomAnalysisCardProps> = ({ symptoms, onSymptomsChange, onSubmit, isAnalyzing }) => {
   return (
-    <Card className="professional-card"> {/* Using new professional-card style */}
-      <CardHeader className="pb-2">
-        <CardTitle className="text-lg flex items-center gap-2 professional-heading text-gray-700">
-          <Search className="h-5 w-5 text-medical-primary" />
-          Symptom Analysis
-        </CardTitle>
+    <Card className="professional-card">
+      <CardHeader className="pb-3"> {/* Adjusted padding */}
+        <div className="flex items-center justify-between">
+          <CardTitle className="text-xl flex items-center gap-2 professional-heading text-brand-navy">
+            <Search className="h-5 w-5 text-brand-teal" />
+            Symptom Analysis
+          </CardTitle>
+          {/* Optional: Add a small info icon/tooltip here if needed */}
+        </div>
+        <CardDescription className="text-sm text-brand-navy/70 pt-1">
+           Please describe your current health symptoms or conditions you're experiencing today.
+        </CardDescription>
       </CardHeader>
       <CardContent>
         <div className="space-y-4">
           <Textarea
-            placeholder="Describe your current symptoms or health conditions you're facing (e.g., persistent cough and mild fever for 2 days, feeling fatigued)..."
+            placeholder="e.g., Persistent cough and mild fever for 2 days, feeling fatigued, occasional headache..."
             value={symptoms}
             onChange={(e) => onSymptomsChange(e.target.value)}
-            rows={6}
-            className="resize-none bg-white/80 focus:bg-white"
+            rows={5} // Slightly reduced rows
+            className="resize-none bg-white/90 dark:bg-neutral-700/50 border-border focus:bg-white dark:focus:bg-neutral-700 focus:border-brand-teal text-sm"
             disabled={isAnalyzing}
           />
-          <Button onClick={onSubmit} disabled={isAnalyzing || !symptoms.trim()} className="w-full bg-medical-primary hover:bg-medical-primary/90 text-white py-3">
+          <Button 
+            onClick={onSubmit} 
+            disabled={isAnalyzing || !symptoms.trim()} 
+            className="w-full bg-gradient-to-r from-brand-teal to-brand-blue-sky hover:from-brand-teal-dark hover:to-brand-teal text-white py-3 text-base shadow-md hover:shadow-lg transition-all"
+          >
             {isAnalyzing ? (
               <>
                 <svg className="animate-spin -ml-1 mr-3 h-5 w-5 text-white" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
@@ -54,3 +64,4 @@ const SymptomAnalysisCard: React.FC<SymptomAnalysisCardProps> = ({ symptoms, onS
 };
 
 export default SymptomAnalysisCard;
+

@@ -1,5 +1,7 @@
+
 import React, { useState } from 'react';
-import Navbar from '@/components/layout/Navbar';
+// Navbar and Footer are part of the page structure, not MainLayout for auth pages
+import Navbar from '@/components/layout/Navbar'; 
 import Footer from '@/components/layout/Footer';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -7,6 +9,12 @@ import { Label } from '@/components/ui/label';
 import { Link, useNavigate } from 'react-router-dom';
 import { useToast } from '@/components/ui/use-toast';
 import { UserData } from '@/types';
+import Logo from '@/components/layout/Logo'; // For login form header
+
+interface StoredUser extends UserData {
+  needsProfileSetup?: boolean;
+  sessionExpiry?: string;
+}
 
 const Login: React.FC = () => {
   const [email, setEmail] = useState('');
@@ -18,28 +26,32 @@ const Login: React.FC = () => {
     e.preventDefault();
     const registeredUsersString = localStorage.getItem('registeredUsers');
     if (registeredUsersString) {
-      const registeredUsers: UserData[] = JSON.parse(registeredUsersString);
+      const registeredUsers: StoredUser[] = JSON.parse(registeredUsersString);
       const user = registeredUsers.find(
         (u) => u.email === email && u.password === password
       );
 
       if (user) {
-        // Check for profile completion
-        if (!user.fullName || !user.age || !user.gender) {
-           // Set temporary flag or part of user object to indicate pending profile setup
-          const userForProfileSetup = { ...user, needsProfileSetup: true };
-          localStorage.setItem('currentUser', JSON.stringify(userForProfileSetup));
-          toast({
-            title: 'Profile Incomplete',
-            description: 'Please complete your profile setup.',
-          });
-          navigate('/profile-setup');
+        if (user.needsProfileSetup === true) {
+           const userForProfileSetup = { ...user, needsProfileSetup: true }; // keep needsProfileSetup
+           localStorage.setItem('currentUser', JSON.stringify(userForProfileSetup));
+           toast({
+             title: 'Profile Incomplete',
+             description: 'Please complete your profile setup.',
+             className: "bg-yellow-500 text-white"
+           });
+           navigate('/profile-setup');
         } else {
-          const userToStore = { ...user, sessionExpiry: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString() }; // 24h session
+          const userToStore = { 
+            ...user, 
+            needsProfileSetup: false, // Explicitly set to false
+            sessionExpiry: new Date(new Date().getTime() + 24 * 60 * 60 * 1000).toISOString() 
+          };
           localStorage.setItem('currentUser', JSON.stringify(userToStore));
           toast({
             title: 'Login Successful',
-            description: `Welcome back, ${user.name}!`,
+            description: `Welcome back, ${user.name || user.fullName}!`,
+            className: "bg-brand-teal text-white"
           });
           navigate('/dashboard');
         }
@@ -60,21 +72,25 @@ const Login: React.FC = () => {
   };
 
   return (
-    <div className="page-container auth-pages-bg"> {/* Applied auth-pages-bg */}
+    // Auth pages get their background from this class in page-container
+    <div className="page-container auth-pages-bg">
       <Navbar />
       <main className="page-content-overlay flex-grow flex items-center justify-center p-4">
         <div className="w-full max-w-md">
           <form
             onSubmit={handleLogin}
-            className="glass-panel p-8 md:p-10 rounded-xl shadow-2xl space-y-6" // Enhanced panel
+            className="glass-panel p-8 md:p-10 rounded-xl shadow-2xl space-y-6"
           >
-            <div className="text-center">
-              <h2 className="text-2xl md:text-3xl font-bold text-gray-800 font-heading">Welcome Back!</h2>
-              <p className="text-gray-600 mt-1">Sign in to access your dashboard.</p>
+            <div className="text-center mb-4">
+              <div className="inline-block mb-4">
+                <Logo size="xl" textColor="text-brand-navy"/>
+              </div>
+              <h2 className="text-3xl font-bold text-brand-navy font-heading">Welcome Back!</h2>
+              <p className="text-brand-navy/70 mt-1">Sign in to access your MediCare AI dashboard.</p>
             </div>
             
             <div className="space-y-2">
-              <Label htmlFor="email">Email</Label>
+              <Label htmlFor="email" className="text-brand-navy/90">Email</Label>
               <Input
                 id="email"
                 type="email"
@@ -82,11 +98,11 @@ const Login: React.FC = () => {
                 value={email}
                 onChange={(e) => setEmail(e.target.value)}
                 required
-                className="bg-white/70"
+                className="bg-white/80 border-border focus:bg-white focus:border-brand-teal"
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="password">Password</Label>
+              <Label htmlFor="password" className="text-brand-navy/90">Password</Label>
               <Input
                 id="password"
                 type="password"
@@ -94,15 +110,15 @@ const Login: React.FC = () => {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 required
-                className="bg-white/70"
+                className="bg-white/80 border-border focus:bg-white focus:border-brand-teal"
               />
             </div>
-            <Button type="submit" className="w-full bg-teal-600 hover:bg-teal-700 text-white py-3">
+            <Button type="submit" className="w-full bg-brand-teal hover:bg-brand-teal-dark text-white py-3 text-base shadow-md hover:shadow-lg">
               Sign In
             </Button>
-            <p className="text-center text-sm text-gray-600">
+            <p className="text-center text-sm text-brand-navy/70">
               Don't have an account?{' '}
-              <Link to="/signup" className="font-medium text-teal-600 hover:text-teal-700">
+              <Link to="/signup" className="font-medium text-brand-teal hover:text-brand-teal-dark hover:underline">
                 Sign Up
               </Link>
             </p>
@@ -115,3 +131,4 @@ const Login: React.FC = () => {
 };
 
 export default Login;
+
